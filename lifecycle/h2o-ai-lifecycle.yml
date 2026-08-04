@@ -1,0 +1,57 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.h2o.ai/enterprise-h2ogpte/releases, https://docs.h2o.ai/enterprise-h2ogpte/changelog, https://h2oai.statuspage.io/, openapi/h2o-ai-h2ogpte-openapi-original.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://h2ogpte.genai.h2o.ai/api/v1
+  spec_version: v1.0.0
+  product_scheme: semver
+  product_current: 1.7.x
+  releases_page: https://docs.h2o.ai/enterprise-h2ogpte/releases
+  changelog: https://docs.h2o.ai/enterprise-h2ogpte/changelog
+  note: >-
+    The REST path version (v1) and the h2oGPTe product version (1.7.x) move independently.
+    The product ships on a roughly annual major cadence with frequent patch releases; the
+    API path has stayed on v1 across 1.3.x through 1.7.x.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  evidence: >-
+    Probed https://docs.h2o.ai/enterprise-h2ogpte/deprecations (404) and
+    /releases/support-policy (404). The releases page lists major versions and dates but
+    states no support window, no end-of-life date and no deprecation timeline. No RFC 8594
+    Sunset or Deprecation header appears in the OpenAPI document, and no operation in either
+    published specification is marked `deprecated: true`.
+  gap: >-
+    This is the largest operational-transparency gap in H2O.ai's published API surface: a
+    422-operation contract with a five-major-version history and no written deprecation or
+    version-support policy. A consumer cannot tell how long v1 or any 1.x line is supported.
+sla:
+  url: null
+  uptime_target: null
+  evidence: Probed h2o.ai/legal/sla and /legal/service-level-agreement — both 404. No public SLA.
+status_page:
+  url: https://h2oai.statuspage.io/
+  canonical_url: https://status.cloud.h2o.ai
+  provider: Atlassian Statuspage
+  page_id: 30tghcv74m2t
+  name: H2O AI Cloud
+  api: https://h2oai.statuspage.io/api/v2/summary.json
+  history_feed: https://h2oai.statuspage.io/history.atom
+  component_groups:
+  - 'Core Access: Sign-in'
+  - 'Platform Services: Drive'
+  - 'Platform Services: Secret Manager'
+  probed_status: All Systems Operational
+  note: >-
+    status.genai.h2o.ai does not exist (it redirects into the genai app store not_found
+    handler); the real page is the Statuspage instance above.
+deprecated_operations: []
+deprecated_operations_note: >-
+  Zero operations across the 429 in the two published specifications carry `deprecated: true`.
+support:
+  channel: https://support.h2o.ai/
+  docs: https://docs.h2o.ai/

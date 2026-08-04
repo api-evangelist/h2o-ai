@@ -1,0 +1,35 @@
+generated: '2026-08-04'
+method: generated
+source: openapi/h2o-ai-h2ogpte-openapi-original.yml, openapi/h2o-ai-mlops-scoring-openapi-original.yml, conventions/h2o-ai-conventions.yml, errors/h2o-ai-problem-types.yml, mcp/h2o-ai-tool-crosswalk.yml
+notes: >-
+  H2O.ai publishes no AGENTS.md or skill files of its own (searched the h2oai GitHub org and
+  docs.h2o.ai). These are API Evangelist packaged Agent Skills. Every operationId referenced
+  in every skill was verified to exist verbatim in the harvested specification — none was
+  invented. Each skill also carries the cross-cutting rules that the specification does not
+  express: no idempotency key, a vendor error envelope rather than RFC 9457, undocumented
+  rate limits, and no webhooks.
+skills:
+- file: h2o-ai-build-collection-and-chat.md
+  name: Build an h2oGPTe Collection and chat over it
+  api: openapi/h2o-ai-h2ogpte-openapi-original.yml
+  operations: [create_collection, list_collections, get_collection, upload_file, ingest_upload,
+    list_documents_for_collection, create_chat_session, get_completion, get_chat_session,
+    delete_collection]
+- file: h2o-ai-async-ingestion-jobs.md
+  name: Ingest documents into h2oGPTe asynchronously with jobs
+  api: openapi/h2o-ai-h2ogpte-openapi-original.yml
+  operations: [upload_file, create_ingest_upload_job, create_ingest_from_s3_job,
+    create_ingest_from_website_job, get_job, list_jobs, list_documents_for_collection,
+    get_document, delete_document_from_collection]
+- file: h2o-ai-retrieve-chunks-directly.md
+  name: Retrieve h2oGPTe chunks directly for your own RAG loop
+  api: openapi/h2o-ai-h2ogpte-openapi-original.yml
+  operations: [list_collections, search_collection_chunks, match_collection_chunks,
+    get_collection_chunks, list_models, answer_question, summarize_content]
+- file: h2o-ai-score-a-deployed-mlops-model.md
+  name: Score a model deployed through H2O MLOps
+  api: openapi/h2o-ai-mlops-scoring-openapi-original.yml
+  operations: [model_id_model_id_get, model_schema_model_schema_get,
+    sample_request_model_sample_request_get, capabilities_model_capabilities_get,
+    score_rows_model_score_post, score_media_model_media_score_post,
+    score_contributions_model_contribution_post]

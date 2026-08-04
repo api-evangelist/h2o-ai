@@ -1,0 +1,63 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Enterprise h2oGPTe REST API
+  version: 1.0.0
+extends: openapi/h2o-ai-h2ogpte-openapi-original.yml
+x-generated: '2026-08-04'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pipeline. Captures our derived findings as an Overlay so the
+  harvested specification at openapi/h2o-ai-h2ogpte-openapi-original.yml stays byte-identical
+  to what H2O.ai publishes at https://h2ogpte.genai.h2o.ai/api-spec.yaml.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: h2o-ai
+    x-apievangelist-source: https://h2ogpte.genai.h2o.ai/api-spec.yaml
+    x-apievangelist-harvested: '2026-08-04'
+    x-apievangelist-operations: 422
+    x-apievangelist-tags: 24
+    x-apievangelist-schemas: 224
+    x-apievangelist-artifacts:
+      authentication: authentication/h2o-ai-authentication.yml
+      conventions: conventions/h2o-ai-conventions.yml
+      errors: errors/h2o-ai-problem-types.yml
+      data_model: data-model/h2o-ai-data-model.yml
+      lifecycle: lifecycle/h2o-ai-lifecycle.yml
+      mcp: mcp/h2o-ai-mcp.yml
+      tool_crosswalk: mcp/h2o-ai-tool-crosswalk.yml
+      agentic_access: agentic-access/h2o-ai-agentic-access.yml
+      skills: skills/_index.yml
+- target: $.info
+  update:
+    x-apievangelist-gaps:
+      idempotency: >-
+        No Idempotency-Key header or parameter on any of the 422 operations. Retrying a POST
+        creates a duplicate resource.
+      errors: >-
+        Errors use the vendor EndpointError {code, message} envelope rather than RFC 9457
+        application/problem+json, and no error-code registry is published.
+      rate_limits: >-
+        Per-user API rate limiting shipped in 1.7.0 but no limit values, header names or
+        Retry-After contract are declared in the spec or the docs.
+      deprecation: >-
+        No deprecation policy, no Sunset/Deprecation header support, and zero operations
+        marked deprecated across five major product versions.
+      events: >-
+        No AsyncAPI and no webhooks. Long-running work is job-polling only (28 job operations).
+      request_tracing: No request-id / correlation-id header is declared.
+- target: $.servers
+  update:
+  - url: https://h2ogpte.genai.h2o.ai/api/v1
+    description: >-
+      H2O.ai managed Enterprise h2oGPTe tenant. Self-hosted installations substitute their
+      own host; the h2ogpte MCP server exposes this as the H2OGPTE_SERVER_URL variable.
+- target: $.components.securitySchemes.bearerAuth
+  update:
+    x-apievangelist-key-prefix: sk-
+    x-apievangelist-key-scopes:
+    - name: global
+      description: Full user impersonation across every Collection, Document, Chat and setting
+    - name: collection-specific
+      description: Chat with one Collection only; cannot create, delete or reach others
+    x-apievangelist-docs: https://docs.h2o.ai/enterprise-h2ogpte/guide/apis

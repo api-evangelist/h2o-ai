@@ -1,0 +1,109 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.h2o.ai/enterprise-h2ogpte/changelog
+scope: Enterprise h2oGPTe
+scheme: semver
+current_version: 1.7.5-1
+latest_stable: 1.7.3
+releases_page: https://docs.h2o.ai/enterprise-h2ogpte/releases
+notes: >-
+  H2O.ai publishes a dated, per-version changelog for Enterprise h2oGPTe grouped by minor
+  line (each patch entry lives on the /changelog/v1.7 or /changelog/v1.6 page). The recent
+  window is captured below; the live page remains the source of truth. Breaking changes are
+  not called out as a distinct section anywhere in the changelog — none of the entries below
+  declares one, and there is no deprecation policy (see lifecycle/h2o-ai-lifecycle.yml).
+  Other H2O products keep their own release notes: MLOps at
+  https://docs.h2o.ai/mlops/release-notes and H2O AI Cloud at
+  https://docs.h2o.ai/haic-documentation/release-notes.
+entries:
+- version: 1.7.5-1
+  date: '2026-08'
+  status: in-development
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog
+  breaking: false
+- version: 1.7.3
+  date: '2026-07'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.7
+  breaking: false
+  highlights:
+  - Graph RAG adds relationship-aware retrieval across documents
+  - Per-user concurrent ingestion and chat limits
+  - Admin dashboard for viewing and revoking active sessions
+  - Memory Blocks support agent_tool injection mode
+  - Guardrail Insights page for tracking violation metrics
+- version: 1.7.1
+  date: '2026-04'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.7
+  breaking: false
+  highlights:
+  - Memory blocks are automatically created for chats without manual setup
+  - Excel and Google Sheets add-ins
+  - Public chat sharing without a sign-in requirement
+  - Role-based access allow list and revocation
+  - Live Logs filtering by level and direct download
+- version: 1.7.0
+  date: '2026-04-28'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.7
+  breaking: false
+  highlights:
+  - Human-in-the-Loop (HITL) course correction and advanced agent controls
+  - Native Model Context Protocol (MCP) server implementation
+  - Persistent Memory Blocks let agents store and retrieve context across sessions
+  - Chat branching from specific messages
+  - Scheduled Tasks UI for creating automated AI workflows
+  - Per-user API rate limiting and automated API key deactivation
+  api_relevant: true
+- version: 1.6.57
+  date: '2026-03'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.6
+  breaking: false
+  highlights:
+  - Support for Gemini 3.1 Pro Preview, Claude 4.6 Sonnet and Claude 4.6 Opus
+  - Collection import with skip_reparse option
+  - Security updates addressing multiple CVEs
+- version: 1.6.55
+  date: '2026-02'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.6
+  breaking: false
+  highlights:
+  - Document count operations significantly faster
+  - Chat generation control methods (pause, resume, stop, finish)
+  - PDF preview page numbering
+- version: 1.6.54
+  date: '2026-01'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.6
+  breaking: false
+  highlights:
+  - Inline reference pills revealing document details on hover
+  - PDF highlighting for exact passage location
+  - RAG query include/exclude filters
+  - Confluence attachments support
+- version: 1.6.46
+  date: '2025-11'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.6
+  breaking: false
+  highlights:
+  - Math formula toggle for chat response display
+  - Consistent chat history button
+  - Text-to-speech feature restoration
+- version: 1.6.45
+  date: '2025-11'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.6
+  breaking: false
+  highlights:
+  - Markdown math equation formatting improvements
+  - Hidden internal system messages from chat history
+- version: 1.6.44
+  date: '2025-11'
+  url: https://docs.h2o.ai/enterprise-h2ogpte/changelog/v1.6
+  breaking: false
+  highlights:
+  - Toolbar reorganized into the chat input area
+  - References slider for focusing on highest-scoring passages
+  - Connector dialog redesign and improved SharePoint OAuth configuration
+major_lines:
+- {version: 1.7.x, released: '2026-04'}
+- {version: 1.6.x, released: '2025-01'}
+- {version: 1.5.x, released: '2024-08'}
+- {version: 1.4.x, released: '2024-05'}
+- {version: 1.3.x, released: '2024-03'}

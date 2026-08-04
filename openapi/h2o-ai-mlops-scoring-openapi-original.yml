@@ -1,0 +1,631 @@
+openapi: 3.0.0
+info:
+  title: MLOps Scoring REST API
+  contact: {}
+  version: '0.1.0'
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
+paths:
+  /model/id:
+    get:
+      summary: model_id_model_id_get
+      description: Returns unique id of the model loaded in the server and used for scoring.
+      operationId: model_id_model_id_get
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+      deprecated: false
+  /model/schema:
+    get:
+      summary: model_schema_model_schema_get
+      description: Returns information about the model used for scoring, e.g., input schema.
+      operationId: model_schema_model_schema_get
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+      deprecated: false
+  /model/sample_request:
+    get:
+      summary: sample_request_model_sample_request_get
+      description: Builds a sample scoring request that would pass all validations.
+      operationId: sample_request_model_sample_request_get
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreRequest'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '501':
+          description: Not Implemented
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      deprecated: false
+  /model/capabilities:
+    get:
+      summary: capabilities_model_capabilities_get
+      description: Returns information about scorer's scoring capabilities.
+      operationId: capabilities_model_capabilities_get
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+        '501':
+          description: Not Implemented
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+      deprecated: false
+  /model/score:
+    post:
+      summary: score_rows_model_score_post
+      description: Computes score of the rows sent in the body of the post request.
+      operationId: score_rows_model_score_post
+      parameters:
+      - name: authorization
+        in: header
+        description: ''
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreResponse'
+        '400':
+          description: failed because of bad request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '501':
+          description: Not Implemented
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      deprecated: false
+  /model/media-score:
+    post:
+      summary: score_media_model_media_score_post
+      description: Computes score of provided media files. These can be any type of file, such as images or mp3.
+      operationId: score_media_model_media_score_post
+      parameters:
+      - name: authorization
+        in: header
+        description: ''
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - scoreMediaRequest
+              - files
+              type: object
+              properties:
+                scoreMediaRequest:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: ''
+        required: false
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreResponse'
+        '400':
+          description: Invalid request content.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '501':
+          description: Not Implemented
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      deprecated: false
+  /model/contribution:
+    post:
+      summary: score_contributions_model_contribution_post
+      description: Computes Shapley contributions for rows sent in the body of the post request.
+      operationId: score_contributions_model_contribution_post
+      parameters:
+      - name: authorization
+        in: header
+        description: ''
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/ContributionsRequest'
+              - $ref: '#/components/schemas/ScoreRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionsResponse'
+        '400':
+          description: Invalid request content.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '422':
+          description: Validation Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '501':
+          description: Not Implemented
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      deprecated: false
+components:
+  schemas:
+    Body_score_media_model_media_score_post:
+      title: Body_score_media_model_media_score_post
+      required:
+      - scoreMediaRequest
+      - files
+      type: object
+      properties:
+        scoreMediaRequest:
+          type: string
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+          description: ''
+    CapabilityType:
+      title: CapabilityType
+      enum:
+      - SCORE
+      - SCORE_PREDICTION_INTERVAL
+      - MEDIA
+      - CONTRIBUTION_ORIGINAL
+      - CONTRIBUTION_TRANSFORMED
+      - TEST_TIME_AUGMENTATION
+      type: string
+      description: An enumeration.
+    ContributionGroup:
+      title: ContributionGroup
+      required:
+      - contributions
+      type: object
+      properties:
+        output_group:
+          type: string
+          description: Name of the output group. It will be populated only for multinomial models. Shapley values are not supported for third party models yet, hence this field will not be populated.
+        contributions:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: n array of rows consisting of the shapley contributions output corresponding to columns in the fields
+    ContributionsRequest:
+      title: ContributionsRequest
+      required:
+      - requestShapleyValueType
+      - fields
+      - rows
+      type: object
+      properties:
+        requestShapleyValueType:
+          allOf:
+          - $ref: '#/components/schemas/ShapleyType'
+          - description: The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested.
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+    ContributionsResponse:
+      title: ContributionsResponse
+      required:
+      - features
+      - contributionGroups
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the rows of the  `contributions` property.
+        contributionGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionGroup'
+          description: An array of rows consisting of the shapley contributions output corresponding to an output group.
+    DataField:
+      title: DataField
+      required:
+      - name
+      - dataType
+      type: object
+      properties:
+        name:
+          type: string
+        dataType:
+          allOf:
+          - $ref: '#/components/schemas/DataType'
+          - description: Enumeration of the supported input and output data types.
+    DataType:
+      title: DataType
+      enum:
+      - Bool
+      - Bytes
+      - Int32
+      - Int64
+      - Float32
+      - Float64
+      - Str
+      - Time64
+      type: string
+      description: Enumeration of the supported input and output data types.
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          description: ''
+    Model:
+      title: Model
+      required:
+      - schema
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        properties:
+          $ref: '#/components/schemas/ModelProperties'
+        schema:
+          $ref: '#/components/schemas/ModelSchema'
+    ModelProperties:
+      title: ModelProperties
+      type: object
+      properties:
+        scoringType:
+          allOf:
+          - $ref: '#/components/schemas/ScoringType'
+          - description: Enumeration of the supported scoring types.
+        scoringResponseLabels:
+          type: array
+          items:
+            type: string
+          description: ''
+    ModelSchema:
+      title: ModelSchema
+      type: object
+      properties:
+        inputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataField'
+          description: ''
+        outputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataField'
+          description: ''
+    PredictionInterval:
+      title: PredictionInterval
+      required:
+      - fields
+      - rows
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+    ScoreRequest:
+      title: ScoreRequest
+      required:
+      - fields
+      - rows
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+        noFieldNamesInOutput:
+          type: boolean
+          description: If set to `true`. The scorer will not fill response column names in the `fields` field. This is can be useful to maintain compatibility with older scorer versions or to save bandwidth.
+          default: false
+        requestPredictionIntervals:
+          type: boolean
+          description: If set to `true`, the scorer will try to fill field `predictionIntervals` in response if it is supported.
+          default: false
+        includeFieldsInOutput:
+          type: array
+          items:
+            type: string
+          description: An array holding the list of field names to be copied from the input request row to the corresponding scoring output. It is an error to specify a field name not present in the `fields` property, except when it is equal to the `idField` property. In the latter case, the row id would be generated and returned in the response. Note that the order of items in `includeFieldsInOutput` is ignored and the specified fields are returned in the order of appearance in the input request row.
+          default: []
+        idField:
+          type: string
+          description: Name of the field that holds a row id, e.g., a value that uniquely identifies each row of the request. The caller may specify a name of the field that is not present in fields. In which case, the scorer is allowed to generate a UUID to identify each row (e.g., for logging and monitoring purposes). To retrieve such a generated id as a part of the response, simply name it in the `includeFieldsInOutput`.
+        requestShapleyValueType:
+          allOf:
+          - $ref: '#/components/schemas/ShapleyType'
+          - description: The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested.
+    ScoreResponse:
+      title: ScoreResponse
+      required:
+      - score
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique id of the model used for scoring.
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance, in the rows of the  `score` property. This field is not populated if requested by setting the `noFieldNamesInOutput` request field to `true`.
+        score:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual scoring output. The order of rows corresponds to the order of the input request rows. Each row contains any copied input fields first (in the order of appearance in the input row). If the `idField` was specified and also listed in the `includeFieldsInOutput` but not provided in `fields`, a unique id will be generated and positioned right after all the other fields copied from the input. The scoring output follows.
+        featureShapleyContributions:
+          allOf:
+          - $ref: '#/components/schemas/ContributionsResponse'
+          - description: An object with features and shapley values that was requested by the client. It is currently available for transformed features of binomial, regression, and multinomial models of mojo2. This field will not be populated if the Shapley values are not available for a model.
+        predictionIntervals:
+          allOf:
+          - $ref: '#/components/schemas/PredictionInterval'
+          - description: Prediction interval consist of an array of interval bound names and rows of array of bounds per bound name. Setting `requestPredictionIntervals` to true will enable populating the field. The field will be empty or an error response returned if prediction intervals arenot returned or supported by the model.
+    ScoringType:
+      title: ScoringType
+      enum:
+      - REGRESSION
+      - CLASSIFICATION
+      - BINOMIAL
+      type: string
+      description: Enumeration of the supported scoring types.
+    ShapleyType:
+      title: ShapleyType
+      enum:
+      - ORIGINAL
+      - TRANSFORMED
+      - NONE
+      type: string
+      description: An enumeration.
+    ValidationError:
+      title: ValidationError
+      required:
+      - loc
+      - msg
+      - type
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+              format: int32
+          description: ''
+        msg:
+          type: string
+        type:
+          type: string
+    Req:
+      title: Req
+      type: object
+      properties:
+        requestShapleyValueType: {}
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+        noFieldNamesInOutput:
+          type: boolean
+          description: If set to `true`. The scorer will not fill response column names in the `fields` field. This is can be useful to maintain compatibility with older scorer versions or to save bandwidth.
+          default: false
+        requestPredictionIntervals:
+          type: boolean
+          description: If set to `true`, the scorer will try to fill field `predictionIntervals` in response if it is supported.
+          default: false
+        includeFieldsInOutput:
+          type: array
+          items:
+            type: string
+          description: An array holding the list of field names to be copied from the input request row to the corresponding scoring output. It is an error to specify a field name not present in the `fields` property, except when it is equal to the `idField` property. In the latter case, the row id would be generated and returned in the response. Note that the order of items in `includeFieldsInOutput` is ignored and the specified fields are returned in the order of appearance in the input request row.
+          default: []
+        idField:
+          type: string
+          description: Name of the field that holds a row id, e.g., a value that uniquely identifies each row of the request. The caller may specify a name of the field that is not present in fields. In which case, the scorer is allowed to generate a UUID to identify each row (e.g., for logging and monitoring purposes). To retrieve such a generated id as a part of the response, simply name it in the `includeFieldsInOutput`.
+tags: []

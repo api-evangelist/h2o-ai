@@ -1,0 +1,107 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/h2o-ai-h2ogpte-openapi-original.yml, openapi/h2o-ai-mlops-scoring-openapi-original.yml, https://trust.h2o.ai/, https://docs.h2o.ai/enterprise-h2ogpte/rest-api
+notes: >-
+  Cross-cutting standards conformance, derived from the two published specifications and
+  from the compliance posture H2O.ai publishes on its Trust Center. `conforms: false` is a
+  recorded observation, not a criticism — several of these standards are simply not
+  applicable to an AI/ML platform.
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    Enterprise h2oGPTe publishes OpenAPI 3.0.1 (422 operations, 224 component schemas) at
+    https://h2ogpte.genai.h2o.ai/api-spec.yaml; MLOps Scoring publishes OpenAPI 3.0.0.
+- id: openapi-3.1
+  conforms: false
+  evidence: Both documents declare 3.0.x.
+- id: model-context-protocol
+  conforms: true
+  evidence: >-
+    First-party h2ogpte-mcp-server (github.com/h2oai/h2ogpte-mcp-server, PyPI 0.1.6), built on
+    FastMCP, projecting the REST OpenAPI onto MCP tools/resources over stdio. h2oGPTe 1.7.0
+    also added native MCP server integration on the platform side.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 or an HTML catch-all
+    on every H2O.ai host probed (h2o.ai, docs.h2o.ai, h2ogpte.genai.h2o.ai, wave.h2o.ai).
+- id: oauth2
+  conforms: false
+  evidence: >-
+    The h2oGPTe REST API uses a bearer API key (http/bearer securityScheme), not OAuth 2.0.
+    OIDC/OAuth metadata does exist at trust.h2o.ai, but the issuer is app.safebase.io — the
+    third-party Trust Center vendor, not an H2O.ai authorization server.
+- id: oidc
+  conforms: partial
+  evidence: >-
+    H2O AI Cloud sign-in and the h2o-authn / h2o-cloud-discovery Python clients are built
+    around OIDC token exchange for platform authentication, but the public REST contract
+    declares no openIdConnect securityScheme.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    No application/problem+json media type appears in either specification. Errors use the
+    vendor EndpointError {code, message} envelope. See errors/h2o-ai-problem-types.yml.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header is declared; no deprecation policy is published.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every host probed.
+- id: rfc8615-well-known
+  conforms: false
+  evidence: >-
+    No first-party /.well-known/ document is served on any H2O.ai host. The only real
+    documents found (trust.h2o.ai OAuth/OIDC metadata) belong to SafeBase.
+- id: idempotency-key
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header or parameter in the 422-operation spec and no documented
+    idempotency contract. See conventions/h2o-ai-conventions.yml.
+- id: pagination
+  conforms: true
+  evidence: >-
+    Consistent offset/limit query parameters (offset on 41 operations, limit on 45) plus
+    sibling *_count operations for totals.
+- id: json-schema
+  conforms: true
+  evidence: 224 reusable component schemas in the h2oGPTe spec; 16 in the MLOps Scoring spec.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No AsyncAPI document and no webhook surface. Long-running work uses a job-polling model
+    (28 job operations) rather than events or callbacks.
+- id: openai-compatible-api
+  conforms: true
+  evidence: >-
+    H2O.ai documents OpenAI-compatible REST endpoints for h2oGPTe so existing OpenAI clients
+    can be pointed at it; the open-source h2ogpt server also starts an OpenAI-compatible API
+    by default.
+- id: soc2-type2
+  conforms: true
+  evidence: Listed on https://trust.h2o.ai/ with a gated SOC 2 report.
+- id: fedramp-high
+  conforms: true
+  evidence: >-
+    Listed on https://trust.h2o.ai/; h2o.ai/security describes FedRAMP at High Impact Level
+    as an in-process designation.
+- id: irap
+  conforms: true
+  evidence: Listed on https://trust.h2o.ai/ and referenced on https://h2o.ai/security/.
+- id: hitech
+  conforms: true
+  evidence: Listed on https://trust.h2o.ai/.
+- id: iso-27001
+  conforms: false
+  evidence: Not listed among the frameworks published on the Trust Center at capture time.
+- id: pci-dss
+  conforms: false
+  evidence: Not applicable — H2O.ai processes no cardholder data through these APIs.
+- id: fhir
+  conforms: false
+  evidence: Not applicable to an AI/ML platform contract.
+compliance_program:
+  published: true
+  url: https://trust.h2o.ai/
+  artifact: security/h2o-ai-trust-center.yml

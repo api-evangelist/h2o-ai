@@ -1,0 +1,759 @@
+generated: '2026-08-04'
+method: derived
+source: mcp/h2o-ai-mcp.yml + openapi/h2o-ai-h2ogpte-openapi-original.yml + https://raw.githubusercontent.com/h2oai/h2ogpte-mcp-server/main/src/h2ogpte_mcp_server/settings.py
+notes: 'The h2oGPTe MCP server is a FastMCP OpenAPI proxy: the tool name IS the REST operationId, so the
+  binding is exact rather than semantic and every tool inherits its backing operation''s parameters +
+  requestBody as its real inputSchema. The crosswalk below enumerates the `basic` endpoint set verbatim
+  from the server''s settings.py, because that is the curated, human-chosen tool surface. The default
+  set (`all_without_async_ingest`) projects 412 of the 422 operations, and `all` projects all 422 — so
+  under the default configuration the REST-only list is the ten asynchronous ingestion job-starters only.
+  Every operationId below was verified to exist in the harvested OpenAPI document.'
+surfaces:
+  openapi:
+    file: openapi/h2o-ai-h2ogpte-openapi-original.yml
+    url: https://h2ogpte.genai.h2o.ai/api-spec.yaml
+    operations: 422
+    gated: false
+  rest:
+    base_url: https://h2ogpte.genai.h2o.ai/api/v1
+    auth: bearer API key
+    gated: true
+  mcp:
+    server: h2ogpte-mcp-server
+    transport: stdio
+    hosted: false
+    tools_list_gated: true
+    gated_reason: stdio-only local proxy; requires H2OGPTE_API_KEY, so tools/list cannot be probed anonymously
+  graphql: null
+crosswalk:
+- tool: create_collection
+  category: Collections
+  rest:
+  - create_collection
+  binding: rest
+  http: POST /collections
+  confidence: high
+- tool: list_collections
+  category: Collections
+  rest:
+  - list_collections
+  binding: rest
+  http: GET /collections
+  confidence: high
+- tool: update_collection
+  category: Collections
+  rest:
+  - update_collection
+  binding: rest
+  http: PATCH /collections/{collection_id}
+  confidence: high
+- tool: update_collection_prompt_template
+  category: Collections
+  rest:
+  - update_collection_prompt_template
+  binding: rest
+  http: PUT /collections/{collection_id}/prompt_template
+  confidence: high
+- tool: delete_collection_prompt_template
+  category: Collections
+  rest:
+  - delete_collection_prompt_template
+  binding: rest
+  http: DELETE /collections/{collection_id}/prompt_template
+  confidence: high
+- tool: reset_collection_prompt_settings
+  category: Collections
+  rest:
+  - reset_collection_prompt_settings
+  binding: rest
+  http: DELETE /collections/{collection_id}/prompt_settings
+  confidence: high
+- tool: get_collection_settings
+  category: Collections
+  rest:
+  - get_collection_settings
+  binding: rest
+  http: GET /collections/{collection_id}/settings
+  confidence: high
+- tool: update_collection_settings
+  category: Collections
+  rest:
+  - update_collection_settings
+  binding: rest
+  http: PUT /collections/{collection_id}/settings
+  confidence: high
+- tool: get_collection_chat_settings
+  category: Collections
+  rest:
+  - get_collection_chat_settings
+  binding: rest
+  http: GET /collections/{collection_id}/chat_settings
+  confidence: high
+- tool: update_collection_chat_settings
+  category: Collections
+  rest:
+  - update_collection_chat_settings
+  binding: rest
+  http: PUT /collections/{collection_id}/chat_settings
+  confidence: high
+- tool: list_documents_for_collection
+  category: Collections
+  rest:
+  - list_documents_for_collection
+  binding: rest
+  http: GET /collections/{collection_id}/documents
+  confidence: high
+- tool: insert_document_into_collection
+  category: Collections
+  rest:
+  - insert_document_into_collection
+  binding: rest
+  http: PUT /collections/{collection_id}/documents/{document_id}
+  confidence: high
+- tool: delete_document_from_collection
+  category: Collections
+  rest:
+  - delete_document_from_collection
+  binding: rest
+  http: DELETE /collections/{collection_id}/documents/{document_id}
+  confidence: high
+- tool: list_chat_sessions_for_collection
+  category: Collections
+  rest:
+  - list_chat_sessions_for_collection
+  binding: rest
+  http: GET /collections/{collection_id}/chats
+  confidence: high
+- tool: list_documents
+  category: Documents
+  rest:
+  - list_documents
+  binding: rest
+  http: GET /documents
+  confidence: high
+- tool: update_document
+  category: Documents
+  rest:
+  - update_document
+  binding: rest
+  http: PATCH /documents/{document_id}
+  confidence: high
+- tool: create_prompt_template
+  category: Prompt Templates
+  rest:
+  - create_prompt_template
+  binding: rest
+  http: POST /prompt_templates
+  confidence: high
+- tool: list_prompt_templates
+  category: Prompt Templates
+  rest:
+  - list_prompt_templates
+  binding: rest
+  http: GET /prompt_templates
+  confidence: high
+- tool: get_default_prompt_template
+  category: Prompt Templates
+  rest:
+  - get_default_prompt_template
+  binding: rest
+  http: GET /prompt_templates/default
+  confidence: high
+- tool: update_prompt_template
+  category: Prompt Templates
+  rest:
+  - update_prompt_template
+  binding: rest
+  http: PATCH /prompt_templates/{prompt_template_id}
+  confidence: high
+- tool: upload_file
+  category: Document Ingestion
+  rest:
+  - upload_file
+  binding: rest
+  http: PUT /uploads
+  confidence: high
+  note: Tool implementation is overridden in the server (tools.py) to take a local file path and perform
+    the multipart request itself; the REST operation is still the backing call.
+- tool: ingest_upload
+  category: Document Ingestion
+  rest:
+  - ingest_upload
+  binding: rest
+  http: POST /uploads/{upload_ids}/ingest
+  confidence: high
+- tool: ingest_from_plain_text
+  category: Document Ingestion
+  rest:
+  - ingest_from_plain_text
+  binding: rest
+  http: POST /ingest/plain_text
+  confidence: high
+- tool: ingest_from_website
+  category: Document Ingestion
+  rest:
+  - ingest_from_website
+  binding: rest
+  http: POST /ingest/website
+  confidence: high
+- tool: ingest_from_s3
+  category: Document Ingestion
+  rest:
+  - ingest_from_s3
+  binding: rest
+  http: POST /ingest/s3
+  confidence: high
+- tool: ingest_from_gcs
+  category: Document Ingestion
+  rest:
+  - ingest_from_gcs
+  binding: rest
+  http: POST /ingest/gcs
+  confidence: high
+- tool: ingest_from_azure_blob_storage
+  category: Document Ingestion
+  rest:
+  - ingest_from_azure_blob_storage
+  binding: rest
+  http: POST /ingest/azure_blob_storage
+  confidence: high
+- tool: create_chat_session
+  category: Chat
+  rest:
+  - create_chat_session
+  binding: rest
+  http: POST /chats
+  confidence: high
+- tool: list_chat_sessions
+  category: Chat
+  rest:
+  - list_chat_sessions
+  binding: rest
+  http: GET /chats
+  confidence: high
+- tool: update_chat_session
+  category: Chat
+  rest:
+  - update_chat_session
+  binding: rest
+  http: PATCH /chats/{session_id}
+  confidence: high
+- tool: update_chat_session_prompt_template
+  category: Chat
+  rest:
+  - update_chat_session_prompt_template
+  binding: rest
+  http: PUT /chats/{session_id}/prompt_template
+  confidence: high
+- tool: delete_chat_session_prompt_template
+  category: Chat
+  rest:
+  - delete_chat_session_prompt_template
+  binding: rest
+  http: DELETE /chats/{session_id}/prompt_template
+  confidence: high
+- tool: get_completion
+  category: Chat
+  rest:
+  - get_completion
+  binding: rest
+  http: POST /chats/{session_id}/completions
+  confidence: high
+- tool: list_models
+  category: Models
+  rest:
+  - list_models
+  binding: rest
+  http: GET /models
+  confidence: high
+- tool: list_embedding_models
+  category: Models
+  rest:
+  - list_embedding_models
+  binding: rest
+  http: GET /embedding_models
+  confidence: high
+- tool: get_default_embedding_model
+  category: Models
+  rest:
+  - get_default_embedding_model
+  binding: rest
+  http: GET /embedding_models/default
+  confidence: high
+mcp_only: []
+mcp_only_note: None. Every MCP tool is a projection of a public REST operationId; the server exposes no
+  composite or GraphQL-backed tool.
+rest_only:
+- capability: Collections
+  operations:
+  - archive_collection
+  - create_delete_collection_job
+  - create_delete_collection_thumbnail_job
+  - create_delete_document_from_collection_job
+  - create_import_collection_to_collection_job
+  - create_insert_document_to_collection_job
+  - create_migrate_collection_chat_sessions_job
+  - create_update_collection_thumbnail_job
+  - delete_collection
+  - delete_collection_expiry_date
+  - delete_collection_inactivity_interval
+  - delete_collection_thumbnail
+  - get_chat_session_count_for_collection
+  - get_collection
+  - get_collection_chunks
+  - get_collection_count
+  - get_collection_group_permissions
+  - get_collection_metadata
+  - get_collection_permissions
+  - get_document_count_for_collection
+  - list_all_collections
+  - list_collection_public_permissions
+  - list_questions_for_collection
+  - list_scheduled_connectors_for_collection
+  - match_collection_chunks
+  - migrate_scheduled_connectors_to_collection
+  - remove_collection_size_limit
+  - reset_all_collection_expirations
+  - search_collection_chunks
+  - set_collection_size_limit
+  - share_collection
+  - share_collection_with_group
+  - unarchive_collection
+  - unshare_collection
+  - unshare_collection_for_all
+  - unshare_collection_from_group
+  - update_collection_expiry_date
+  - update_collection_inactivity_interval
+  - update_collection_metadata
+  - update_collection_privacy
+  - update_collection_thumbnail
+  - update_collection_workspace
+  count: 42
+- capability: Agents
+  operations:
+  - add_builtin_mcp
+  - add_custom_agent
+  - add_custom_agent_tool
+  - create_agent_key
+  - create_agent_key_tool_associations
+  - create_custom_agent_key_association
+  - create_custom_agent_tool_association
+  - create_user_builtin_mcp
+  - delete_agent_keys
+  - delete_agent_tool_association
+  - delete_agent_tool_preference
+  - delete_custom_agent
+  - delete_custom_agent_key_associations
+  - delete_custom_agent_tool
+  - delete_custom_agent_tool_associations
+  - delete_user_builtin_mcp
+  - download_custom_agent
+  - download_custom_agent_tool
+  - get_agent_suggestions
+  - get_all_agents
+  - get_custom_agent
+  - get_custom_agent_tool
+  - get_mcp_sdk_options
+  - inspect_mcp_tool
+  - list_agent_directory_stats
+  - list_agent_key_tool_associations
+  - list_agent_keys
+  - list_agent_tool_preference
+  - list_agent_tools
+  - list_builtin_mcps
+  - list_custom_agent_key_associations
+  - list_custom_agent_tool_associations
+  - list_custom_agent_tools
+  - list_custom_agents
+  - list_mcp_tools
+  - remove_admin_mcp_logo
+  - update_admin_mcp_logo
+  - update_agent_key
+  - update_agent_tool_preference
+  - update_custom_agent
+  - update_custom_agent_tool
+  - update_user_builtin_mcp
+  count: 42
+- capability: AI Assistants
+  operations:
+  - connect_ai_assistant_collection
+  - connect_ai_assistant_forum
+  - connect_ai_assistant_schedule
+  - create_ai_assistant
+  - create_event_type
+  - delete_ai_assistant
+  - delete_event_type
+  - disconnect_ai_assistant_collection
+  - disconnect_ai_assistant_forum
+  - disconnect_ai_assistant_schedule
+  - download_ai_assistant_file
+  - emit_custom_event
+  - generate_assistant_spec
+  - get_ai_assistant
+  - get_ai_assistant_chat_history
+  - get_ai_assistant_event_history
+  - get_event_type
+  - list_ai_assistant_collections
+  - list_ai_assistant_events
+  - list_ai_assistant_files
+  - list_ai_assistant_forums
+  - list_ai_assistant_messages
+  - list_ai_assistant_permissions
+  - list_ai_assistant_schedules
+  - list_ai_assistants
+  - list_event_subscriptions
+  - list_event_types
+  - pause_ai_assistant
+  - reset_ai_assistant_tool
+  - search_assistant_forum_posts
+  - send_ai_assistant_message
+  - send_inter_assistant_message
+  - share_ai_assistant
+  - start_ai_assistant
+  - stop_ai_assistant
+  - subscribe_to_event_type
+  - unpause_ai_assistant
+  - unshare_ai_assistant
+  - unsubscribe_from_event_type
+  - update_ai_assistant
+  - update_ai_assistant_tool
+  - wake_ai_assistant
+  count: 42
+- capability: Permissions
+  operations:
+  - add_user_document_permission
+  - assign_permission_to_role
+  - assign_roles_to_group
+  - assign_roles_to_user
+  - confirm_current_user_deletion
+  - create_group
+  - create_role
+  - delete_groups
+  - delete_groups_by_names
+  - delete_roles
+  - delete_roles_by_names
+  - get_current_user_permissions
+  - get_current_user_roles
+  - get_group_permissions
+  - get_group_roles
+  - get_role
+  - get_role_permissions
+  - get_user
+  - get_user_permissions
+  - get_user_roles
+  - is_collection_permission_granted
+  - is_permission_granted
+  - list_groups
+  - list_permissions
+  - list_roles
+  - list_users
+  - remove_permission_from_role
+  - remove_roles_from_group
+  - remove_roles_from_user
+  - request_current_user_deletion
+  - reset_group_roles
+  - reset_user_roles
+  - set_role_permissions
+  - set_role_priority
+  count: 34
+- capability: Chat
+  operations:
+  - create_delete_chat_session_job
+  - delete_agent_server_directories
+  - delete_agent_server_files
+  - delete_chat_session
+  - delete_chat_session_collection
+  - delete_messages
+  - download_feedback_export
+  - finish_chat_message
+  - fork_chat_session
+  - get_agent_server_directory_stats
+  - get_chat_session
+  - get_chat_session_count
+  - get_chat_session_guardrails
+  - get_chat_session_messages
+  - get_message_meta
+  - get_message_references
+  - get_question_answer_feedback_count
+  - insert_command_synth_pair
+  - list_agent_server_files
+  - list_all_agent_server_directories_stats
+  - list_question_answer_feedbacks
+  - list_questions_for_chat_session
+  - pause_chat_message
+  - resume_chat_message
+  - send_hitl_message
+  - set_message_votes
+  - stop_chat_message
+  - update_chat_session_collection
+  - update_question_answer_feedback
+  count: 29
+- capability: Documents
+  operations:
+  - create_delete_document_job
+  - create_process_document_job
+  - create_tag_on_document
+  - delete_document
+  - delete_document_summaries
+  - delete_tag_from_document
+  - get_chat_session_count_for_document
+  - get_document
+  - get_document_count
+  - get_document_guardrails_settings
+  - get_document_internal_metadata
+  - get_document_metadata
+  - get_document_page_layout
+  - get_document_page_ocr_model
+  - get_document_summary
+  - get_document_user_source_file
+  - list_chat_sessions_for_document
+  - list_collections_for_document
+  - list_document_chunks
+  - list_document_summaries
+  - update_document_metadata
+  count: 21
+- capability: Models
+  operations:
+  - answer_question
+  - create_guardrails_settings
+  - create_topic_model
+  - delete_topic_model
+  - encode_chunks_for_retrieval
+  - extract_data
+  - get_model_to_reasoning_model_mapping
+  - get_model_to_vision_model_mapping
+  - get_performance_stats_by_model
+  - get_reasoning_capable_model_names
+  - get_usage_stats
+  - get_usage_stats_by_model
+  - get_usage_stats_by_model_and_user
+  - get_usage_stats_by_user
+  - get_vision_capable_model_names
+  - run_model_self_test
+  - summarize_content
+  count: 17
+- capability: Extractors
+  operations:
+  - create_extractor
+  - create_extractor_run_job
+  - delete_extractor
+  - get_extractor
+  - get_extractor_group_permissions
+  - get_extractor_permissions
+  - list_extractor_results
+  - list_extractors
+  - reset_and_share_extractor
+  - reset_and_share_extractor_with_groups
+  - run_extractor
+  - share_extractor
+  - share_extractor_with_group
+  - unshare_extractor
+  - unshare_extractor_for_all
+  - unshare_extractor_from_group
+  - update_extractor_privacy
+  count: 17
+- capability: Forums
+  operations:
+  - create_forum
+  - create_forum_post
+  - delete_forum
+  - delete_forum_post
+  - get_forum
+  - get_forum_post
+  - list_forum_permissions
+  - list_forum_posts
+  - list_forums
+  - pin_forum_post
+  - reply_to_forum_post
+  - share_forum
+  - unshare_forum
+  - update_forum
+  - update_forum_post
+  - vote_on_forum_post
+  count: 16
+- capability: Scheduled Tasks
+  operations:
+  - create_scheduled_task
+  - delete_scheduled_task
+  - delete_scheduled_tasks
+  - delete_scheduled_tasks_by_admin
+  - get_scheduled_task
+  - get_scheduled_task_execution_stats
+  - get_scheduled_task_summary
+  - get_scheduled_task_summary_by_admin
+  - list_all_user_scheduled_task_executions
+  - list_scheduled_task_executions
+  - list_scheduled_task_executions_by_admin
+  - list_scheduled_tasks
+  - list_scheduled_tasks_by_admin
+  - trigger_scheduled_task
+  - update_scheduled_task
+  - update_scheduled_task_by_admin
+  count: 16
+- capability: Prompt Templates
+  operations:
+  - delete_prompt_template
+  - get_prompt_template
+  - get_prompt_template_count
+  - get_prompt_template_group_permissions
+  - get_prompt_template_permissions
+  - list_all_prompt_templates
+  - reset_and_share_prompt_template
+  - reset_and_share_prompt_template_with_groups
+  - share_prompt_template
+  - share_prompt_template_with_group
+  - unshare_prompt_template
+  - unshare_prompt_template_for_all
+  - unshare_prompt_template_from_group
+  - update_default_prompt_template_visibility
+  - update_prompt_template_privacy
+  count: 15
+- capability: Memory Blocks
+  operations:
+  - create_memory_block
+  - delete_memory_block
+  - get_default_memory_blocks
+  - get_memory_block
+  - list_memory_block_group_permissions
+  - list_memory_block_permissions
+  - list_memory_blocks
+  - list_public_memory_block_permissions
+  - set_default_memory_block
+  - set_memory_block_privacy
+  - share_memory_block
+  - share_memory_block_with_group
+  - unshare_memory_block
+  - unshare_memory_block_from_group
+  - update_memory_block
+  count: 15
+- capability: Document Ingestion
+  operations:
+  - create_ingest_agent_only_to_standard_job
+  - create_ingest_from_azure_blob_storage_job
+  - create_ingest_from_confluence_job
+  - create_ingest_from_file_system_job
+  - create_ingest_from_gcs_job
+  - create_ingest_from_plain_text_job
+  - create_ingest_from_s3_job
+  - create_ingest_from_sharepoint_online_job
+  - create_ingest_from_website_job
+  - create_ingest_upload_job
+  - ingest_agent_only_to_standard
+  - ingest_from_confluence
+  - ingest_from_file_system
+  - ingest_from_sharepoint_online
+  count: 14
+- capability: Configurations
+  operations:
+  - delete_global_configurations
+  - delete_role_configurations
+  - delete_user_configurations
+  - fetch_configuration_url
+  - list_current_user_configurations
+  - list_global_configurations
+  - list_role_configurations
+  - list_user_configurations
+  - reset_user_configuration
+  - set_global_configuration
+  - set_role_configuration
+  - set_user_configuration
+  count: 12
+- capability: Showcase
+  operations:
+  - add_showcase_chat
+  - delete_showcase_thumbnail
+  - get_showcase_thumbnail
+  - list_showcase_categories
+  - list_showcase_chats
+  - remove_showcase_chat
+  - reorder_showcase_chats
+  - update_showcase_chat
+  - upload_showcase_thumbnail
+  count: 9
+- capability: Jobs
+  operations:
+  - cancel_job
+  - cancel_user_job
+  - count_pending_jobs
+  - delete_job
+  - get_job
+  - list_jobs
+  - list_user_jobs
+  count: 7
+- capability: Tags
+  operations:
+  - create_tag
+  - delete_tag
+  - get_tag
+  - list_documents_for_tags
+  - list_tags
+  - update_tag
+  count: 6
+- capability: API Keys
+  operations:
+  - create_api_key_for_user
+  - deactivate_api_key
+  - delete_api_key
+  - list_all_api_keys
+  - update_api_key_expiry
+  - update_api_key_inactivity_interval
+  count: 6
+- capability: Secrets
+  operations:
+  - create_secret
+  - delete_secret
+  - get_secret
+  - get_secret_value
+  - list_secret_ids
+  - update_secret
+  count: 6
+- capability: Shared Chats
+  operations:
+  - delete_shared_chat
+  - delete_shared_chats
+  - get_shared_chat
+  - list_shared_chats
+  - share_chat_session
+  - update_shared_chat
+  count: 6
+- capability: Guardrails
+  operations:
+  - get_effective_guardrails
+  - get_guardrail_violations_dashboard
+  - get_guardrail_violations_summary
+  - list_guardrail_violations
+  count: 4
+- capability: GraphRAG
+  operations:
+  - build_collection_graph
+  - delete_collection_graph
+  - get_collection_graph_status
+  - get_graph_config
+  count: 4
+- capability: System
+  operations:
+  - download_user_limits_export
+  - generate_scheduled_task_spec
+  - get_h2ogpt_system_info
+  count: 3
+- capability: Admin Sessions
+  operations:
+  - get_admin_sessions_stats
+  - list_admin_sessions
+  - revoke_admin_session
+  count: 3
+rest_only_note: 'Relative to the `basic` endpoint set. Under the default `all_without_async_ingest` set
+  the only genuinely REST-only operations are the ten asynchronous ingestion job-starters: create_ingest_agent_only_to_standard_job,
+  create_ingest_from_azure_blob_storage_job, create_ingest_from_confluence_job, create_ingest_from_file_system_job,
+  create_ingest_from_gcs_job, create_ingest_from_plain_text_job, create_ingest_from_s3_job, create_ingest_from_sharepoint_online_job,
+  create_ingest_from_website_job, create_ingest_upload_job.'
+coverage:
+  rest_operations_total: 422
+  tools_in_basic_set: 36
+  tools_in_default_set: 412
+  tools_in_all_set: 422
+  tools_bound_to_rest: 36
+  mcp_only: 0
+  rest_only_vs_basic: 386
+  rest_only_vs_default: 10
+  binding_confidence: high (name-identical, OpenAPI-generated)

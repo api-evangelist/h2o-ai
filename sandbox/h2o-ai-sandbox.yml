@@ -1,0 +1,55 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.h2o.ai/enterprise-h2ogpte/rest-api, https://h2ogpte.genai.h2o.ai/swagger-ui/, https://genai.h2o.ai/appstore
+notes: >-
+  H2O.ai publishes no test-vs-live key separation, no sandbox host, and no magic test values.
+  What it does publish is a live freemium tenant plus an authenticated interactive console —
+  developers evaluate against real data on the shared instance rather than against a mock.
+  Nothing below is invented; the absence of test fixtures is itself the finding.
+test_mode:
+  supported: false
+  key_prefixes:
+    live: sk-
+    test: null
+  note: >-
+    All Enterprise h2oGPTe API keys carry the single sk- prefix. There is no test-mode key,
+    no mode flag on the request, and no separate sandbox base URL — the only documented host
+    is https://h2ogpte.genai.h2o.ai/api/v1.
+console:
+  url: https://h2ogpte.genai.h2o.ai/swagger-ui/
+  type: Swagger UI
+  live_requests: true
+  authenticated: true
+  note: >-
+    "Browse every REST endpoint and try live requests in your browser." Requires being signed
+    in to an Enterprise h2oGPTe account; requests hit the real tenant.
+free_tier:
+  url: https://genai.h2o.ai/appstore
+  name: H2O Generative AI app store
+  description: >-
+    The h2oGPTe OpenAPI description states the platform is accessible through the H2O
+    Generative AI app store account, "available with a freemium tier." This is the practical
+    stand-in for a sandbox — a real account with real quota, not an isolated test environment.
+  api_key_docs: https://docs.h2o.ai/enterprise-h2ogpte/guide/apis
+key_scoping_as_blast_radius_control:
+  mechanism: collection-specific API keys
+  description: >-
+    In place of a test mode, H2O.ai's documented containment story is key scoping: a
+    Collection-specific key can only chat with the one Collection it was created against and
+    cannot create, delete, or reach any other Collection or Chat. For agent development this
+    is the closest available substitute for a sandbox credential.
+  docs: https://docs.h2o.ai/enterprise-h2ogpte/guide/apis
+test_values: []
+test_clocks:
+  supported: false
+fixtures_and_triggers:
+  supported: false
+self_hosted_alternative:
+  note: >-
+    The open-source h2ogpt project (https://github.com/h2oai/h2ogpt) can be run locally with
+    an OpenAI-compatible server, which developers use as a local substitute. It is a separate
+    open-source product, not a vendor-operated sandbox for the Enterprise h2oGPTe API.
+gaps:
+- No test-mode API key or key prefix
+- No sandbox host separate from production
+- No published test fixtures, seed data or simulated failure triggers

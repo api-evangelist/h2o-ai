@@ -1,0 +1,49 @@
+generated: '2026-08-04'
+method: searched
+source: https://wave.h2o.ai/docs/cli, https://github.com/h2oai/cloud-discovery-py, https://pypi.org/project/h2o-wave/
+notes: >-
+  H2O.ai ships no single umbrella CLI for its platform — there is no `h2o` command that
+  drives the h2oGPTe or MLOps REST APIs. What it does publish are per-product command-line
+  entry points bundled with the Python clients. Only tools verified against first-party docs
+  or the published package are listed.
+clis:
+- name: wave
+  product: H2O Wave
+  first_party: true
+  package: h2o-wave
+  install:
+  - pip install h2o-wave
+  docs: https://wave.h2o.ai/docs/cli
+  repository: https://github.com/h2oai/wave
+  help_flag: --help
+  commands:
+  - {command: 'wave run', description: 'Run an app, with options for auto-reload and automatic daemon startup control'}
+  - {command: 'wave init', description: 'Initial scaffolding for a Wave project, choosing from starter app templates'}
+  - {command: 'wave fetch', description: 'Download examples and related files to the ./wave folder, along with the daemon'}
+  - {command: 'wave learn', description: 'Run the interactive learning app (Wave University); requires the h2o-wave-university package'}
+  - {command: 'wave share', description: 'Expose a locally running app to the public internet; stop with CTRL+C'}
+- name: h2ogpte-mcp-server
+  product: Enterprise h2oGPTe
+  first_party: true
+  package: h2ogpte-mcp-server
+  install:
+  - pip install h2ogpte-mcp-server
+  repository: https://github.com/h2oai/h2ogpte-mcp-server
+  description: >-
+    Console entry point that starts the local stdio MCP server proxying the h2oGPTe REST API.
+    Configured entirely through H2OGPTE_* environment variables rather than flags.
+  artifact: mcp/h2o-ai-mcp.yml
+- name: h2o-cloud-discovery
+  product: H2O AI Cloud
+  first_party: true
+  package: h2o-cloud-discovery
+  install:
+  - pip install h2o-cloud-discovery
+  repository: https://github.com/h2oai/cloud-discovery-py
+  description: >-
+    Client for the H2O Cloud Discovery service, used to resolve H2O AI Cloud service
+    endpoints and OIDC configuration for the other Python clients.
+not_found:
+- {name: h2ogpte CLI, note: 'the h2ogpte PyPI package is a library; no documented console command'}
+- {name: h2o-mlops CLI, note: 'MLOps is driven through the h2o-mlops Python client, not a CLI'}
+- {name: umbrella h2o CLI, note: 'probed docs.h2o.ai/haic-documentation — no platform-wide CLI is documented'}

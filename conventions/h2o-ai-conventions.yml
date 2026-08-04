@@ -1,0 +1,102 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.h2o.ai/enterprise-h2ogpte/rest-api, https://docs.h2o.ai/enterprise-h2ogpte/guide/apis, openapi/h2o-ai-h2ogpte-openapi-original.yml
+scope: Enterprise h2oGPTe REST API (the H2O MLOps Scoring API is a per-deployment model endpoint and carries none of these conventions)
+authentication:
+  style: bearer-api-key
+  header: 'Authorization: Bearer sk-...'
+  scheme_name: bearerAuth
+  key_prefix: sk-
+  key_types:
+  - name: global
+    description: >-
+      Created without selecting a Collection. Grants full user impersonation and system-wide
+      access to every Collection, Document, Chat and setting belonging to that user.
+  - name: collection-specific
+    description: >-
+      Created against one Collection. Permits only chat with that Collection and related
+      calls; cannot create, delete, or reach other Collections or Chats.
+  docs: https://docs.h2o.ai/enterprise-h2ogpte/guide/apis
+  artifact: authentication/h2o-ai-authentication.yml
+idempotency:
+  supported: false
+  evidence: >-
+    No Idempotency-Key header, parameter or extension appears anywhere in the 422-operation
+    OpenAPI document, and the docs publish no idempotency contract. The only idempotency
+    statement in the spec is a per-operation note that DELETE on an admin session returns 204
+    whether or not the session existed. Retrying a POST — create_collection,
+    create_chat_session, ingest_* — will create a duplicate.
+  agent_impact: >-
+    An agent driving this API must de-duplicate on its own side (check list_collections /
+    list_chat_sessions before creating) because the server offers no replay key.
+pagination:
+  style: offset-limit
+  params:
+  - {name: offset, in: query, type: integer, operations: 41}
+  - {name: limit, in: query, type: integer, operations: 45}
+  response_shape: bare JSON array
+  count_operations:
+    pattern: separate *_count operations return the total
+    examples: [get_collection_count, get_document_count, get_chat_session_count]
+  cursors: false
+  link_header: false
+  note: >-
+    Collections list endpoints return a plain array with no envelope, so total counts come
+    from the sibling count operations rather than from a wrapper object.
+sorting_and_filtering:
+  sort_column_param: sort_column
+  ascending_param: ascending
+  filter_param: filter
+  note: Present on the larger list operations; derived from the OpenAPI parameters.
+field_expansion:
+  supported: false
+metadata:
+  supported: true
+  mechanism: >-
+    Collections, Documents and Chat Sessions carry free-form user metadata via dedicated
+    operations and properties rather than a universal `metadata` object on every resource.
+request_tracing:
+  request_id_header: null
+  evidence: No X-Request-Id / X-Correlation-Id header appears in the specification.
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://h2ogpte.genai.h2o.ai/api/v1
+  spec_version: v1.0.0
+  product_versioning: semver (h2oGPTe 1.7.x at capture time)
+  artifact: lifecycle/h2o-ai-lifecycle.yml
+error_envelope:
+  format: vendor-json
+  schema: EndpointError
+  shape: '{"code": <int32>, "message": <string>}'
+  rfc9457: false
+  artifact: errors/h2o-ai-problem-types.yml
+rate_limiting:
+  documented_headers: none
+  evidence: >-
+    No rate-limit header, parameter or response code is declared in the OpenAPI document.
+    The h2oGPTe 1.7 changelog announces "per-user API rate limiting and automated key
+    deactivation" as an enterprise governance feature, but H2O.ai publishes no numeric
+    limits, no retry-after contract and no header names, so no rate-limits artifact is
+    asserted here.
+  source: https://docs.h2o.ai/enterprise-h2ogpte/changelog
+async_model:
+  pattern: job-polling
+  description: >-
+    Long-running work (document ingestion, collection deletion, topic modelling, summarization)
+    is started by a create_*_job operation that returns a job handle; the client then polls the
+    Jobs operations. There is no webhook or callback surface — see asyncapi/ absence in this repo.
+  job_operations: 28
+  example_flow: [create_ingest_upload_job, get_job, list_jobs]
+content_types:
+  request: [application/json, multipart/form-data]
+  response: [application/json, text/event-stream]
+  streaming: >-
+    Chat completions stream over server-sent events; interrupted LLM communication surfaces
+    as the ChatError {"error": "..."} envelope.
+cross_links:
+  authentication: authentication/h2o-ai-authentication.yml
+  errors: errors/h2o-ai-problem-types.yml
+  lifecycle: lifecycle/h2o-ai-lifecycle.yml
+  data_model: data-model/h2o-ai-data-model.yml
+  mcp: mcp/h2o-ai-mcp.yml

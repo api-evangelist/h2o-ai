@@ -1,0 +1,181 @@
+generated: '2026-08-04'
+method: searched
+source: https://pypi.org/, https://registry.npmjs.org/, https://search.maven.org/, https://cran.r-project.org/
+notes: >-
+  First-party H2O.ai client libraries verified against the public registries on 2026-08-04.
+  Versions are the latest published at probe time. Java artifacts are published under the
+  ai.h2o Maven Central group (97 artifacts at probe time); only the marquee entries are
+  listed here.
+packages:
+- language: python
+  registry: pypi
+  name: h2o
+  version: 3.46.0.11
+  url: https://pypi.org/project/h2o/
+  install: pip install h2o
+  repository: https://github.com/h2oai/h2o-3
+  description: H2O, Fast Scalable Machine Learning, for python (the H2O-3 Python client)
+  official: true
+- language: python
+  registry: pypi
+  name: h2ogpte
+  version: 1.7.3.post1
+  url: https://pypi.org/project/h2ogpte/
+  install: pip install h2ogpte
+  docs: https://h2oai.github.io/h2ogpte/
+  repository: https://github.com/h2oai/h2ogpte
+  description: Client library for Enterprise h2oGPTe
+  official: true
+- language: python
+  registry: pypi
+  name: h2ogpte-mcp-server
+  version: 0.1.6
+  url: https://pypi.org/project/h2ogpte-mcp-server/
+  install: pip install h2ogpte-mcp-server
+  repository: https://github.com/h2oai/h2ogpte-mcp-server
+  description: MCP API server for h2oGPTe — a local stdio MCP proxy over the h2oGPTe REST API
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-mlops
+  version: 1.5.3
+  url: https://pypi.org/project/h2o-mlops/
+  install: pip install h2o-mlops
+  docs: https://docs.h2o.ai/mlops/py-client/overview
+  license: Apache-2.0
+  description: Python client for H2O MLOps
+  official: true
+- language: python
+  registry: pypi
+  name: driverlessai
+  version: 2.4.5
+  url: https://pypi.org/project/driverlessai/
+  install: pip install driverlessai
+  docs: https://docs.h2o.ai/driverless-ai/pyclient/docs/html/index.html
+  description: Python client for H2O Driverless AI
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-wave
+  version: 1.8.10
+  url: https://pypi.org/project/h2o-wave/
+  install: pip install h2o-wave
+  docs: https://wave.h2o.ai/
+  repository: https://github.com/h2oai/wave
+  description: Python driver for H2O Wave Realtime Apps (also ships the `wave` CLI)
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-lightwave
+  version: 1.8.10
+  url: https://pypi.org/project/h2o-lightwave/
+  install: pip install h2o-lightwave
+  description: H2O Wave Python driver for integration with arbitrary Python web frameworks
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-authn
+  version: 3.1.0
+  url: https://pypi.org/project/h2o-authn/
+  install: pip install h2o-authn
+  repository: https://github.com/h2oai/authn-py
+  description: H2O Python Clients Authentication Helpers (universal token provider)
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-cloud-discovery
+  version: 3.3.0
+  url: https://pypi.org/project/h2o-cloud-discovery/
+  install: pip install h2o-cloud-discovery
+  repository: https://github.com/h2oai/cloud-discovery-py
+  description: H2O Cloud Discovery Python client
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-drive
+  version: 4.1.0
+  url: https://pypi.org/project/h2o-drive/
+  install: pip install h2o-drive
+  description: H2O Drive Python client
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-engine-manager
+  version: 1.9.0
+  url: https://pypi.org/project/h2o-engine-manager/
+  install: pip install h2o-engine-manager
+  docs: https://docs.h2o.ai/ai-engine-manager/py/initialization
+  description: Python client for H2O AI Engine Manager
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-notebook
+  version: 0.6.5
+  url: https://pypi.org/project/h2o-notebook/
+  install: pip install h2o-notebook
+  docs: https://docs.h2o.ai/notebook/py/initialization
+  description: Python client for H2O Notebook Labs
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-secure-store
+  version: 1.3.6
+  url: https://pypi.org/project/h2o-secure-store/
+  install: pip install h2o-secure-store
+  docs: https://docs.h2o.ai/secure-store/py/initialization
+  description: Python client for H2O Secure Store
+  official: true
+- language: python
+  registry: pypi
+  name: h2o-featurestore
+  version: 2.4.4
+  url: https://pypi.org/project/h2o-featurestore/
+  install: pip install h2o-featurestore
+  docs: https://docs.h2o.ai/featurestore/api/permissions
+  description: Python client for H2O Feature Store
+  official: true
+- language: python
+  registry: pypi
+  name: h2osteam
+  version: 1.9.18
+  url: https://pypi.org/project/h2osteam/
+  install: pip install h2osteam
+  description: Python client for H2O Enterprise Steam
+  official: true
+- language: javascript
+  registry: npm
+  name: h2ogpte
+  version: 1.6.43
+  url: https://www.npmjs.com/package/h2ogpte
+  install: npm install h2ogpte
+  description: JavaScript client for h2oGPTe
+  official: true
+- language: javascript
+  registry: npm
+  name: h2o-wave
+  version: 1.2.8
+  url: https://www.npmjs.com/package/h2o-wave
+  install: npm install h2o-wave
+  description: H2O Wave browser module
+  official: true
+- language: r
+  registry: cran
+  name: h2o
+  url: https://cran.r-project.org/web/packages/h2o/index.html
+  install: install.packages("h2o")
+  description: R Interface for the 'H2O' Scalable Machine Learning Platform
+  official: true
+- language: java
+  registry: maven
+  name: ai.h2o:h2o-core
+  url: https://central.sonatype.com/artifact/ai.h2o/h2o-core
+  install: 'implementation "ai.h2o:h2o-core:3.46.0.7"'
+  description: H2O-3 core engine (one of 97 ai.h2o artifacts on Maven Central)
+  official: true
+- language: java
+  registry: maven
+  name: ai.h2o:mojo2-runtime-api
+  url: https://central.sonatype.com/artifact/ai.h2o/mojo2-runtime-api
+  install: 'implementation "ai.h2o:mojo2-runtime-api:2.8.9"'
+  description: MOJO2 scoring runtime API used to embed Driverless AI / MLOps models
+  official: true

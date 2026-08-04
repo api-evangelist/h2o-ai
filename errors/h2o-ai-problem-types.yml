@@ -1,0 +1,196 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/h2o-ai-h2ogpte-openapi-original.yml, openapi/h2o-ai-mlops-scoring-openapi-original.yml
+format: vendor-json
+format_note: 'Neither published H2O.ai specification uses RFC 9457 application/problem+json. Enterprise
+  h2oGPTe returns a vendor envelope declared as the EndpointError schema — {"code": <int32>, "message":
+  <string>} — on every non-2xx `default` response, and a separate ChatError {"error": <string>} on interrupted
+  chat/LLM communication. H2O MLOps Scoring returns the FastAPI HTTPValidationError {"detail":[ValidationError]}
+  shape on 422.'
+envelopes:
+- name: EndpointError
+  schema: openapi/h2o-ai-h2ogpte-openapi-original.yml#/components/schemas/EndpointError
+  fields:
+  - name: code
+    type: integer(int32)
+    description: Error code
+    required: true
+  - name: message
+    type: string
+    description: Error message
+    required: true
+  used_on: the `default` response of all 422 h2oGPTe operations
+- name: ChatError
+  schema: openapi/h2o-ai-h2ogpte-openapi-original.yml#/components/schemas/ChatError
+  fields:
+  - name: error
+    type: string
+    description: e.g. "The communication with llm has been interrupted"
+    required: true
+  used_on: chat/completion streaming responses
+- name: HTTPValidationError
+  schema: openapi/h2o-ai-mlops-scoring-openapi-original.yml#/components/schemas/HTTPValidationError
+  fields:
+  - name: detail
+    type: array<ValidationError>
+    description: FastAPI field-level validation detail (loc/msg/type)
+    required: false
+  used_on: 422 responses on the MLOps Scoring API
+problems:
+- status: 400
+  title: Invalid request content.
+  occurrences: 334
+  schemas:
+  - EndpointError
+  - HTTPValidationError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_collections
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_all_collections
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection_count
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#delete_collection
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml
+- status: 401
+  title: Unauthorized
+  occurrences: 429
+  schemas:
+  - HTTPValidationError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_collections
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_all_collections
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection_count
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#delete_collection
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml
+- status: 403
+  title: Caller is not an admin.
+  occurrences: 50
+  schemas:
+  - EndpointError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#update_collection_settings
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#migrate_scheduled_connectors_to_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#add_user_document_permission
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#delete_messages
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#download_user_limits_export
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+- status: 404
+  title: MCP not found
+  occurrences: 113
+  schemas:
+  - EndpointError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#update_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#update_collection_prompt_template
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#delete_collection_prompt_template
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#archive_collection
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+- status: 409
+  title: A graph build is already in progress for this collection.
+  occurrences: 52
+  schemas:
+  - EndpointError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#reset_all_collection_expirations
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#reset_collection_prompt_settings
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#unshare_collection_for_all
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#share_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#unshare_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#share_collection_with_group
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+- status: 413
+  title: File too large
+  occurrences: 3
+  schemas:
+  - EndpointError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#update_collection_thumbnail
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_update_collection_thumbnail_job
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#upload_showcase_thumbnail
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+- status: 415
+  title: Unspecified error response
+  occurrences: 6
+  schemas: null
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#update_collection_thumbnail
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_update_collection_thumbnail_job
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#add_custom_agent_tool
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#add_custom_agent
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_user_builtin_mcp
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#update_admin_mcp_logo
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+- status: 422
+  title: Validation Error
+  occurrences: 2
+  schemas:
+  - HTTPValidationError
+  source_operations:
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#score_rows_model_score_post
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#score_contributions_model_contribution_post
+  sources:
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml
+- status: 500
+  title: Internal Server Error
+  occurrences: 55
+  schemas:
+  - HTTPValidationError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection_group_permissions
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_prompt_template_group_permissions
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_completion
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#set_role_priority
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_role_configurations
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#set_role_configuration
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml
+- status: 501
+  title: Not Implemented
+  occurrences: 5
+  schemas:
+  - HTTPValidationError
+  source_operations:
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#sample_request_model_sample_request_get
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#capabilities_model_capabilities_get
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#score_rows_model_score_post
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#score_media_model_media_score_post
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml#score_contributions_model_contribution_post
+  sources:
+  - openapi/h2o-ai-mlops-scoring-openapi-original.yml
+- status: 502
+  title: Failed to fetch content from the URL.
+  occurrences: 1
+  schemas:
+  - EndpointError
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#fetch_configuration_url
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml
+- status: default
+  title: Unspecified error response
+  occurrences: 422
+  schemas: null
+  source_operations:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#create_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_collections
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#list_all_collections
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection_count
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#get_collection
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml#delete_collection
+  sources:
+  - openapi/h2o-ai-h2ogpte-openapi-original.yml

@@ -1,0 +1,51 @@
+generated: '2026-08-04'
+method: searched
+probe: false
+probe_note: >-
+  0-working/probe-security-programs.py returned trust=none for h2o-ai because trust.h2o.ai
+  is a JavaScript-rendered SafeBase single-page app — the raw HTML carries none of the
+  keyword text the probe requires. The certifications below were read from the rendered
+  page on 2026-08-04 and are recorded as searched rather than probed.
+url: https://trust.h2o.ai/
+platform: SafeBase
+also_see: https://h2o.ai/security/
+certifications:
+- name: SOC 2 Type 2
+  report_available: true
+  access: gated (request through the Trust Center)
+- name: FedRAMP High
+  note: >-
+    h2o.ai/security describes FedRAMP at High Impact Level as an in-process designation;
+    the Trust Center lists FedRAMP High among its frameworks.
+- name: IRAP
+  note: Australian Information Security Registered Assessors Program
+- name: HITECH
+reports:
+- {name: SOC 2 Report, access: gated}
+- {name: Pentest Report, access: gated}
+policies_published:
+- Product Architecture
+- Privacy Policy
+- Acceptable Use Policy
+- Access Control Policy
+- Backup Policy
+- Bring Your Own Device (BYOD) Policy
+- Business Continuity / Disaster Recovery (BC/DR) Policy
+- Data Classification Policy
+- Data Protection Policy
+- Data Retention Policy
+- Data Processing Agreement
+- Data Breach Notifications
+- Cookies Policy
+- Artificial Intelligence Management System (AIMS) Plan
+product_security:
+- Multi-Factor Authentication
+- Single Sign-On (SSO)
+subprocessor_disclosure: null
+evidence:
+- {source: 'https://trust.h2o.ai/', http_status: 200, fetched: '2026-08-04',
+   keywords: [soc 2 type 2, fedramp high, irap, hitech, trust center, pentest report]}
+- {source: 'https://h2o.ai/security/', http_status: 200, fetched: '2026-08-04',
+   keywords: [soc, irap, fedramp high impact level, trust center]}
+- {source: 'https://trust.h2o.ai/.well-known/oauth-protected-resource', http_status: 200,
+   note: 'confirms the SafeBase platform (resource https://app.safebase.io/api/mcp), captured in well-known/'}

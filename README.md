@@ -42,5 +42,40 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-H2O.ai is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/h2o-ai_stock/
+H2O.ai is an open-source artificial-intelligence and machine-learning company. Its platform spans
+H2O-3 (a distributed, in-memory ML engine), H2O Driverless AI (automatic machine learning),
+H2O MLOps (model deployment, scoring and monitoring), H2O Wave (a Python/R framework for realtime
+AI apps), H2O LLM Studio, and Enterprise h2oGPTe (a private generative-AI, RAG and agent platform).
+
+- Website — https://h2o.ai/
+- Documentation — https://docs.h2o.ai/
+- GitHub — https://github.com/h2oai
+- Status — https://h2oai.statuspage.io/
+- Trust Center — https://trust.h2o.ai/
+
+## APIs profiled
+
+| API | Spec | Operations |
+|---|---|---|
+| Enterprise h2oGPTe REST API | OpenAPI 3.0.1 | 422 across 24 tags |
+| H2O MLOps Scoring REST API | OpenAPI 3.0.0 | 7 |
+| h2oGPTe MCP Server | first-party MCP (stdio) | one tool per REST operationId |
+
+Both specifications were harvested verbatim from H2O.ai's own hosts —
+`https://h2ogpte.genai.h2o.ai/api-spec.yaml` and the YAML linked from the MLOps scoring docs.
+
+## What H2O.ai does not publish
+
+Recorded here because the absence is the finding, not an omission on our side:
+
+- No `Idempotency-Key` on any of the 422 h2oGPTe operations.
+- Errors use a vendor `{code, message}` envelope, not RFC 9457 problem details.
+- Rate limiting ships in h2oGPTe 1.7.0 but no limit values, header names or `Retry-After` contract.
+- No deprecation or version-support policy and no `Sunset`/`Deprecation` headers, across five
+  major product versions.
+- No webhooks and no AsyncAPI — long-running work is job-polling only.
+- No `/.well-known/security.txt`, no API catalog, and no A2A agent card on any host.
+- No test-mode key and no sandbox host; the interactive Swagger UI hits the live tenant.
+
+Harvest provenance: surfaced via the API Evangelist harvest backlog (source: secondary-market,
+https://forgeglobal.com/h2o-ai_stock/) and profiled by the enrichment pipeline on 2026-08-04.

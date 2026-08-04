@@ -1,0 +1,78 @@
+generated: '2026-08-04'
+method: searched
+source: live probes of every H2O.ai host in apis.yml on 2026-08-04
+notes: >-
+  h2o.ai and www.h2o.ai answer 200 with the full marketing HTML for several /.well-known/
+  paths (an AEM catch-all) — those are recorded as html-catchall, NOT as hits. The same is
+  true of h2ogpte.genai.h2o.ai (a 2,944-byte SPA login shell answering 200 for every path)
+  and wave.h2o.ai (a Docusaurus 404 page served with a 200). The only real /.well-known/
+  documents on any H2O host are served from trust.h2o.ai, and they are the vendor's:
+  the issuer is https://app.safebase.io/api/mcp — SafeBase, the third-party platform that
+  hosts H2O.ai's Trust Center — not an H2O.ai authorization server. They are captured
+  verbatim for the record but do not describe H2O.ai API authentication, which is a
+  bearer API key (see authentication/h2o-ai-authentication.yml).
+hosts:
+- host: https://h2o.ai
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 200, result: html-catchall}
+  - {path: /.well-known/oauth-authorization-server, status: 200, result: html-catchall}
+  - {path: /.well-known/api-catalog, status: 200, result: html-catchall}
+  - {path: /llms.txt, status: 404}
+- host: https://docs.h2o.ai
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://h2ogpte.genai.h2o.ai
+  documents:
+  - {path: /.well-known/security.txt, status: 200, result: html-catchall}
+  - {path: /.well-known/agent-card.json, status: 200, result: html-catchall}
+  - {path: /.well-known/agent.json, status: 200, result: html-catchall}
+  - {path: /.well-known/openid-configuration, status: 200, result: html-catchall}
+  - {path: /.well-known/oauth-authorization-server, status: 200, result: html-catchall}
+  - {path: /.well-known/oauth-protected-resource, status: 200, result: html-catchall}
+  - {path: /.well-known/api-catalog, status: 200, result: html-catchall}
+  - {path: /.well-known/ai-plugin.json, status: 200, result: html-catchall}
+  - {path: /llms.txt, status: 200, result: html-catchall}
+  - {path: /api-spec.yaml, status: 200, result: openapi, content_type: application/x-yaml,
+     file: ../openapi/h2o-ai-h2ogpte-openapi-original.yml}
+  - {path: /api-spec.json, status: 200, result: html-catchall}
+- host: https://trust.h2o.ai
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: h2o-ai-trust-openid-configuration.json
+    third_party: safebase
+    issuer: https://app.safebase.io/api/mcp
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: h2o-ai-trust-oauth-authorization-server.json
+    third_party: safebase
+    issuer: https://app.safebase.io/api/mcp
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: h2o-ai-trust-oauth-protected-resource.json
+    third_party: safebase
+    resource: https://app.safebase.io/api/mcp
+- host: https://wave.h2o.ai
+  documents:
+  - {path: /.well-known/agent-card.json, status: 200, result: html-catchall}
+  - {path: /.well-known/agent.json, status: 200, result: html-catchall}
+  - {path: /.well-known/security.txt, status: 200, result: html-catchall}
+  - {path: /llms.txt, status: 200, result: html-catchall}
+summary:
+  security_txt: false
+  agent_card: false
+  api_catalog: false
+  llms_txt: false
+  oauth_metadata: third-party-only
