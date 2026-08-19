@@ -1,0 +1,225 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Admin Sessions API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Admin Sessions
+paths:
+  /admin/sessions:
+    get:
+      operationId: list_admin_sessions
+      summary: List live sessions
+      description: Allows admins to enumerate live sessions stored in Redis. Returns metadata only — never access tokens, refresh tokens, or CSRF values. Pagination is cursor-based; pass back the `next_cursor` from a previous response to continue, or omit to start fresh. Iteration is complete when `next_cursor` is absent.
+      tags:
+      - Admin Sessions
+      parameters:
+      - name: cursor
+        in: query
+        description: Opaque cursor returned by a previous call. Omit on the first call.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Maximum number of sessions to return in this page. Defaults to 100, hard-capped at 500.
+        required: false
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSessionsListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Caller is not an admin.
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/sessions/stats:
+    get:
+      operationId: get_admin_sessions_stats
+      summary: Get session inventory stats
+      description: Returns aggregate counters across all live sessions (total, by transport, anonymous count, Azure exchange-cache count). Result is cached per-process for ~30 seconds; the `cache_age_seconds` field communicates freshness so a polling dashboard can render it.
+      tags:
+      - Admin Sessions
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSessionsStatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Caller is not an admin.
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/sessions/{session_id}:
+    delete:
+      operationId: revoke_admin_session
+      summary: Revoke a session
+      description: Force-revokes a live session by ID. Reuses the same revoke path as user-driven sign-out, so peer mux replicas drop their cached copy via pub/sub. DELETE is idempotent — returns 204 whether the session existed or not.
+      tags:
+      - Admin Sessions
+      parameters:
+      - name: session_id
+        in: path
+        description: ID of the session to revoke.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Caller is not an admin.
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  responses:
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  schemas:
+    AdminSessionsListResponse:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          description: Page of session metadata.
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminSessionItem'
+        next_cursor:
+          description: Opaque cursor for the next page. Absent when iteration is complete.
+          type: string
+    AdminSessionItem:
+      required:
+      - session_id
+      - user_id
+      - username
+      - transport
+      - is_anonymous
+      - expires_in_seconds
+      type: object
+      properties:
+        session_id:
+          description: Unique identifier of the session.
+          type: string
+        user_id:
+          description: ID of the user the session belongs to.
+          type: string
+        username:
+          description: Username of the user the session belongs to.
+          type: string
+        subject:
+          description: OIDC subject claim for the user (when known).
+          type: string
+        transport:
+          description: How the session authenticated. One of `keycloak`, `anonymous`, `spoof`, or `unknown`.
+          type: string
+          enum:
+          - keycloak
+          - anonymous
+          - spoof
+          - unknown
+        is_anonymous:
+          description: True if the session is for a guest / anonymous user.
+          type: boolean
+        expires_in_seconds:
+          description: Remaining Redis TTL on the session key, in seconds.
+          type: integer
+          format: int64
+        expires_at:
+          description: Access-token expiry from the underlying OAuth2 token. Zero for anonymous or spoofed sessions.
+          type: string
+          format: date-time
+    AdminSessionsStatsResponse:
+      required:
+      - total
+      - by_transport
+      - anonymous_count
+      - azure_cache_count
+      - computed_at
+      - cache_age_seconds
+      - session_default_ttl
+      type: object
+      properties:
+        total:
+          description: Total number of live sessions.
+          type: integer
+          format: int64
+        by_transport:
+          description: Counters partitioned by `transport` (keycloak, anonymous, spoof, unknown).
+          type: object
+          additionalProperties:
+            type: integer
+        anonymous_count:
+          description: Number of guest / anonymous sessions.
+          type: integer
+        azure_cache_count:
+          description: Number of distinct Azure tokens currently cached for federation exchange. Approximate; not a user count.
+          type: integer
+          format: int64
+        computed_at:
+          description: When the cached stats were computed.
+          type: string
+          format: date-time
+        cache_age_seconds:
+          description: Wall-clock age of the cached stats, in seconds. Useful for rendering freshness in a polling UI.
+          type: integer
+          format: int64
+        session_default_ttl:
+          description: Configured default TTL for session keys (Go duration string, e.g. `168h0m0s`).
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

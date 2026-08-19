@@ -1,0 +1,358 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST System API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: System
+paths:
+  /admin/user_limits/export:
+    get:
+      tags:
+      - System
+      summary: Export user limits as CSV.
+      description: Generates and streams a CSV of user limits data. Admin only.
+      operationId: download_user_limits_export
+      parameters:
+      - name: search
+        in: query
+        description: Search string to filter users by username or email.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: Filter by limit status. One of all, within_limit, approaching, blocked.
+        required: false
+        schema:
+          type: string
+          default: all
+      - name: user_ids
+        in: query
+        description: Comma-separated user IDs to export. When set, search and filter are ignored.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CSV file download
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Admin access required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /system/h2ogpt_info:
+    get:
+      operationId: get_h2ogpt_system_info
+      summary: Gets H2OGPT system information.
+      description: Gets H2OGPT system information.
+      tags:
+      - System
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/H2OGPTSystemInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/generate_spec:
+    post:
+      operationId: generate_scheduled_task_spec
+      summary: Generate a scheduled task spec from a prompt.
+      description: 'Uses an LLM with guided JSON to generate a scheduled task configuration
+
+        from a natural language description. The returned spec can be used directly
+
+        with the create_scheduled_task RPC.
+
+        '
+      tags:
+      - System
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - prompt
+              properties:
+                prompt:
+                  type: string
+                  description: Natural language description of the desired scheduled task.
+                llm:
+                  type: string
+                  description: Optional LLM model override for generation.
+                timezone:
+                  type: string
+                  description: 'Optional IANA timezone string (e.g. "America/New_York") used to compute
+
+                    today''s local date for relative schedule expressions. Defaults to UTC.
+
+                    '
+                use_agent:
+                  type: boolean
+                  description: 'When true, signals to the LLM that the user has agent mode enabled in
+
+                    their chat so it should prefer task_type=agent_task unless the prompt
+
+                    clearly describes a plain chat-completion task. Does not force the
+
+                    generated task_type.
+
+                    '
+        required: true
+      responses:
+        '200':
+          description: Generated scheduled task configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    type: object
+                    description: The generated scheduled task spec.
+                  passed:
+                    type: boolean
+                    description: 'Whether the user prompt was minimally sufficient to create the task.
+
+                      Callers MUST NOT create the task when passed is false; only show
+
+                      `response` to the user.
+
+                      '
+                  response:
+                    type: string
+                    description: 'When passed=false, a clarifying question describing what info is missing.
+
+                      When passed=true, a human-language confirmation of what was scheduled,
+
+                      including any defaults the LLM inferred.
+
+                      '
+                  llm_used:
+                    type: string
+                    description: The actual model that generated the spec.
+            text/event-stream:
+              schema:
+                type: string
+                description: 'Server-Sent Events stream when `Accept: text/event-stream` is requested.
+
+                  Three event types are emitted:
+
+                  - `progress` — `{"chars": <number>}` incremental character count from the LLM stream.
+
+                  - `done` — same JSON payload as the `application/json` 200 response.
+
+                  - `error` — `{"message": "<string>"}` on generation failure.
+
+                  '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    H2OGPTGPUInfo:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        temperature:
+          type: number
+        utilization:
+          type: number
+        memory_total:
+          type: integer
+        memory_used:
+          type: integer
+        power_usage:
+          type: number
+        fan_speed:
+          type: integer
+    H2OGPTSystemInfo:
+      required:
+      - timestamp
+      - uptime_seconds
+      - hostname
+      - os_name
+      - os_version
+      - kernel_version
+      - cpu_count_physical
+      - cpu_count_logical
+      - cpu_percent_per_cpu
+      - cpu_freq_current
+      - cpu_freq_min
+      - cpu_freq_max
+      - load_avg_1min
+      - load_avg_5min
+      - load_avg_15min
+      - memory_total
+      - memory_available
+      - memory_used
+      - memory_percent
+      - swap_total
+      - swap_used
+      - swap_percent
+      - disk_partitions
+      - disk_usage
+      - disk_io_counters
+      - network_interfaces
+      - network_io_counters
+      - network_connections_count
+      - gpus
+      - process_count
+      - top_processes_cpu
+      - top_processes_memory
+      type: object
+      properties:
+        timestamp:
+          type: string
+        uptime_seconds:
+          type: number
+        hostname:
+          type: string
+        os_name:
+          type: string
+        os_version:
+          type: string
+        kernel_version:
+          type: string
+        cpu_count_physical:
+          type: integer
+        cpu_count_logical:
+          type: integer
+        cpu_percent_per_cpu:
+          type: array
+          items:
+            type: number
+        cpu_freq_current:
+          type: number
+        cpu_freq_min:
+          type: number
+        cpu_freq_max:
+          type: number
+        cpu_temperature:
+          type: number
+        load_avg_1min:
+          type: number
+        load_avg_5min:
+          type: number
+        load_avg_15min:
+          type: number
+        memory_total:
+          type: integer
+        memory_available:
+          type: integer
+        memory_used:
+          type: integer
+        memory_percent:
+          type: number
+        swap_total:
+          type: integer
+        swap_used:
+          type: integer
+        swap_percent:
+          type: number
+        disk_partitions:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: string
+        disk_usage:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+        disk_io_counters:
+          type: object
+          additionalProperties:
+            type: number
+        network_interfaces:
+          type: array
+          items:
+            type: string
+        network_io_counters:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+        network_connections_count:
+          type: integer
+        gpus:
+          type: array
+          items:
+            $ref: '#/components/schemas/H2OGPTGPUInfo'
+        process_count:
+          type: integer
+        top_processes_cpu:
+          type: array
+          items:
+            type: object
+        top_processes_memory:
+          type: array
+          items:
+            type: object
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+  responses:
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

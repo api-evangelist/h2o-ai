@@ -1,0 +1,520 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Showcase API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Showcase
+paths:
+  /showcase:
+    get:
+      operationId: list_showcase_chats
+      summary: List showcase chats
+      description: 'Public listing of admin-curated shared chats. Visibility is gated by the
+
+        `showcase_page_mode` global setting: `disabled` (404), `authenticated`
+
+        (login required, guests blocked), or `public` (anyone).
+
+        '
+      tags:
+      - Showcase
+      parameters:
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShowcaseChat'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    post:
+      operationId: add_showcase_chat
+      summary: Add a shared chat to the showcase
+      description: 'Requires the `h2ogpte/chat/manage_showcase` permission. Private shared
+
+        chats may be pinned; their tiles are only listed to authenticated
+
+        callers.
+
+        '
+      tags:
+      - Showcase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddShowcaseChatRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddShowcaseChatResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /showcase/categories:
+    get:
+      operationId: list_showcase_categories
+      summary: List existing showcase categories
+      description: 'Returns the distinct, alphabetically-sorted set of category labels
+
+        currently in use across showcase tiles. Powers the curator-facing
+
+        autocomplete so admins reuse existing labels instead of fragmenting
+
+        the taxonomy with typos. Requires the `h2ogpte/chat/manage_showcase`
+
+        permission.
+
+        '
+      tags:
+      - Showcase
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListShowcaseCategoriesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /showcase/reorder:
+    post:
+      operationId: reorder_showcase_chats
+      summary: Reorder showcase chats
+      description: 'Requires the `h2ogpte/chat/manage_showcase` permission. Atomically
+
+        reassigns sort_order for each entry.
+
+        '
+      tags:
+      - Showcase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReorderShowcaseChatsRequest'
+        required: true
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /showcase/{showcase_id}:
+    patch:
+      operationId: update_showcase_chat
+      summary: Update a showcase tile
+      description: 'Requires the `h2ogpte/chat/manage_showcase` permission. Update the tile
+
+        title, description, or category. Omitted fields are left unchanged.
+
+        Title and description must remain non-empty (empty / whitespace-only
+
+        returns 400); category may be cleared by sending an empty string.
+
+        thumbnail_path is set exclusively by the upload endpoint.
+
+        '
+      tags:
+      - Showcase
+      parameters:
+      - name: showcase_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateShowcaseChatRequest'
+        required: true
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: remove_showcase_chat
+      summary: Remove a chat from the showcase
+      description: 'Requires the `h2ogpte/chat/manage_showcase` permission. The underlying
+
+        shared chat is untouched; only the tile (and its stored thumbnail) is
+
+        removed.
+
+        '
+      tags:
+      - Showcase
+      parameters:
+      - name: showcase_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /showcase/{showcase_id}/thumbnail:
+    post:
+      operationId: upload_showcase_thumbnail
+      summary: Upload a thumbnail for a showcase tile
+      description: 'Requires the `h2ogpte/chat/manage_showcase` permission. Multipart upload
+
+        of an image (jpg/png/webp/gif, max 20 MB). Stored in object storage; the
+
+        resulting path is saved to the showcase entry.
+
+        '
+      tags:
+      - Showcase
+      parameters:
+      - name: showcase_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadShowcaseThumbnailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          description: File too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: get_showcase_thumbnail
+      summary: Serve a showcase thumbnail
+      description: Streams the stored thumbnail image. Public, but only served when showcase_page_mode allows.
+      tags:
+      - Showcase
+      parameters:
+      - name: showcase_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: delete_showcase_thumbnail
+      summary: Remove a showcase thumbnail
+      description: 'Requires the `h2ogpte/chat/manage_showcase` permission. Drops the
+
+        thumbnail object from storage and clears the showcase row''s
+
+        thumbnail_path so the tile renders the placeholder icon.
+
+        '
+      tags:
+      - Showcase
+      parameters:
+      - name: showcase_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  schemas:
+    AddShowcaseChatRequest:
+      type: object
+      required:
+      - shared_chat_id
+      - title
+      - description
+      properties:
+        shared_chat_id:
+          type: string
+        title:
+          type: string
+          description: Required. Non-empty after trim.
+        description:
+          type: string
+          description: Required. Non-empty after trim.
+        category:
+          type: string
+          description: Optional free-text category used to group tiles in the listing.
+    ReorderShowcaseChatsRequest:
+      type: object
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReorderShowcaseChatEntry'
+    AddShowcaseChatResponse:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    UpdateShowcaseChatRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
+        description:
+          type: string
+          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
+        category:
+          type: string
+          description: Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized).
+    ShowcaseChat:
+      type: object
+      required:
+      - id
+      - shared_chat_id
+      - chat_name
+      - sort_order
+      - featured_at
+      properties:
+        id:
+          type: string
+          description: Showcase entry ID.
+        shared_chat_id:
+          type: string
+          description: Underlying shared chat ID.
+        title:
+          type: string
+          description: Admin-supplied tile title; falls back to chat_name when empty.
+        description:
+          type: string
+          description: Admin-supplied tile description.
+        category:
+          type: string
+          description: Free-text label used to group tiles. Null/missing means uncategorized.
+        thumbnail_path:
+          type: string
+          description: Object storage key for the tile thumbnail.
+        sort_order:
+          type: integer
+          description: Display order, ascending.
+        featured_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          description: Last mutation on the showcase row; used as a cache-buster for the thumbnail URL.
+        chat_name:
+          type: string
+        is_private:
+          type: boolean
+          description: Current privacy of the linked shared chat. Private tiles are only listed to authenticated users.
+        is_frozen:
+          type: boolean
+          description: Whether the linked shared chat is a frozen snapshot.
+        includes_artifacts:
+          type: boolean
+        chat_created_at:
+          type: string
+          format: date-time
+        shared_by_username:
+          type: string
+        featured_by_username:
+          type: string
+    ListShowcaseCategoriesResponse:
+      type: object
+      required:
+      - categories
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    UploadShowcaseThumbnailResponse:
+      type: object
+      required:
+      - thumbnail_path
+      properties:
+        thumbnail_path:
+          type: string
+    ReorderShowcaseChatEntry:
+      type: object
+      required:
+      - id
+      - sort_order
+      properties:
+        id:
+          type: string
+        sort_order:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

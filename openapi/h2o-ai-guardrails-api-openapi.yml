@@ -1,0 +1,476 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Guardrails API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Guardrails
+paths:
+  /guardrails/violations/summary:
+    get:
+      operationId: get_guardrail_violations_summary
+      summary: Get guardrail violation summary KPIs.
+      description: Returns total violation counts, time-window breakdowns, violation rate, and per-type breakdown. Admin only.
+      tags:
+      - Guardrails
+      parameters:
+      - name: interval
+        in: query
+        description: Time interval to aggregate over (e.g. "7 days", "30 days", "90 days").
+        required: false
+        schema:
+          type: string
+          default: 7 days
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardrailViolationsSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /guardrails/violations/dashboard:
+    get:
+      operationId: get_guardrail_violations_dashboard
+      summary: Get guardrail violations dashboard data.
+      description: Returns daily trend, breakdown by violation type, by collection, and by user. Admin only.
+      tags:
+      - Guardrails
+      parameters:
+      - name: interval
+        in: query
+        description: Time interval to aggregate over (e.g. "7 days", "30 days", "90 days").
+        required: false
+        schema:
+          type: string
+          default: 7 days
+      - name: collection_id_filter
+        in: query
+        description: Filter by collection ID.
+        required: false
+        schema:
+          type: string
+          default: ''
+      - name: user_id_filter
+        in: query
+        description: Filter by user ID.
+        required: false
+        schema:
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardrailViolationsDashboard'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /guardrails/violations:
+    get:
+      operationId: list_guardrail_violations
+      summary: List guardrail violations.
+      description: Returns a paginated list of guardrail violations with user and collection context. Admin only.
+      tags:
+      - Guardrails
+      parameters:
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: interval
+        in: query
+        description: Time interval to filter by (e.g. "7 days", "30 days", "90 days").
+        required: false
+        schema:
+          type: string
+          default: 7 days
+      - name: type_filter
+        in: query
+        description: Filter by violation type (e.g. "guardrails_safety", "presidio_pii").
+        required: false
+        schema:
+          type: string
+          default: ''
+      - name: collection_id_filter
+        in: query
+        description: Filter by collection ID.
+        required: false
+        schema:
+          type: string
+          default: ''
+      - name: user_id_filter
+        in: query
+        description: Filter by user ID.
+        required: false
+        schema:
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardrailViolationsList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /guardrails/effective:
+    get:
+      operationId: get_effective_guardrails
+      summary: Get effective guardrails settings.
+      description: Returns the effective guardrails settings based on the hierarchy (chat session > collection > global admin > defaults).
+      tags:
+      - Guardrails
+      parameters:
+      - name: chat_session_id
+        in: query
+        description: Optional chat session ID to check for chat-level settings
+        required: false
+        schema:
+          type: string
+      - name: collection_id
+        in: query
+        description: Optional collection ID to check for collection-level settings
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardrailsSettings'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    GuardrailViolationsDashboard:
+      type: object
+      properties:
+        daily_trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsDailyTrend'
+        by_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByType'
+        by_collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByCollection'
+        by_user:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByUser'
+        available_types:
+          type: array
+          items:
+            type: string
+    GuardrailViolationsByType:
+      type: object
+      properties:
+        violation_type:
+          type: string
+        total:
+          type: integer
+    GuardrailViolation:
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+        user_id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        collection_id:
+          type:
+          - string
+          - 'null'
+        collection_name:
+          type: string
+        violation_type:
+          type: string
+        violation_message:
+          type: string
+    GuardrailViolationsByCollection:
+      type: object
+      properties:
+        collection_name:
+          type: string
+        collection_id:
+          type:
+          - string
+          - 'null'
+        total:
+          type: integer
+    GuardrailsSettings:
+      type: object
+      properties:
+        exception_message:
+          description: A message that will be returned in case some guardrails settings are violated.
+          type: string
+        show_violated_responses:
+          description: Admin-only toggle to view the exact content of violated responses. When enabled, admins can see what triggered a guardrail violation. This is disabled by default for privacy and security. Only administrators can enable this setting and view violated content.
+          type: boolean
+          default: false
+        guardrails_on_transcriptions:
+          description: When enabled, audio and video transcriptions are checked for content safety violations using the guardrails LLM, in addition to the existing PII detection.
+          type: boolean
+          default: false
+        vision_guardrails_enabled:
+          description: When enabled, images and video frames are checked for content safety violations using a vision-capable guardrails LLM during document ingestion.
+          type: boolean
+          default: false
+        guardrails_vision_llm:
+          description: Vision-capable LLM for image and video content safety checks. Defaults to auto which selects the best available vision model.
+          type: string
+          default: auto
+        column_redaction_config:
+          type: array
+          description: List of [column_pattern, redaction_label], both strings.
+          items:
+            type: array
+            minItems: 2
+            maxItems: 2
+            items:
+              type: string
+        disallowed_regex_patterns:
+          description: A list of regular expressions that match custom PII.
+          type: array
+          items:
+            type: string
+          example:
+          - secret_disallowed_word
+          - (?!0{3})(?!6{3})[0-8]\d{2}-(?!0{2})\d{2}-(?!0{4})\d{4}
+        presidio_labels_to_flag:
+          description: A list of entities to be flagged as PII by the built-in Presidio model.
+          type: array
+          items:
+            type: string
+          example:
+          - IBAN_CODE
+          - US_SSN
+        pii_labels_to_flag:
+          description: A list of entities to be flagged as PII by the built-in PII model.
+          type: array
+          items:
+            type: string
+          example:
+          - IBAN
+          - SSN
+        pii_detection_parse_action:
+          description: What to do when PII is detected during parsing of documents. The 'redact' option will replace disallowed content in the ingested documents with redaction bars.
+          type: string
+          enum:
+          - allow
+          - redact
+          - fail
+        pii_detection_llm_input_action:
+          description: What to do when PII is detected in the input to the LLM (document content and user prompts). The 'redact' option will replace disallowed content with placeholders.
+          type: string
+          enum:
+          - allow
+          - redact
+          - fail
+        pii_detection_llm_output_action:
+          description: What to do when PII is detected in the output of the LLM. The 'redact' option will replace disallowed content with placeholders.
+          type: string
+          enum:
+          - allow
+          - redact
+          - fail
+        prompt_guard_labels_to_flag:
+          description: A list of entities to be flagged as safety violations in user prompts by the built-in prompt guard model.
+          type: array
+          items:
+            type: string
+          example:
+          - JAILBREAK
+        guardrails_labels_to_flag:
+          description: A list of entities to be flagged as safety violations in user prompts. Must be a subset of guardrails_entities, if provided.
+          type: array
+          items:
+            type: string
+          example:
+          - Violent Crimes
+          - Non-Violent Crimes
+          - Intellectual Property
+          - Code Interpreter Abuse
+        guardrails_llm:
+          description: LLM to use for Guardrails and PII detection
+          type: string
+          example: h2oai/h2o-danube3-4b-chat
+        guardrails_safe_category:
+          description: Name of the safe category for guardrails. Must be a key in guardrails_entities, if provided. Otherwise uses system defaults.
+          type: string
+          example: Safe
+        guardrails_entities:
+          description: Dictionary of entities and their descriptions for the guardrails model to classify. The first entry is the "safe" class, the rest are "unsafe" classes.
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            Safe: Messages that do not contain any of the following unsafe content
+            Violent Crimes: 'Messages that enable, encourage, or endorse the commission of violent crimes, including: (1) unlawful violence toward people (ex: terrorism, genocide, murder, hate-motivated violent crimes, child abuse, assault, battery, kidnapping) and (2) unlawful violence toward animals (ex: animal abuse)'
+            Non-Violent Crimes: 'Messages that enable, encourage, or endorse the commission of non-violent crimes, including: (1) personal crimes (ex: labor trafficking, threats, intimidation, hate-motivated non-violent crimes), (2) financial crimes (ex: fraud, scams, money laundering), (3) property crimes (ex: theft, arson, vandalism), (4) drug crimes (ex: creating or using regulated substances), (5) weapons crimes (ex: producing unlicensed firearms), and (6) cyber crimes (ex: hacking)'
+            Defamation: Messages that are both verifiably false and likely to injure a living person’s reputation
+            Specialized Advice: Messages that contain specialized financial, medical, or legal advice, or that indicate dangerous activities or objects are safe
+            Intellectual Property: Messages that may violate the intellectual property rights of any third party
+            Code Interpreter Abuse: Messages that seek to abuse code interpreters, including those that enable denial of service attacks, container escapes or privilege escalation exploits
+        column_redaction_custom_entities_to_flag:
+          description: Deprecated - Use custom_pii_entities_to_flag. A list of entities to redact in tabular data files. Must be a subset of column_redaction_custom_entities, if provided.
+          type: array
+          items:
+            type: string
+          example:
+          - Mother's Maiden Name
+        column_redaction_custom_entities:
+          description: (Optional) Deprecated - Use custom_pii_entities. A dictionary of entities and a short description for the LLM to check for and redact columns containing PII in tabular data files.
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            Mother's Maiden Name: Mother's maiden name
+        custom_pii_entities_to_flag:
+          description: A list of entities to redact in tabular data files. Must be a subset of custom_pii_entities, if provided.
+          type: array
+          items:
+            type: string
+          example:
+          - Mother's Maiden Name
+        custom_pii_entities:
+          description: (Optional) A dictionary of entities and a short description for the LLM to check for and redact columns containing PII in tabular data files.
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            Mother's Maiden Name: Mother's maiden name
+    GuardrailViolationsList:
+      type: object
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolation'
+    GuardrailViolationsDailyTrend:
+      type: object
+      properties:
+        day:
+          type: string
+        total:
+          type: integer
+    GuardrailViolationsByUser:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        total:
+          type: integer
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    GuardrailViolationsSummary:
+      type: object
+      properties:
+        total_violations:
+          type: integer
+        last_24h:
+          type: integer
+        last_7d:
+          type: integer
+        last_30d:
+          type: integer
+        violation_rate:
+          type:
+          - number
+          - 'null'
+        by_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByType'
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

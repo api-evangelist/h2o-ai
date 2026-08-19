@@ -1,0 +1,1737 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Document Ingestion API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Document Ingestion",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "upload_file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/uploads",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads file to H2OGPTe instance"
+        },
+        {
+          "info": {
+            "name": "Ingest uploaded document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/uploads/:upload_ids/ingest",
+            "params": [
+              {
+                "name": "upload_ids",
+                "value": "",
+                "type": "path",
+                "description": "Id of uploaded document"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "restricted",
+                "value": "",
+                "type": "query",
+                "description": "Whether the document should be restricted only to certain users."
+              },
+              {
+                "name": "permissions",
+                "value": "",
+                "type": "query",
+                "description": "The list of usernames having permissions to the document."
+              },
+              {
+                "name": "encrypt_document",
+                "value": "",
+                "type": "query",
+                "description": "Whether to encrypt the document files at rest in object storage."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Ingests uploaded document identified to a given collection"
+        },
+        {
+          "info": {
+            "name": "Creates a job to ingest uploaded document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/uploads/:upload_ids/ingest/job",
+            "params": [
+              {
+                "name": "upload_ids",
+                "value": "",
+                "type": "path",
+                "description": "Id of uploaded document"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "restricted",
+                "value": "",
+                "type": "query",
+                "description": "Whether the document should be restricted only to certain users."
+              },
+              {
+                "name": "permissions",
+                "value": "",
+                "type": "query",
+                "description": "The list of usernames having permissions to the document."
+              },
+              {
+                "name": "encrypt_document",
+                "value": "",
+                "type": "query",
+                "description": "Whether to encrypt the document files at rest in object storage."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to ingest uploaded document identified to a given collection"
+        },
+        {
+          "info": {
+            "name": "Adds files from the local system into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/file_system",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds files from the local system into a collection."
+        },
+        {
+          "info": {
+            "name": "Creates a job to add files from the local system into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/file_system/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to add files from the local system into a collection."
+        },
+        {
+          "info": {
+            "name": "Adds plain text to a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/plain_text",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "file_name",
+                "value": "",
+                "type": "query",
+                "description": "String of the file name to use for the document."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              },
+              {
+                "name": "metadata",
+                "value": "",
+                "type": "query",
+                "description": "String with json-encoded metadata for the document."
+              }
+            ]
+          },
+          "docs": "Adds plain text to a collection."
+        },
+        {
+          "info": {
+            "name": "Creates a job to add plain text to a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/plain_text/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "file_name",
+                "value": "",
+                "type": "query",
+                "description": "String of the file name to use for the document."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "metadata",
+                "value": "",
+                "type": "query",
+                "description": "String with json-encoded metadata for the document."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Creates a job to add plain text to a collection."
+        },
+        {
+          "info": {
+            "name": "Crawls and ingest a URL into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/website",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "follow_links",
+                "value": "",
+                "type": "query",
+                "description": "Whether to import all web pages linked from this URL will be imported. External links will be ignored. Links to other pages on the same domain will be followed as long as they are at the same level or below the URL you specify. Each page will be transformed into a PDF document."
+              },
+              {
+                "name": "max_depth",
+                "value": "",
+                "type": "query",
+                "description": "Max depth of recursion when following links, only when follow_links is `true`. Max_depth of 0 means don't follow any links, max_depth of 1 means follow only top-level links, etc. Use -1 for automatic (system settings)."
+              },
+              {
+                "name": "max_documents",
+                "value": "",
+                "type": "query",
+                "description": "Max number of documents when following links, only when follow_links is `true`. Use None for automatic (system defaults). Use -1 for max (system limit)."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Crawls and ingest a URL into a collection. The web page or document linked from this URL will be imported."
+        },
+        {
+          "info": {
+            "name": "Creates a job to crawl and ingest a URL into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/website/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "follow_links",
+                "value": "",
+                "type": "query",
+                "description": "Whether to import all web pages linked from this URL will be imported. External links will be ignored. Links to other pages on the same domain will be followed as long as they are at the same level or below the URL you specify. Each page will be transformed into a PDF document."
+              },
+              {
+                "name": "max_depth",
+                "value": "",
+                "type": "query",
+                "description": "Max depth of recursion when following links, only when follow_links is `true`. Max_depth of 0 means don't follow any links, max_depth of 1 means follow only top-level links, etc. Use -1 for automatic (system settings)."
+              },
+              {
+                "name": "max_documents",
+                "value": "",
+                "type": "query",
+                "description": "Max number of documents when following links, only when follow_links is `true`. Use None for automatic (system defaults). Use -1 for max (system limit)."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to crawl and ingest a URL into a collection. The web page or document linked from this URL will be imported."
+        },
+        {
+          "info": {
+            "name": "Converts files uploaded in \"agent_only\" ingest mode  to PDF and parses them.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/agent_only_to_standard",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the document to be parsed."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "restricted",
+                "value": "",
+                "type": "query",
+                "description": "Whether the document should be restricted only to certain users."
+              },
+              {
+                "name": "permissions",
+                "value": "",
+                "type": "query",
+                "description": "The list of usernames having permissions to the document."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Converts files uploaded in \"agent_only\" ingest mode  to PDF and parses them."
+        },
+        {
+          "info": {
+            "name": "Creates a job to parse files uploaded in \"agent_only\" ingest mode.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/agent_only_to_standard/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the document to be parsed."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "restricted",
+                "value": "",
+                "type": "query",
+                "description": "Whether the document should be restricted only to certain users."
+              },
+              {
+                "name": "permissions",
+                "value": "",
+                "type": "query",
+                "description": "The list of usernames having permissions to the document."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Creates a job to parse files uploaded in \"agent_only\" ingest mode."
+        },
+        {
+          "info": {
+            "name": "Adds files from the AWS S3 storage into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/s3",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds files from the AWS S3 storage into a collection."
+        },
+        {
+          "info": {
+            "name": "Creates a job to add files from the AWS S3 storage into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/s3/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to add files from the AWS S3 storage into a collection."
+        },
+        {
+          "info": {
+            "name": "Adds files from the Google Cloud Storage into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/gcs",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds files from the Google Cloud Storage into a collection."
+        },
+        {
+          "info": {
+            "name": "Creates a job to add files from the Google Cloud Storage into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/gcs/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to add files from the Google Cloud Storage into a collection."
+        },
+        {
+          "info": {
+            "name": "Adds files from the Azure Blob Storage into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/azure_blob_storage",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds files from the Azure Blob Storage into a collection."
+        },
+        {
+          "info": {
+            "name": "Creates a job to add files from the Azure Blob Storage into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/azure_blob_storage/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to add files from the Azure Blob Storage into a collection."
+        },
+        {
+          "info": {
+            "name": "Adds files from SharePoint Online into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/sharepoint_online",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds files from Microsoft SharePoint Online into a collection. Accepts a\nlist of entries — sites, drives, folders, or files — each identified by\nthe drive_id and object_id returned by the connector browse API.\n\nTo ingest from a drive that is only addressable by its drive_id (for\nexample a OneDrive personal drive, a Microsoft 365 group drive, or any\ndrive in a non-discoverable site) pass an entry with\nentry_type=\"drive_by_id\" and the drive_id field set.\n"
+        },
+        {
+          "info": {
+            "name": "Creates a job to add files from SharePoint Online into a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/sharepoint_online/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to add files from Microsoft SharePoint Online into a\ncollection. See ingest_from_sharepoint_online for details on the entry\nshape — including how to target a drive by its drive_id.\n"
+        },
+        {
+          "info": {
+            "name": "Ingests confluence pages into collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/confluence",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Ingests confluence pages into collection. If an ingested page has sub-pages, the subpages are also ingested."
+        },
+        {
+          "info": {
+            "name": "Creates a job to ingest confluence pages into collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/ingest/confluence/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "String id of the collection to add the ingested documents into."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "audio_input_language",
+                "value": "",
+                "type": "query",
+                "description": "Language of audio files."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to confluence pages into collection. If an ingested page has sub-pages, the subpages are also ingested."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

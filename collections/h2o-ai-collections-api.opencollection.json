@@ -1,0 +1,1562 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Collections API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Collections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List collections.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many collections to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many collections to return."
+              },
+              {
+                "name": "sort_column",
+                "value": "",
+                "type": "query",
+                "description": "Sort column."
+              },
+              {
+                "name": "ascending",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns sorted by sort_column in ascending order."
+              },
+              {
+                "name": "metadata_filter",
+                "value": "",
+                "type": "query",
+                "description": "Only returns collections with metadata matching this filter."
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Only returns collections with names matching this filter."
+              },
+              {
+                "name": "current_user_only",
+                "value": "",
+                "type": "query",
+                "description": "When true, will only return the user owned collections."
+              }
+            ]
+          },
+          "docs": "List collections for a given user. If sort_column is not specified, the output is sorted by by last update time in descending order."
+        },
+        {
+          "info": {
+            "name": "Create a Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Collection refers to a group of related Documents. A Collection lets a user aggregate documents in one location. A user can utilize Collections to group particular sets of material (documents) to explore individually through Chats utilizing a large language model (LLM)."
+        },
+        {
+          "info": {
+            "name": "Fetches all users' collection metadata sorted by last update time by default.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/all",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many collections to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many collections to return."
+              },
+              {
+                "name": "sort_column",
+                "value": "",
+                "type": "query",
+                "description": "Sort column."
+              },
+              {
+                "name": "ascending",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns sorted by sort_column in ascending order."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter collections by name, ID, or username."
+              }
+            ]
+          },
+          "docs": "Fetches all users' collection metadata sorted by last update time by default. This is for admin use only and includes private, public, and shared collections in the result."
+        },
+        {
+          "info": {
+            "name": "Counts a number of collections.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/count"
+          },
+          "docs": "Counts a number of collections."
+        },
+        {
+          "info": {
+            "name": "Get a Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of collection to return"
+              }
+            ]
+          },
+          "docs": "A user can obtain a Collection by specifying its ID."
+        },
+        {
+          "info": {
+            "name": "Updates attributes of an existing collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of collection to to be updated"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates of an existing collection, particularly name and description."
+        },
+        {
+          "info": {
+            "name": "Deletes collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of collection to delete"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Deletes collection with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Returns specific chunks in a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chunks/:chunk_ids",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to search in"
+              },
+              {
+                "name": "chunk_ids",
+                "value": "",
+                "type": "path",
+                "description": "List of ids for the chunks to return. Chunks are indexed starting at 1."
+              }
+            ]
+          },
+          "docs": "Returns specific chunks in a collection."
+        },
+        {
+          "info": {
+            "name": "Finds chunks related to a message using semantic search.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chunks/match",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of collection to search within."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Finds chunks related to a message using semantic search.\nChunks are sorted by relevance and similarity score to the message.\n"
+        },
+        {
+          "info": {
+            "name": "Finds chunks related to a message using lexical search.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chunks/search",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to search within."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Finds chunks related to a message using lexical search.\nChunks are sorted by relevance and similarity score to the message.\n"
+        },
+        {
+          "info": {
+            "name": "Creates a job to delete collections.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/delete_job",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to delete collections with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Reset all collection expiry dates and inactivity intervals that have been set.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/reset_all_collection_expirations"
+          },
+          "docs": "Reset any expiry dates and inactivity intervals that have been set for all collections (admin only). This will also reset any archived collections back to active."
+        },
+        {
+          "info": {
+            "name": "Updates a prompt template reference of a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/prompt_template",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a prompt template reference of a collection."
+        },
+        {
+          "info": {
+            "name": "Removes a prompt template reference from the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/prompt_template",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ]
+          },
+          "docs": "Removes a prompt template reference from the collection."
+        },
+        {
+          "info": {
+            "name": "Updates an expiry date of a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/expiry_date",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an expiry date of a collection."
+        },
+        {
+          "info": {
+            "name": "Removes an expiry date from a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/expiry_date",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ]
+          },
+          "docs": "Removes an expiry date from a collection."
+        },
+        {
+          "info": {
+            "name": "Updates an inactivity interval of a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/inactivity_interval",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an inactivity interval of a collection."
+        },
+        {
+          "info": {
+            "name": "Removes an inactivity interval from the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/inactivity_interval",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ]
+          },
+          "docs": "Removes an inactivity interval from the collection."
+        },
+        {
+          "info": {
+            "name": "Updates the workspace associated with a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/workspace",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the workspace associated with a collection as well as the chats belonging to the collection."
+        },
+        {
+          "info": {
+            "name": "Archives a collection along with its associated data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/archive",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "Archives a collection along with its associated data."
+        },
+        {
+          "info": {
+            "name": "Restores an archived collection to an active status.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/unarchive",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "Restores an archived collection to an active status."
+        },
+        {
+          "info": {
+            "name": "Sets a maximum limit on the total size of documents (sum) added to a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/size_limit",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets a maximum limit on the total size of documents (sum) added to a collection. The limit is measured in bytes."
+        },
+        {
+          "info": {
+            "name": "Removes a size limit for a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/size_limit",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "Removes a size limit for a collection."
+        },
+        {
+          "info": {
+            "name": "Updates a flag specifying whether a collection is private or public.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/is_public",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a flag specifying whether a collection is private or public."
+        },
+        {
+          "info": {
+            "name": "Fetches collection settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/settings",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection associated with the settings"
+              }
+            ]
+          },
+          "docs": "Returns details of collection settings"
+        },
+        {
+          "info": {
+            "name": "Updates collection settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/settings",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Recreates entire settings on the collection."
+        },
+        {
+          "info": {
+            "name": "Resets the prompt settings for a given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/prompt_settings",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ]
+          },
+          "docs": "Resets the prompt settings for a given collection."
+        },
+        {
+          "info": {
+            "name": "Fetches collection metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/metadata",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection associated with metadata."
+              }
+            ]
+          },
+          "docs": "Returns details of collection metadata."
+        },
+        {
+          "info": {
+            "name": "Updates collection metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/metadata",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Recreates entire metadata of the collection."
+        },
+        {
+          "info": {
+            "name": "Updates collection thumbnail.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/thumbnail",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads a new thumbnail image for the collection."
+        },
+        {
+          "info": {
+            "name": "Deletes collection thumbnail.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/thumbnail",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Deletes collection thumbnail image."
+        },
+        {
+          "info": {
+            "name": "Creates a job to update collection thumbnail.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/thumbnail/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Creates a job to update a new thumbnail image for the collection."
+        },
+        {
+          "info": {
+            "name": "Creates a job to delete collection thumbnail.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/thumbnail/job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ]
+          },
+          "docs": "Creates a job to delete collection thumbnail image."
+        },
+        {
+          "info": {
+            "name": "Fetches collection chat settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chat_settings",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection associated with the chat settings"
+              }
+            ]
+          },
+          "docs": "Returns details of collection chat settings"
+        },
+        {
+          "info": {
+            "name": "Updates collection chat settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chat_settings",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Recreates entire chat settings on the collection."
+        },
+        {
+          "info": {
+            "name": "List a Collection's documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/documents",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "This parameter refers to the unique identifier ( ID) of the Collection to filter results."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "This parameter refers to the number of documents to skip before retrieving results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "This parameter refers to the maximum number of documents to return in the result set."
+              },
+              {
+                "name": "metadata_filter",
+                "value": "",
+                "type": "query",
+                "description": "String containing metadata json dict to filter documents by metadata."
+              }
+            ]
+          },
+          "docs": "A user can list a Collection's documents."
+        },
+        {
+          "info": {
+            "name": "Import an already stored document to an existing collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/documents/:document_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to remove the document from."
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to be inserted."
+              },
+              {
+                "name": "copy_document",
+                "value": "",
+                "type": "query",
+                "description": "Whether to save a new copy of the document"
+              },
+              {
+                "name": "preserve_metadata",
+                "value": "",
+                "type": "query",
+                "description": "Whether to preserve document metadata when copying documents."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Import an already stored document to an existing collection."
+        },
+        {
+          "info": {
+            "name": "Removes the document from the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/documents/:document_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to remove the document from."
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to be removed."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Removes the document from the collection."
+        },
+        {
+          "info": {
+            "name": "Creates job to insert document to the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/documents/insert_job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection where the document will be inserted into."
+              },
+              {
+                "name": "copy_document",
+                "value": "",
+                "type": "query",
+                "description": "Whether to save a new copy of the document"
+              },
+              {
+                "name": "preserve_metadata",
+                "value": "",
+                "type": "query",
+                "description": "Whether to preserve document metadata when copying documents."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates job to insert document to the collection."
+        },
+        {
+          "info": {
+            "name": "Creates job to remove documents from the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/documents/delete_job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to remove the document from."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates job to remove documents from the collection."
+        },
+        {
+          "info": {
+            "name": "Counts a number of documents in the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/documents/count",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to filter by."
+              }
+            ]
+          },
+          "docs": "Counts a number of documents in the collection."
+        },
+        {
+          "info": {
+            "name": "List chat sessions for a given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chats",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to filter by."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to return."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Filter chat sessions by owner username."
+              }
+            ]
+          },
+          "docs": "List chat sessions for a given collection."
+        },
+        {
+          "info": {
+            "name": "Counts a number of chat sessions with the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/chats/count",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to filter by."
+              }
+            ]
+          },
+          "docs": "Counts a number of chat sessions with the collection."
+        },
+        {
+          "info": {
+            "name": "List suggested questions for a given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/questions",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection to filter by."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many questions to return."
+              }
+            ]
+          },
+          "docs": "List suggested questions for a given collection."
+        },
+        {
+          "info": {
+            "name": "Returns a list of access permissions for a given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/permissions",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "The returned list of permissions denotes who has access to the collection."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of a collection to all other users except the original owner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/permissions",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "Removes sharing of a collection to all other users except the original owner."
+        },
+        {
+          "info": {
+            "name": "Returns a list of group access permissions for a given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/group_permissions",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "The returned list of group permissions denoting which groups have access to the collection."
+        },
+        {
+          "info": {
+            "name": "Returns the public permissions for a given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/public_permissions",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ]
+          },
+          "docs": "Returns the list of public permissions for a collection. Returns an empty array if the collection is not public or has no permissions."
+        },
+        {
+          "info": {
+            "name": "Shares a collection to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/permissions/:username",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "User name that will obtain access to the collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shares a collection template to a user."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of a collection to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/permissions/:username",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "User name that will lose access to the collection"
+              }
+            ]
+          },
+          "docs": "Removes sharing of a collection to a user."
+        },
+        {
+          "info": {
+            "name": "Shares a collection to a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a group that will obtain access to the collection."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shares a collection to a group. The permission attribute defines the level of access, and which group can access the collection, the collection_id attribute denotes the collection to be shared."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of a collection to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a group that will lose access to the collection."
+              }
+            ]
+          },
+          "docs": "Removes sharing of a collection to a user."
+        },
+        {
+          "info": {
+            "name": "Creates job to import collection to the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/import_collection_job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the destination collection."
+              },
+              {
+                "name": "migrate_scheduled_connectors",
+                "value": "",
+                "type": "query",
+                "description": "Whether to move scheduled connectors from the source collection to the target collection\nafter documents are imported. The source collection will have no scheduled connectors\nafter this operation. Only the owner of both collections can use this flag.\n"
+              },
+              {
+                "name": "copy_lifecycle_settings",
+                "value": "",
+                "type": "query",
+                "description": "Whether to copy lifecycle settings (expiry_date, inactivity_interval, size_limit)\nfrom the source collection to the target collection.\n"
+              },
+              {
+                "name": "skip_reparse",
+                "value": "",
+                "type": "query",
+                "description": "Whether to skip re-parsing documents and only re-embed existing chunks with the\ntarget collection's embedding model. Much faster than full import since it skips\nfile fetch, PDF conversion, OCR, and chunking. Only re-embeds the text chunks.\nCannot be combined with copy_document=true.\n"
+              },
+              {
+                "name": "copy_document",
+                "value": "",
+                "type": "query",
+                "description": "Whether to save a new copy of the document"
+              },
+              {
+                "name": "preserve_document_status",
+                "value": "",
+                "type": "query",
+                "description": "Whether to preserve each document's original ingest mode (agent_only vs standard) when importing. When true, documents with agent_only status remain agent_only in the target collection. When false (default), all documents use the ingest_mode parameter uniformly."
+              },
+              {
+                "name": "preserve_metadata",
+                "value": "",
+                "type": "query",
+                "description": "Whether to preserve document metadata when copying documents."
+              },
+              {
+                "name": "gen_doc_summaries",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate document summaries (uses LLM)."
+              },
+              {
+                "name": "gen_doc_questions",
+                "value": "",
+                "type": "query",
+                "description": "Whether to auto-generate sample questions for each document (uses LLM)."
+              },
+              {
+                "name": "ocr_model",
+                "value": "",
+                "type": "query",
+                "description": "Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made)."
+              },
+              {
+                "name": "tesseract_lang",
+                "value": "",
+                "type": "query",
+                "description": "Which language to use when using ocr_model=\"tesseract\"."
+              },
+              {
+                "name": "keep_tables_as_one_chunk",
+                "value": "",
+                "type": "query",
+                "description": "When tables are identified by the table parser the table tokens will be kept in a single chunk."
+              },
+              {
+                "name": "chunk_by_page",
+                "value": "",
+                "type": "query",
+                "description": "Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`."
+              },
+              {
+                "name": "handwriting_check",
+                "value": "",
+                "type": "query",
+                "description": "Check pages for handwriting. Will use specialized models if handwriting is found."
+              },
+              {
+                "name": "ingest_mode",
+                "value": "",
+                "type": "query",
+                "description": "Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates job to import collection to the collection."
+        },
+        {
+          "info": {
+            "name": "List scheduled connectors for a collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/scheduled_connectors",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Collection ID to list scheduled connectors for"
+              }
+            ]
+          },
+          "docs": "Returns a list of all scheduled connectors configured for the specified collection."
+        },
+        {
+          "info": {
+            "name": "Migrate scheduled connectors from another collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/migrate_scheduled_connectors",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Target collection ID where scheduled connectors will be copied to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Moves all scheduled connectors from a source collection to the target collection. The source collection will have no scheduled connectors after this operation. Both collections must be owned by the same user."
+        },
+        {
+          "info": {
+            "name": "Creates a job to migrate all chat sessions from one collection to another.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/migrate_chat_sessions_job",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the source collection (where chat sessions will be migrated from)."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a job to migrate all chat sessions from the source collection (specified in path) to the destination collection (specified in request body). Only the collection owner can perform this operation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

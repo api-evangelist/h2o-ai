@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST System API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export user limits as CSV.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/user_limits/export",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search string to filter users by username or email."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by limit status. One of all, within_limit, approaching, blocked."
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated user IDs to export. When set, search and filter are ignored."
+              }
+            ]
+          },
+          "docs": "Generates and streams a CSV of user limits data. Admin only."
+        },
+        {
+          "info": {
+            "name": "Gets H2OGPT system information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/system/h2ogpt_info"
+          },
+          "docs": "Gets H2OGPT system information."
+        },
+        {
+          "info": {
+            "name": "Generate a scheduled task spec from a prompt.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/generate_spec",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Uses an LLM with guided JSON to generate a scheduled task configuration\nfrom a natural language description. The returned spec can be used directly\nwith the create_scheduled_task RPC.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

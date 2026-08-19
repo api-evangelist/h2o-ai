@@ -1,0 +1,826 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Agents API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all agents (built-in and custom)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents"
+          },
+          "docs": "Get all agents (both built-in and custom agents) with unified structure"
+        },
+        {
+          "info": {
+            "name": "Lists agent directory stats across all agent chat sessions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/directory_stats",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many agent chat sessions to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many agent chat sessions to return."
+              },
+              {
+                "name": "filter_text",
+                "value": "",
+                "type": "query",
+                "description": "Applied text filter."
+              }
+            ]
+          },
+          "docs": "Lists agent directory stats across all agent chat sessions."
+        },
+        {
+          "info": {
+            "name": "Lists agent tools present on the system.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tools"
+          },
+          "docs": "Lists agent tools present on the system."
+        },
+        {
+          "info": {
+            "name": "Lists the agent tool preference for the user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tool_preference"
+          },
+          "docs": "Lists the agent tool preference for the user."
+        },
+        {
+          "info": {
+            "name": "Creates or updates the agent tool preference for the user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tool_preference",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates the agent tool preference for the user."
+        },
+        {
+          "info": {
+            "name": "Deletes the agent tool preferences for the user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tool_preference"
+          },
+          "docs": "Deletes the agent tool preferences for the user."
+        },
+        {
+          "info": {
+            "name": "Lists agent keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/keys"
+          },
+          "docs": "Lists agent keys."
+        },
+        {
+          "info": {
+            "name": "Creates agent key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates agent key."
+        },
+        {
+          "info": {
+            "name": "Updates agent key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/keys/:key_id",
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the key to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates agent key."
+        },
+        {
+          "info": {
+            "name": "Deletes agent keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/keys/:key_ids",
+            "params": [
+              {
+                "name": "key_ids",
+                "value": "",
+                "type": "path",
+                "description": "Ids of keys to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes agent keys."
+        },
+        {
+          "info": {
+            "name": "Returns a list of tools and the user's associated keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tool_association"
+          },
+          "docs": "Returns a list of tools and the user's associated keys."
+        },
+        {
+          "info": {
+            "name": "Creates associations between a tool and user's keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tool_association",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates associations between a tool and user's keys."
+        },
+        {
+          "info": {
+            "name": "Deletes agent tool key associations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/tool_association/:associate_ids",
+            "params": [
+              {
+                "name": "associate_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of tool associations to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes agent tool key associations given a list of associate ids belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Returns a list of custom agent tool associations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agent_tool_associations",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by custom agent UUID"
+              },
+              {
+                "name": "agent_name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by custom agent name"
+              }
+            ]
+          },
+          "docs": "Returns a list of custom agent tool associations, optionally filtered by agent_id or agent_name."
+        },
+        {
+          "info": {
+            "name": "Creates a custom agent tool association.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agent_tool_associations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a custom agent tool association."
+        },
+        {
+          "info": {
+            "name": "Deletes custom agent tool associations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agent_tool_associations/:association_ids",
+            "params": [
+              {
+                "name": "association_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of associations to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes custom agent tool associations given a list of association ids belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Returns a list of custom agent key associations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agent_key_associations",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by custom agent UUID"
+              }
+            ]
+          },
+          "docs": "Returns a list of custom agent key associations, optionally filtered by agent_id."
+        },
+        {
+          "info": {
+            "name": "Creates a custom agent key association.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agent_key_associations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Associates an env var (from envs.json or user-added) with an agent key."
+        },
+        {
+          "info": {
+            "name": "Deletes custom agent key associations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agent_key_associations/:association_ids",
+            "params": [
+              {
+                "name": "association_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of associations to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes custom agent key associations given a list of association ids belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Get MCP tool suggestions for a custom agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents/:agent_id/suggestions",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the custom agent."
+              }
+            ]
+          },
+          "docs": "Returns suggested MCP tool configurations for a custom agent based on its metadata. Helps users identify and configure required tools."
+        },
+        {
+          "info": {
+            "name": "List Custom Agent Tools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_tools"
+          },
+          "docs": "List all custom agent tools for the current user"
+        },
+        {
+          "info": {
+            "name": "Add Custom Agent Tools",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_tools",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "tool_type",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "tool_args",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "custom_tool_path",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "filename",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "generate_system_prompt",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "system_prompt_generation_timeout",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Add Custom Agent Tools"
+        },
+        {
+          "info": {
+            "name": "Deletes custom agent tools",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_tools/:tool_ids",
+            "params": [
+              {
+                "name": "tool_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of tools to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes custom agent tool given a list of tool ids belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Get a single custom agent tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_tools/:tool_id",
+            "params": [
+              {
+                "name": "tool_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the tool to retrieve."
+              }
+            ]
+          },
+          "docs": "Get a single custom agent tool by ID for the current user"
+        },
+        {
+          "info": {
+            "name": "Updates a custom agent tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_tools/:tool_id",
+            "params": [
+              {
+                "name": "tool_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the tool to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a custom agent tool given a tool id belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Download custom agent tool file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_tools/:tool_id/download",
+            "params": [
+              {
+                "name": "tool_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the tool whose file should be downloaded."
+              }
+            ]
+          },
+          "docs": "Downloads the file associated with a custom agent tool owned by the current user. Only local_mcp, browser_action, and general_code tool types support file download.\n"
+        },
+        {
+          "info": {
+            "name": "List Custom Agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents"
+          },
+          "docs": "List all custom agents for the current user"
+        },
+        {
+          "info": {
+            "name": "Add Custom Agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "agent_type",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "agent_args",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "agent_name",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Add Custom Agents"
+        },
+        {
+          "info": {
+            "name": "Deletes custom agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents/:agent_ids",
+            "params": [
+              {
+                "name": "agent_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of agents to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes custom agents given a list of agent ids belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Get a single custom agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents/:agent_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the agent to retrieve."
+              }
+            ]
+          },
+          "docs": "Get a single custom agent by ID for the current user"
+        },
+        {
+          "info": {
+            "name": "Updates a custom agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents/:agent_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the agent to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a custom agent given an agent id belonging to the user."
+        },
+        {
+          "info": {
+            "name": "Download custom agent zip file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/custom_agents/:agent_id/download",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the agent whose zip file should be downloaded."
+              }
+            ]
+          },
+          "docs": "Downloads the zip file associated with a custom agent owned by the current user."
+        },
+        {
+          "info": {
+            "name": "Unified MCP tool inspection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/mcp/inspect_tool",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unified endpoint for inspecting MCP tools. Supports three modes: (1) tool_id — inspect an existing local or remote MCP tool by database ID, (2) servers — inspect one or more remote MCP server configs (pre-add), (3) file_name + file_data_base64 — inspect an uploaded package (pre-add). Returns a list of per-server inspection results.\n"
+        },
+        {
+          "info": {
+            "name": "List tools from MCP servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/mcp/list_tools",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Lists tools from configured MCP servers, optionally filtered by config type and server names.\n"
+        },
+        {
+          "info": {
+            "name": "Get Claude SDK options schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/mcp/sdk_options"
+          },
+          "docs": "Returns the schema of available Claude SDK options that can be configured for MCP tool runners. Includes permission modes, effort levels, available betas, hook actions, and limitations.\n"
+        },
+        {
+          "info": {
+            "name": "Lists built-in MCPs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps"
+          },
+          "docs": "Returns the list of built-in predefined MCPs (Model Context Protocol servers) available for use. Includes information about which MCPs are already added as tools and which OAuth apps are connected.\n"
+        },
+        {
+          "info": {
+            "name": "Add a built-in MCP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps/add",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "mcp_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "keys",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "files",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Adds a built-in MCP (Model Context Protocol server) to the user's tools. This endpoint configures and enables a predefined MCP for the user with direct file uploads.\n"
+        },
+        {
+          "info": {
+            "name": "Create a custom builtin MCP (Admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps/admin",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "mcp_config",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "logo_file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Creates a new admin-defined predefined MCP that will be available in the builtin MCPs list. This endpoint is restricted to admin users only. Supports optional logo file upload.\n"
+        },
+        {
+          "info": {
+            "name": "Update a custom builtin MCP (Admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps/admin/:mcp_id",
+            "params": [
+              {
+                "name": "mcp_id",
+                "value": "",
+                "type": "path",
+                "description": "The MCP identifier to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing admin-defined predefined MCP configuration. This endpoint is restricted to admin users only.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a custom builtin MCP (Admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps/admin/:mcp_id",
+            "params": [
+              {
+                "name": "mcp_id",
+                "value": "",
+                "type": "path",
+                "description": "The MCP identifier to delete"
+              }
+            ]
+          },
+          "docs": "Deletes an admin-defined predefined MCP from the system. This endpoint is restricted to admin users only.\n"
+        },
+        {
+          "info": {
+            "name": "Update admin MCP logo (Admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps/admin/:mcp_id/logo",
+            "params": [
+              {
+                "name": "mcp_id",
+                "value": "",
+                "type": "path",
+                "description": "The MCP identifier to update"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Updates the logo for an admin-defined predefined MCP by uploading a new logo file. This endpoint is restricted to admin users only.\n"
+        },
+        {
+          "info": {
+            "name": "Remove admin MCP logo (Admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/agents/builtin_mcps/admin/:mcp_id/logo",
+            "params": [
+              {
+                "name": "mcp_id",
+                "value": "",
+                "type": "path",
+                "description": "The MCP identifier"
+              }
+            ]
+          },
+          "docs": "Removes the logo from an admin-defined predefined MCP. This endpoint is restricted to admin users only.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

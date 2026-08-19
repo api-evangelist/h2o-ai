@@ -1,0 +1,136 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MLOps Scoring REST Model API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Model",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "model_id_model_id_get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{defaultHost}/model/id"
+          },
+          "docs": "Returns unique id of the model loaded in the server and used for scoring."
+        },
+        {
+          "info": {
+            "name": "model_schema_model_schema_get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{defaultHost}/model/schema"
+          },
+          "docs": "Returns information about the model used for scoring, e.g., input schema."
+        },
+        {
+          "info": {
+            "name": "sample_request_model_sample_request_get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{defaultHost}/model/sample_request"
+          },
+          "docs": "Builds a sample scoring request that would pass all validations."
+        },
+        {
+          "info": {
+            "name": "capabilities_model_capabilities_get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{defaultHost}/model/capabilities"
+          },
+          "docs": "Returns information about scorer's scoring capabilities."
+        },
+        {
+          "info": {
+            "name": "score_rows_model_score_post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{defaultHost}/model/score",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Computes score of the rows sent in the body of the post request."
+        },
+        {
+          "info": {
+            "name": "score_media_model_media_score_post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{defaultHost}/model/media-score",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "scoreMediaRequest",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "files",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Computes score of provided media files. These can be any type of file, such as images or mp3."
+        },
+        {
+          "info": {
+            "name": "score_contributions_model_contribution_post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{defaultHost}/model/contribution",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Computes Shapley contributions for rows sent in the body of the post request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

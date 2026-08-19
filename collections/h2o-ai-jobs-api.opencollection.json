@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Jobs API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lists jobs associated with the user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/jobs"
+          },
+          "docs": "Lists jobs associated with the user making call."
+        },
+        {
+          "info": {
+            "name": "Counts the number of global, pending jobs on the server.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/jobs/pending/count"
+          },
+          "docs": "Counts the number of global, pending jobs on the server."
+        },
+        {
+          "info": {
+            "name": "Lists jobs associated with the user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/jobs/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the job"
+              }
+            ]
+          },
+          "docs": "Lists jobs associated with the user calling this endpoint."
+        },
+        {
+          "info": {
+            "name": "Deletes job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/jobs/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the job"
+              }
+            ]
+          },
+          "docs": "Deletes job with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Stops a specific job from running for the user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/jobs/:job_id/cancel",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the job"
+              }
+            ]
+          },
+          "docs": "Stops a specific job from running for the user."
+        },
+        {
+          "info": {
+            "name": "Lists all jobs running on the system for all users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/user_jobs"
+          },
+          "docs": "Lists all jobs running on the system for all users (to be used by admins only)."
+        },
+        {
+          "info": {
+            "name": "Stops a specific job from running on the server.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/user_jobs/:job_id/cancel",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the job"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "As an admin, stops a specific user job from running on the server."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

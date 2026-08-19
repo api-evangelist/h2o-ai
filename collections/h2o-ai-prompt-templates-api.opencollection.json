@@ -1,0 +1,469 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Prompt Templates API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Prompt Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List prompt templates.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many prompt templates to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many prompt templates to return."
+              },
+              {
+                "name": "sort_column",
+                "value": "",
+                "type": "query",
+                "description": "Sort column."
+              },
+              {
+                "name": "ascending",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns sorted by sort_column in ascending order."
+              },
+              {
+                "name": "template_type",
+                "value": "",
+                "type": "query",
+                "description": "When set, will be used as a type filter."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "When set, will be used as a filter on some prompt template columns."
+              }
+            ]
+          },
+          "docs": "List all existing prompt templates."
+        },
+        {
+          "info": {
+            "name": "Creates a new prompt template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new prompt template that can be subsequently associated with a collection."
+        },
+        {
+          "info": {
+            "name": "Lists prompt templates, including hidden default templates.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/all",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many prompt templates to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many prompt templates to return."
+              },
+              {
+                "name": "sort_column",
+                "value": "",
+                "type": "query",
+                "description": "Sort column."
+              },
+              {
+                "name": "ascending",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns sorted by sort_column in ascending order."
+              },
+              {
+                "name": "template_type",
+                "value": "",
+                "type": "query",
+                "description": "When set, will be used as a type filter."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "When set, will be used as a filter on some prompt template columns."
+              }
+            ]
+          },
+          "docs": "Lists prompt templates, including hidden default templates. Only for users who have the permission to manage prompt templates."
+        },
+        {
+          "info": {
+            "name": "Counts a number of prompt templates.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/count"
+          },
+          "docs": "Counts a number of prompt templates."
+        },
+        {
+          "info": {
+            "name": "Returns the default prompt template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/default"
+          },
+          "docs": "Returns the default prompt template."
+        },
+        {
+          "info": {
+            "name": "Finds a prompt template by id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template to return"
+              }
+            ]
+          },
+          "docs": "Returns a single prompt template by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Updates attributes of a given prompt template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates attributes of a given prompt template."
+        },
+        {
+          "info": {
+            "name": "Deletes a prompt template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template to delete"
+              }
+            ]
+          },
+          "docs": "Deletes a prompt template with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Returns a list of access permissions for a given prompt template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/permissions",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template"
+              }
+            ]
+          },
+          "docs": "The returned list of permissions denotes who has access to the prompt template."
+        },
+        {
+          "info": {
+            "name": "Resets and shares a prompt template to a new list of users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/permissions",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resets and shares a prompt template to a new list of users."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of a prompt template to all other users except the original owner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/permissions",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template"
+              }
+            ]
+          },
+          "docs": "Removes sharing of a prompt template to all other users except the original owner."
+        },
+        {
+          "info": {
+            "name": "Shares a prompt template to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/permissions/:username",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template"
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "User name that will obtain access to the prompt template"
+              }
+            ]
+          },
+          "docs": "Shares a prompt template to a user."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of a prompt template to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/permissions/:username",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template"
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "User name that will lose access to the prompt template"
+              }
+            ]
+          },
+          "docs": "Removes sharing of a prompt template to a user."
+        },
+        {
+          "info": {
+            "name": "Returns a list of group access permissions for a given prompt template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/group_permissions",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template"
+              }
+            ]
+          },
+          "docs": "The returned list of group permissions denotes which groups have access to the prompt template."
+        },
+        {
+          "info": {
+            "name": "Resets and shares a prompt template to a new list of groups.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/group_permissions",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resets and shares a prompt template to a new list of groups."
+        },
+        {
+          "info": {
+            "name": "Shares a prompt template with a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the group that will obtain access to the prompt template."
+              }
+            ]
+          },
+          "docs": "Shares a prompt template with a user."
+        },
+        {
+          "info": {
+            "name": "Removes access to a prompt template for a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the group that will lose access to the prompt template."
+              }
+            ]
+          },
+          "docs": "Removes access to a prompt template for a group."
+        },
+        {
+          "info": {
+            "name": "Updates a flag specifying whether a prompt template is private or public.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/is_public",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the prompt template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a flag specifying whether a prompt template is private or public."
+        },
+        {
+          "info": {
+            "name": "Updates a flag specifying whether a default prompt template is visible or hidden to users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/prompt_templates/:prompt_template_id/is_visible",
+            "params": [
+              {
+                "name": "prompt_template_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a prompt template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a flag specifying whether a default prompt template is visible or hidden to users."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

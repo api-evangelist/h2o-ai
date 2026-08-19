@@ -1,0 +1,413 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Forums API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Forums",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sharing permissions for a forum.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/permissions",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List sharing permissions for a forum."
+        },
+        {
+          "info": {
+            "name": "List forums.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List forums."
+        },
+        {
+          "info": {
+            "name": "Create a forum.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new forum (threaded message board)."
+        },
+        {
+          "info": {
+            "name": "Get a forum by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a forum by ID."
+        },
+        {
+          "info": {
+            "name": "Update a forum.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a forum."
+        },
+        {
+          "info": {
+            "name": "Delete a forum.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a forum."
+        },
+        {
+          "info": {
+            "name": "Share a forum with a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/permissions/:username",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Share a forum with a user."
+        },
+        {
+          "info": {
+            "name": "Unshare a forum from a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/permissions/:username",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unshare a forum from a user."
+        },
+        {
+          "info": {
+            "name": "List forum posts.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parent_post_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query",
+                "description": "ISO 8601 timestamp — only return posts created after this time. Defaults to 1 year ago if not specified."
+              }
+            ]
+          },
+          "docs": "List forum posts."
+        },
+        {
+          "info": {
+            "name": "Create a post on a forum.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a post on a forum."
+        },
+        {
+          "info": {
+            "name": "Get a single post with its thread.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts/:post_id",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single post with its thread."
+        },
+        {
+          "info": {
+            "name": "Edit a post (author only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts/:post_id",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit a post (author only)."
+        },
+        {
+          "info": {
+            "name": "Delete a post.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts/:post_id",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a post."
+        },
+        {
+          "info": {
+            "name": "Reply to a post.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts/:post_id/reply",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The parent post is determined by the post_id path parameter."
+        },
+        {
+          "info": {
+            "name": "Vote on a post.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts/:post_id/vote",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Vote on a post."
+        },
+        {
+          "info": {
+            "name": "Pin or unpin a post.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/forums/:forum_id/posts/:post_id/pin",
+            "params": [
+              {
+                "name": "forum_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pin or unpin a post."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

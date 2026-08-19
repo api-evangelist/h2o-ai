@@ -1,0 +1,878 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Prompt Templates API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Prompt Templates
+paths:
+  /prompt_templates:
+    post:
+      operationId: create_prompt_template
+      summary: Creates a new prompt template.
+      description: Creates a new prompt template that can be subsequently associated with a collection.
+      tags:
+      - Prompt Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptTemplateCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: list_prompt_templates
+      summary: List prompt templates.
+      description: List all existing prompt templates.
+      tags:
+      - Prompt Templates
+      parameters:
+      - name: offset
+        in: query
+        description: How many prompt templates to skip before returning.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: How many prompt templates to return.
+        required: false
+        schema:
+          type: integer
+          default: 100
+      - name: sort_column
+        in: query
+        description: Sort column.
+        required: false
+        schema:
+          type: string
+          enum:
+          - name
+          - description
+          - is_default
+          - lang
+          - updated_at
+          - username
+          - user_count
+          default: updated_at
+      - name: ascending
+        in: query
+        description: When true, returns sorted by sort_column in ascending order.
+        required: false
+        schema:
+          type: boolean
+          default: true
+      - name: template_type
+        in: query
+        description: When set, will be used as a type filter.
+        required: false
+        schema:
+          type: string
+          enum:
+          - all
+          - user
+          - system
+          default: all
+      - name: filter
+        in: query
+        description: When set, will be used as a filter on some prompt template columns.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PromptTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/all:
+    get:
+      operationId: list_all_prompt_templates
+      summary: Lists prompt templates, including hidden default templates.
+      description: Lists prompt templates, including hidden default templates. Only for users who have the permission to manage prompt templates.
+      tags:
+      - Prompt Templates
+      parameters:
+      - name: offset
+        in: query
+        description: How many prompt templates to skip before returning.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: How many prompt templates to return.
+        required: false
+        schema:
+          type: integer
+          default: 100
+      - name: sort_column
+        in: query
+        description: Sort column.
+        required: false
+        schema:
+          type: string
+          enum:
+          - name
+          - description
+          - is_default
+          - lang
+          - updated_at
+          - username
+          - user_count
+          - visible
+          default: updated_at
+      - name: ascending
+        in: query
+        description: When true, returns sorted by sort_column in ascending order.
+        required: false
+        schema:
+          type: boolean
+          default: true
+      - name: template_type
+        in: query
+        description: When set, will be used as a type filter.
+        required: false
+        schema:
+          type: string
+          enum:
+          - all
+          - user
+          - system
+          default: all
+      - name: filter
+        in: query
+        description: When set, will be used as a filter on some prompt template columns.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PromptTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/count:
+    get:
+      operationId: get_prompt_template_count
+      summary: Counts a number of prompt templates.
+      description: Counts a number of prompt templates.
+      tags:
+      - Prompt Templates
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/default:
+    get:
+      tags:
+      - Prompt Templates
+      summary: Returns the default prompt template.
+      description: Returns the default prompt template.
+      operationId: get_default_prompt_template
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}:
+    get:
+      tags:
+      - Prompt Templates
+      summary: Finds a prompt template by id.
+      description: Returns a single prompt template by its unique identifier.
+      operationId: get_prompt_template
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template to return
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    patch:
+      operationId: update_prompt_template
+      summary: Updates attributes of a given prompt template.
+      description: Updates attributes of a given prompt template.
+      tags:
+      - Prompt Templates
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptTemplateUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      tags:
+      - Prompt Templates
+      summary: Deletes a prompt template.
+      description: Deletes a prompt template with a given unique identifier.
+      operationId: delete_prompt_template
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template to delete
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}/permissions:
+    get:
+      tags:
+      - Prompt Templates
+      summary: Returns a list of access permissions for a given prompt template.
+      description: The returned list of permissions denotes who has access to the prompt template.
+      operationId: get_prompt_template_permissions
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SharePermission'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    put:
+      tags:
+      - Prompt Templates
+      summary: Resets and shares a prompt template to a new list of users.
+      description: Resets and shares a prompt template to a new list of users.
+      operationId: reset_and_share_prompt_template
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        description: List of usernames the prompt template should be shared with.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetAndShareRequest'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      tags:
+      - Prompt Templates
+      summary: Removes sharing of a prompt template to all other users except the original owner.
+      description: Removes sharing of a prompt template to all other users except the original owner.
+      operationId: unshare_prompt_template_for_all
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}/permissions/{username}:
+    put:
+      tags:
+      - Prompt Templates
+      summary: Shares a prompt template to a user.
+      description: Shares a prompt template to a user.
+      operationId: share_prompt_template
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: User name that will obtain access to the prompt template
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      tags:
+      - Prompt Templates
+      summary: Removes sharing of a prompt template to a user.
+      description: Removes sharing of a prompt template to a user.
+      operationId: unshare_prompt_template
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: User name that will lose access to the prompt template
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}/group_permissions:
+    get:
+      tags:
+      - Prompt Templates
+      summary: Returns a list of group access permissions for a given prompt template.
+      description: The returned list of group permissions denotes which groups have access to the prompt template.
+      operationId: get_prompt_template_group_permissions
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupSharePermission'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    put:
+      tags:
+      - Prompt Templates
+      summary: Resets and shares a prompt template to a new list of groups.
+      description: Resets and shares a prompt template to a new list of groups.
+      operationId: reset_and_share_prompt_template_with_groups
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        description: List of group ids the prompt template should be shared with.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetAndShareWithGroupsRequest'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}/group_permissions/{group_id}:
+    put:
+      tags:
+      - Prompt Templates
+      summary: Shares a prompt template with a group.
+      description: Shares a prompt template with a user.
+      operationId: share_prompt_template_with_group
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template.
+        required: true
+        schema:
+          type: string
+      - name: group_id
+        in: path
+        description: Id of the group that will obtain access to the prompt template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      tags:
+      - Prompt Templates
+      summary: Removes access to a prompt template for a group.
+      description: Removes access to a prompt template for a group.
+      operationId: unshare_prompt_template_from_group
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template.
+        required: true
+        schema:
+          type: string
+      - name: group_id
+        in: path
+        description: Id of the group that will lose access to the prompt template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}/is_public:
+    post:
+      tags:
+      - Prompt Templates
+      summary: Updates a flag specifying whether a prompt template is private or public.
+      description: Updates a flag specifying whether a prompt template is private or public.
+      operationId: update_prompt_template_privacy
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of the prompt template.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - is_public
+              properties:
+                is_public:
+                  description: A flag specifying whether a prompt template is private or public.
+                  type: boolean
+        required: true
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /prompt_templates/{prompt_template_id}/is_visible:
+    put:
+      tags:
+      - Prompt Templates
+      summary: Updates a flag specifying whether a default prompt template is visible or hidden to users.
+      description: Updates a flag specifying whether a default prompt template is visible or hidden to users.
+      operationId: update_default_prompt_template_visibility
+      parameters:
+      - name: prompt_template_id
+        in: path
+        description: Id of a prompt template.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - is_visible
+              properties:
+                is_visible:
+                  description: A flag specifying whether the default prompt template should be visible or not.
+                  type: boolean
+        required: true
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    ResetAndShareWithGroupsRequest:
+      required:
+      - groups
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: string
+    PromptTemplate:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - id
+        - is_default
+        - is_public
+        properties:
+          id:
+            description: A unique identifier of the prompt template.
+            type: string
+          is_default:
+            description: A flag identifying if the prompt template is default or not.
+            type: boolean
+          user_count:
+            description: The number of users who have access to the prompt template.
+            type: integer
+          group_count:
+            description: The number of groups who have access to the prompt template.
+            type: integer
+          username:
+            description: Name of the user owning the prompt template.
+            type: string
+          user_id:
+            description: The unique identifier of the user owning the prompt template.
+            type: string
+          created_at:
+            description: The moment when the prompt template was created.
+            type: string
+            format: date-time
+          updated_at:
+            description: The Last time when the prompt template was modified.
+            type: string
+            format: date-time
+          is_public:
+            description: Whether the prompt template is public or private (only applies to custom templates).
+            type: boolean
+          visible:
+            description: A flag identifying if a default prompt template is visible to system users.
+            type: boolean
+          is_system_default:
+            description: A flag identifying if a default prompt template is the system default.
+            type: boolean
+    PromptTemplateCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - name
+        properties:
+          name:
+            type: string
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    ResetAndShareRequest:
+      required:
+      - usernames
+      type: object
+      properties:
+        usernames:
+          type: array
+          items:
+            type: string
+    Count:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
+    GroupSharePermission:
+      required:
+      - group_id
+      type: object
+      properties:
+        group_id:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    PromptTemplateUpdateRequest:
+      $ref: '#/components/schemas/PromptTemplateBase'
+    PromptTemplateBase:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name of the prompt template.
+        description:
+          type: string
+          description: A description of the prompt template.
+        lang:
+          type: string
+          description: A language code.
+        system_prompt:
+          type: string
+          description: A system prompt.
+        pre_prompt_query:
+          type: string
+          description: A text that is prepended before the contextual document chunks.
+        prompt_query:
+          type: string
+          description: A text that is appended to the beginning of the user's message.
+        hyde_no_rag_llm_prompt_extension:
+          type: string
+          description: An LLM prompt extension.
+        pre_prompt_summary:
+          type: string
+          description: A prompt that goes before each large piece of text to summarize.
+        prompt_summary:
+          type: string
+          description: A prompt that goes after each large piece of text to summarize.
+        system_prompt_reflection:
+          type: string
+          description: A system prompt for self-reflection.
+        prompt_reflection:
+          type: string
+          description: A template for self-reflection, must contain two occurrences of %s for full previous prompt (including system prompt, document related context and prompts if applicable, and user prompts) and answer
+        auto_gen_description_prompt:
+          type: string
+          description: A prompt to create a description of the collection.
+        auto_gen_document_summary_pre_prompt_summary:
+          type: string
+          description: A `pre_prompt_summary` for summary of a freshly imported document (if enabled).
+        auto_gen_document_summary_prompt_summary:
+          type: string
+          description: A `prompt_summary` for summary of a freshly imported document (if enabled).`
+        auto_gen_document_sample_questions_prompt:
+          type: string
+          description: A prompt to create sample questions for a freshly imported document (if enabled).
+        default_sample_questions:
+          type: array
+          items:
+            type: string
+          description: Default sample questions in case there are no auto-generated sample questions.
+        image_batch_image_prompt:
+          type: string
+          description: A prompt for each image batch for vision models.
+        image_batch_final_prompt:
+          type: string
+          description: A prompt for each image batch for vision models.
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+  responses:
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

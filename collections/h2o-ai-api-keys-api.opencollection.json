@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST API Keys API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "API Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List API keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/api_keys",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many API keys to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many API keys to return."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Only returns keys for usernames matching this filter."
+              }
+            ]
+          },
+          "docs": "Allows admins to list all existing API keys."
+        },
+        {
+          "info": {
+            "name": "Create an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/api_keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows admins to create an API key for another user."
+        },
+        {
+          "info": {
+            "name": "Deactivate an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/api_keys/deactivate/:key_id",
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the key to deactivate."
+              }
+            ]
+          },
+          "docs": "Allows admins to deactivate an API key."
+        },
+        {
+          "info": {
+            "name": "Update API key expiry.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/api_keys/expire/:key_id",
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the key to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows admins to update the expiration of an API key (either set a new expiry or remove one)."
+        },
+        {
+          "info": {
+            "name": "Update API key inactivity interval.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/api_keys/inactivity_interval/:key_id",
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the key to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows admins to update the inactivity interval of an API key (either set a new inactivity interval or remove one). The inactivity interval is the number of days a key can remain unused (no activity) before it becomes invalid."
+        },
+        {
+          "info": {
+            "name": "Delete an API key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/api_keys/:key_id",
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the key to delete."
+              }
+            ]
+          },
+          "docs": "Allows admins to delete an API key."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

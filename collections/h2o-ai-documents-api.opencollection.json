@@ -1,0 +1,567 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Documents API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List documents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many documents to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many documents to return."
+              },
+              {
+                "name": "sort_column",
+                "value": "",
+                "type": "query",
+                "description": "Sort column."
+              },
+              {
+                "name": "ascending",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns sorted by sort_column in ascending order."
+              },
+              {
+                "name": "with_summaries",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns also summary and summary_parameter with other common attributes of the document."
+              },
+              {
+                "name": "metadata_filter",
+                "value": "",
+                "type": "query",
+                "description": "String containing metadata json dict to filter collections by metadata."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Filter documents by the username of the uploader (exact match)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter documents by ingestion status (exact match). Values: unknown, scheduled, queued, running, completed, failed, canceled, agent_only."
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Filter documents by connector source (case-insensitive match, e.g. SharePoint, url, upload, Agent)."
+              }
+            ]
+          },
+          "docs": "List documents for a given user. If sort_column is not specified, the output is sorted by by last update time in descending order."
+        },
+        {
+          "info": {
+            "name": "Counts a number of documents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/count",
+            "params": [
+              {
+                "name": "owned",
+                "value": "",
+                "type": "query",
+                "description": "If true, it counts only the documents owned by the user."
+              }
+            ]
+          },
+          "docs": "Counts a number of documents the user has access to. If owned parameter is enabled, it counts only the documents owned by the user."
+        },
+        {
+          "info": {
+            "name": "Finds a document by id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of document to return"
+              }
+            ]
+          },
+          "docs": "Returns a single document by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Updates attributes of an existing document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of document to to be updated"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates attributes of an existing document, particularly name and uri."
+        },
+        {
+          "info": {
+            "name": "Deletes a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of document to delete"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Deletes a document with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Returns all chunks for a specific document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/chunks",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document."
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Id of the collection the document belongs to."
+              }
+            ]
+          },
+          "docs": "Returns all chunks for a specific document."
+        },
+        {
+          "info": {
+            "name": "Creates job to process document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/process_job",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Processes a document to either create a global or piecewise summary/extraction/transformation of a document.\n"
+        },
+        {
+          "info": {
+            "name": "Creates job to delete documents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/delete_job",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates job to delete documents with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Lists collections for containing a given document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/collections",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many collections to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many collections to return."
+              }
+            ]
+          },
+          "docs": "Lists collections for containing a given document."
+        },
+        {
+          "info": {
+            "name": "Assigns a tag to the document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/tags",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to to be associated with a tag"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assigns a tag to the document."
+        },
+        {
+          "info": {
+            "name": "Removes a tag from a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/tags/:tag_name",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to remove the tag from"
+              },
+              {
+                "name": "tag_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of the tag to be removed."
+              }
+            ]
+          },
+          "docs": "Removes a tag from a document."
+        },
+        {
+          "info": {
+            "name": "List chat sessions for a given document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/chats",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to filter by."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to return."
+              }
+            ]
+          },
+          "docs": "List chat sessions for a given document."
+        },
+        {
+          "info": {
+            "name": "Counts a number of chat sessions with the document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/chats/count",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to filter by."
+              }
+            ]
+          },
+          "docs": "Counts a number of chat sessions with the document."
+        },
+        {
+          "info": {
+            "name": "Fetches recent document summaries/extractions/transformations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/summaries",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document to filter by."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many summaries to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many summaries to return."
+              }
+            ]
+          },
+          "docs": "Fetches recent document summaries/extractions/transformations"
+        },
+        {
+          "info": {
+            "name": "Deletes document summaries.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/summaries/:summary_ids",
+            "params": [
+              {
+                "name": "summary_ids",
+                "value": "",
+                "type": "path",
+                "description": "List of string ids of a document summary to delete from the system."
+              }
+            ]
+          },
+          "docs": "Deletes document summaries."
+        },
+        {
+          "info": {
+            "name": "Fetches document metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/metadata",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document associated with the metadata"
+              }
+            ]
+          },
+          "docs": "Returns details of document metadata"
+        },
+        {
+          "info": {
+            "name": "Updates document metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/metadata",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Recreates entire metadata of the document."
+        },
+        {
+          "info": {
+            "name": "Fetches document user source file.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/user_source_file",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              }
+            ]
+          },
+          "docs": "Returns document user source file."
+        },
+        {
+          "info": {
+            "name": "Fetches document page ocr model.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/page_ocr_model",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              }
+            ]
+          },
+          "docs": "Returns document page ocr model."
+        },
+        {
+          "info": {
+            "name": "Fetches document page layout.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/page_layout",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              }
+            ]
+          },
+          "docs": "Returns document page layout."
+        },
+        {
+          "info": {
+            "name": "Fetches document internal metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/internal_metadata",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              }
+            ]
+          },
+          "docs": "Returns document internal metadata."
+        },
+        {
+          "info": {
+            "name": "Fetches document guardrails settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/guardrails_settings",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              }
+            ]
+          },
+          "docs": "Returns document guardrails settings."
+        },
+        {
+          "info": {
+            "name": "Fetches document summary.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/document_summaries/:summary_id",
+            "params": [
+              {
+                "name": "summary_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document summary"
+              }
+            ]
+          },
+          "docs": "Fetches document summary."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,192 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Showcase API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Showcase",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List showcase chats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Public listing of admin-curated shared chats. Visibility is gated by the\n`showcase_page_mode` global setting: `disabled` (404), `authenticated`\n(login required, guests blocked), or `public` (anyone).\n"
+        },
+        {
+          "info": {
+            "name": "Add a shared chat to the showcase",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requires the `h2ogpte/chat/manage_showcase` permission. Private shared\nchats may be pinned; their tiles are only listed to authenticated\ncallers.\n"
+        },
+        {
+          "info": {
+            "name": "List existing showcase categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/categories"
+          },
+          "docs": "Returns the distinct, alphabetically-sorted set of category labels\ncurrently in use across showcase tiles. Powers the curator-facing\nautocomplete so admins reuse existing labels instead of fragmenting\nthe taxonomy with typos. Requires the `h2ogpte/chat/manage_showcase`\npermission.\n"
+        },
+        {
+          "info": {
+            "name": "Reorder showcase chats",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/reorder",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requires the `h2ogpte/chat/manage_showcase` permission. Atomically\nreassigns sort_order for each entry.\n"
+        },
+        {
+          "info": {
+            "name": "Update a showcase tile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/:showcase_id",
+            "params": [
+              {
+                "name": "showcase_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requires the `h2ogpte/chat/manage_showcase` permission. Update the tile\ntitle, description, or category. Omitted fields are left unchanged.\nTitle and description must remain non-empty (empty / whitespace-only\nreturns 400); category may be cleared by sending an empty string.\nthumbnail_path is set exclusively by the upload endpoint.\n"
+        },
+        {
+          "info": {
+            "name": "Remove a chat from the showcase",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/:showcase_id",
+            "params": [
+              {
+                "name": "showcase_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Requires the `h2ogpte/chat/manage_showcase` permission. The underlying\nshared chat is untouched; only the tile (and its stored thumbnail) is\nremoved.\n"
+        },
+        {
+          "info": {
+            "name": "Serve a showcase thumbnail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/:showcase_id/thumbnail",
+            "params": [
+              {
+                "name": "showcase_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Streams the stored thumbnail image. Public, but only served when showcase_page_mode allows."
+        },
+        {
+          "info": {
+            "name": "Upload a thumbnail for a showcase tile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/:showcase_id/thumbnail",
+            "params": [
+              {
+                "name": "showcase_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Requires the `h2ogpte/chat/manage_showcase` permission. Multipart upload\nof an image (jpg/png/webp/gif, max 20 MB). Stored in object storage; the\nresulting path is saved to the showcase entry.\n"
+        },
+        {
+          "info": {
+            "name": "Remove a showcase thumbnail",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/showcase/:showcase_id/thumbnail",
+            "params": [
+              {
+                "name": "showcase_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Requires the `h2ogpte/chat/manage_showcase` permission. Drops the\nthumbnail object from storage and clears the showcase row's\nthumbnail_path so the tile renders the placeholder icon.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

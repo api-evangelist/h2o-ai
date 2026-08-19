@@ -15,44 +15,45 @@ server:
   framework: FastMCP (OpenAPI-driven)
   backs: https://h2ogpte.genai.h2o.ai/api/v1
   openapi: openapi/h2o-ai-h2ogpte-openapi-original.yml
-description: >-
-  H2OGPTe MCP Server is H2O.ai's first-party Model Context Protocol server for Enterprise
-  h2oGPTe. It is a LOCAL stdio proxy — there is no hosted/remote MCP endpoint — and it
-  builds its tool surface directly from the h2oGPTe OpenAPI document it fetches from the
-  configured server at start-up. Every tool is therefore one REST operationId, and every
-  tool's inputSchema is that operation's parameters + requestBody verbatim.
+description: H2OGPTe MCP Server is H2O.ai's first-party Model Context Protocol server for Enterprise h2oGPTe.
+  It is a LOCAL stdio proxy — there is no hosted/remote MCP endpoint — and it builds its tool surface
+  directly from the h2oGPTe OpenAPI document it fetches from the configured server at start-up. Every
+  tool is therefore one REST operationId, and every tool's inputSchema is that operation's parameters
+  + requestBody verbatim.
 authentication:
   type: bearer-api-key
   env: H2OGPTE_API_KEY
   docs: https://docs.h2o.ai/enterprise-h2ogpte/guide/apis#create-an-api-key
-  note: >-
-    Because the server is a local proxy, the MCP client supplies the same h2oGPTe API key
-    the REST API uses; there is no MCP-specific OAuth surface and no anonymous tools/list.
+  note: Because the server is a local proxy, the MCP client supplies the same h2oGPTe API key the REST
+    API uses; there is no MCP-specific OAuth surface and no anonymous tools/list.
 configuration:
-  - name: H2OGPTE_API_KEY
-    required: true
-    description: h2oGPTe access key
-  - name: H2OGPTE_SERVER_URL
-    required: false
-    default: https://h2ogpte.genai.h2o.ai
-    description: URL of the h2oGPTe server to proxy
-  - name: H2OGPTE_ALL_ENDPOINTS_AS_TOOLS
-    required: false
-    default: 'true'
-    description: >-
-      When true every REST endpoint becomes an MCP tool. When false, GET endpoints are
-      exposed as MCP resources instead of tools.
-  - name: H2OGPTE_ENDPOINT_SET
-    required: false
-    default: all_without_async_ingest
-    values: [all, all_without_async_ingest, basic, custom]
-    description: Which subset of REST endpoints is projected onto the MCP surface
-  - name: H2OGPTE_CUSTOM_ENDPOINT_SET_FILE
-    required: false
-    description: Path to a newline-delimited list of operationIds (required when endpoint_set is custom)
-  - name: H2OGPTE_CUSTOM_OPENAPI_SPEC_FILE
-    required: false
-    description: Path to a local OpenAPI YAML file (debugging only; normally fetched from the server)
+- name: H2OGPTE_API_KEY
+  required: true
+  description: h2oGPTe access key
+- name: H2OGPTE_SERVER_URL
+  required: false
+  default: https://h2ogpte.genai.h2o.ai
+  description: URL of the h2oGPTe server to proxy
+- name: H2OGPTE_ALL_ENDPOINTS_AS_TOOLS
+  required: false
+  default: 'true'
+  description: When true every REST endpoint becomes an MCP tool. When false, GET endpoints are exposed
+    as MCP resources instead of tools.
+- name: H2OGPTE_ENDPOINT_SET
+  required: false
+  default: all_without_async_ingest
+  values:
+  - all
+  - all_without_async_ingest
+  - basic
+  - custom
+  description: Which subset of REST endpoints is projected onto the MCP surface
+- name: H2OGPTE_CUSTOM_ENDPOINT_SET_FILE
+  required: false
+  description: Path to a newline-delimited list of operationIds (required when endpoint_set is custom)
+- name: H2OGPTE_CUSTOM_OPENAPI_SPEC_FILE
+  required: false
+  description: Path to a local OpenAPI YAML file (debugging only; normally fetched from the server)
 tool_surface:
   model: one-tool-per-operationId
   sets:
@@ -62,13 +63,10 @@ tool_surface:
     all_without_async_ingest:
       tools: 412
       default: true
-      description: >-
-        Every operation except the ten asynchronous ingestion job-starters
-        (create_ingest_upload_job, create_ingest_from_s3_job, create_ingest_from_gcs_job,
-        create_ingest_from_azure_blob_storage_job, create_ingest_from_website_job,
-        create_ingest_from_plain_text_job, create_ingest_from_file_system_job,
-        create_ingest_from_confluence_job, create_ingest_from_sharepoint_online_job,
-        create_ingest_agent_only_to_standard_job)
+      description: Every operation except the ten asynchronous ingestion job-starters (create_ingest_upload_job,
+        create_ingest_from_s3_job, create_ingest_from_gcs_job, create_ingest_from_azure_blob_storage_job,
+        create_ingest_from_website_job, create_ingest_from_plain_text_job, create_ingest_from_file_system_job,
+        create_ingest_from_confluence_job, create_ingest_from_sharepoint_online_job, create_ingest_agent_only_to_standard_job)
     basic:
       tools: 36
       description: Minimal set for chatting with collections and ingesting new documents
@@ -76,13 +74,10 @@ tool_surface:
       description: Caller-supplied operationId list
   overridden_tools:
   - name: upload_file
-    reason: >-
-      Reimplemented in tools.py so the tool takes a local file path and performs the
-      multipart PUT /uploads itself, rather than expecting the caller to build the body.
+    reason: Reimplemented in tools.py so the tool takes a local file path and performs the multipart PUT
+      /uploads itself, rather than expecting the caller to build the body.
   - name: update_collection_thumbnail
-    reason: >-
-      Reimplemented in tools.py to read a local image (max 5MB) and PUT it to
-      /collections/{collection_id}/thumbnail.
+    reason: Reimplemented in tools.py to read a local image (max 5MB) and PUT it to /collections/{collection_id}/thumbnail.
 x-evidence:
   fetched: '2026-08-04'
   sources:
@@ -96,7 +91,15 @@ x-evidence:
   - url: https://pypi.org/project/h2ogpte-mcp-server/
     http_status: 200
   live_tools_list: not-applicable
-  live_tools_list_note: >-
-    tools/list cannot be probed anonymously — the server is stdio-only and requires an
-    H2OGPTE_API_KEY. The tool set is instead derived deterministically from the published
-    OpenAPI document plus the endpoint-set definitions in the server's own source.
+  live_tools_list_note: tools/list cannot be probed anonymously — the server is stdio-only and requires
+    an H2OGPTE_API_KEY. The tool set is instead derived deterministically from the published OpenAPI document
+    plus the endpoint-set definitions in the server's own source.
+deployment:
+  mode: none
+  endpoint: https://h2ogpte.genai.h2o.ai/api/v1
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

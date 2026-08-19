@@ -1,0 +1,298 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Graph RAG API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: GraphRAG
+paths:
+  /graph/config:
+    get:
+      operationId: get_graph_config
+      summary: Get GraphRAG configuration.
+      description: Returns GraphRAG configuration including allowed LLM models for graph building.
+      tags:
+      - GraphRAG
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allowed_models:
+                    type:
+                    - array
+                    - 'null'
+                    items:
+                      type: string
+                    description: List of LLM model names allowed for graph building, or null for all.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /graph/{collection_id}/build:
+    post:
+      operationId: build_collection_graph
+      summary: Build a knowledge graph for a collection.
+      description: Triggers an asynchronous job that extracts entities and relationships from document chunks to build a knowledge graph using LightRAG. Returns 409 Conflict if a build is already in progress.
+      tags:
+      - GraphRAG
+      parameters:
+      - name: collection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The collection ID to build the graph for.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                llm:
+                  description: LLM to use for entity extraction. Defaults to the system default.
+                  oneOf:
+                  - type: string
+                  - type: integer
+                force_rebuild:
+                  type: boolean
+                  default: false
+                  description: If true, removes any existing graph and rebuilds from scratch.
+                name:
+                  type: string
+                  description: Optional job name override.
+      responses:
+        '201':
+          description: Graph build job created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: A graph build is already in progress for this collection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /graph/{collection_id}/status:
+    get:
+      operationId: get_collection_graph_status
+      summary: Get graph build status for a collection.
+      description: Returns the current knowledge graph build status and metadata.
+      tags:
+      - GraphRAG
+      parameters:
+      - name: collection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The collection ID to check.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - none
+                    - building
+                    - ready
+                    - failed
+                    description: Current graph build status.
+                  built_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: When the graph was last successfully built.
+                  outdated:
+                    type: boolean
+                    description: Whether new documents have been added since the last build.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /graph/{collection_id}:
+    delete:
+      operationId: delete_collection_graph
+      summary: Delete the knowledge graph for a collection.
+      description: 'Tears down the collection''s knowledge graph: removes the stored
+
+        tarball from object storage, drops the in-memory per-collection
+
+        lock and event loop, removes the local LightRAG cache directory,
+
+        and resets graph_status to ''none''. The collection itself is
+
+        unaffected. Auto-RAG selection will revert to normal RAG until
+
+        a new graph is built.
+
+        '
+      tags:
+      - GraphRAG
+      parameters:
+      - name: collection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The collection whose graph should be deleted.
+      responses:
+        '204':
+          description: Graph deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  schemas:
+    JobDetails:
+      required:
+      - id
+      - name
+      - overall_status
+      - passed_percentage
+      - failed_percentage
+      - progress
+      - created_at
+      - updated_at
+      - kind
+      - statuses
+      - errors
+      - duration
+      - duration_seconds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        overall_status:
+          type: string
+          enum:
+          - in progress
+          - completed
+          - failed
+          - canceled
+        status:
+          type: string
+        passed_percentage:
+          type: number
+          format: double
+        failed_percentage:
+          type: number
+          format: double
+        progress:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        kind:
+          type: string
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetailsStatus'
+        errors:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        duration_seconds:
+          type: number
+          format: double
+        canceled_by:
+          type: string
+        cancel_reason:
+          type: string
+        timeout:
+          type: number
+          format: double
+        start_time:
+          type: number
+          format: double
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

@@ -1,0 +1,1358 @@
+{
+  "item": [
+    {
+      "id": "8eaf9542-f556-44ac-8f3f-ea6513ecbd53",
+      "name": "Guardrails",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e4f4091b-22e1-40ac-93d4-24ed0b827650",
+          "name": "Get guardrail violation summary KPIs.",
+          "request": {
+            "name": "Get guardrail violation summary KPIs.",
+            "description": {
+              "content": "Returns total violation counts, time-window breakdowns, violation rate, and per-type breakdown. Admin only.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "guardrails",
+                "violations",
+                "summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "7 days",
+                  "description": "Time interval to aggregate over (e.g. \"7 days\", \"30 days\", \"90 days\")."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "da4fd025-b12b-4f26-b38b-0b7298654fdc",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_violations\": 6217,\n  \"last_24h\": 8487,\n  \"last_7d\": 4052,\n  \"last_30d\": 6646,\n  \"violation_rate\": null,\n  \"by_type\": [\n    {\n      \"violation_type\": \"string\",\n      \"total\": 8516\n    },\n    {\n      \"violation_type\": \"string\",\n      \"total\": 8366\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4cad631-bd9b-4f31-9c9b-6450fdfd3bb9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c64e4ce-4a11-4de0-848d-83ac3a07b30e",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6726bc10-97f5-4458-82ab-41ad85a5f6a5",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "674e2fad-2fc5-4b59-927e-78081af2919b",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05ef16ea-c7db-47c1-ae82-910dcb59444a",
+          "name": "Get guardrail violations dashboard data.",
+          "request": {
+            "name": "Get guardrail violations dashboard data.",
+            "description": {
+              "content": "Returns daily trend, breakdown by violation type, by collection, and by user. Admin only.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "guardrails",
+                "violations",
+                "dashboard"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "7 days",
+                  "description": "Time interval to aggregate over (e.g. \"7 days\", \"30 days\", \"90 days\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "collection_id_filter",
+                  "value": "",
+                  "description": "Filter by collection ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "user_id_filter",
+                  "value": "",
+                  "description": "Filter by user ID."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0e4365aa-d721-496e-b830-5cd57b77f230",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "dashboard"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"daily_trend\": [\n    {\n      \"day\": \"string\",\n      \"total\": 1451\n    },\n    {\n      \"day\": \"string\",\n      \"total\": 180\n    }\n  ],\n  \"by_type\": [\n    {\n      \"violation_type\": \"string\",\n      \"total\": 8850\n    },\n    {\n      \"violation_type\": \"string\",\n      \"total\": 3533\n    }\n  ],\n  \"by_collection\": [\n    {\n      \"collection_name\": \"string\",\n      \"collection_id\": \"string\",\n      \"total\": 1186\n    },\n    {\n      \"collection_name\": \"string\",\n      \"collection_id\": \"string\",\n      \"total\": 7090\n    }\n  ],\n  \"by_user\": [\n    {\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"total\": 426\n    },\n    {\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"total\": 805\n    }\n  ],\n  \"available_types\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "201dde66-52df-4186-82ee-0871c203b798",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "dashboard"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8025463d-caeb-4355-a154-5756bd79cae5",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "dashboard"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a320162-720d-446d-a35e-6c4f5b4d3475",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "dashboard"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b97b99f-37f0-40d8-a825-52123719febb",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations",
+                    "dashboard"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7f99a186-dfbf-4349-a1ea-43f77ecf1adc",
+          "name": "List guardrail violations.",
+          "request": {
+            "name": "List guardrail violations.",
+            "description": {
+              "content": "Returns a paginated list of guardrail violations with user and collection context. Admin only.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "guardrails",
+                "violations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "7 days",
+                  "description": "Time interval to filter by (e.g. \"7 days\", \"30 days\", \"90 days\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "type_filter",
+                  "value": "",
+                  "description": "Filter by violation type (e.g. \"guardrails_safety\", \"presidio_pii\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "collection_id_filter",
+                  "value": "",
+                  "description": "Filter by collection ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "user_id_filter",
+                  "value": "",
+                  "description": "Filter by user ID."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6e48b69e-68f7-40c6-83ea-9179875ce751",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "type_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 8839,\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"created_at\": \"string\",\n      \"user_id\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"collection_id\": \"string\",\n      \"collection_name\": \"string\",\n      \"violation_type\": \"string\",\n      \"violation_message\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"created_at\": \"string\",\n      \"user_id\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"collection_id\": \"string\",\n      \"collection_name\": \"string\",\n      \"violation_type\": \"string\",\n      \"violation_message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "754653d0-47d8-444a-b079-e81b6ac5bf38",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "type_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73740c50-307f-4f84-9a2c-f7aa061ffa10",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "type_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de8379b0-807a-4fb5-af86-69248642a63e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "type_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8133732-b60b-4dc6-b54b-c7e1e6ea9f76",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "violations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "7 days"
+                    },
+                    {
+                      "key": "type_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "collection_id_filter",
+                      "value": ""
+                    },
+                    {
+                      "key": "user_id_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1c2ae42-79f1-48fd-be98-4ffeb278d481",
+          "name": "Get effective guardrails settings.",
+          "request": {
+            "name": "Get effective guardrails settings.",
+            "description": {
+              "content": "Returns the effective guardrails settings based on the hierarchy (chat session > collection > global admin > defaults).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "guardrails",
+                "effective"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chat_session_id",
+                  "value": "<string>",
+                  "description": "Optional chat session ID to check for chat-level settings"
+                },
+                {
+                  "disabled": false,
+                  "key": "collection_id",
+                  "value": "<string>",
+                  "description": "Optional collection ID to check for collection-level settings"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "87f556c8-5055-44eb-80a6-59ee2c195cab",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "effective"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chat_session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"exception_message\": \"string\",\n  \"show_violated_responses\": false,\n  \"guardrails_on_transcriptions\": false,\n  \"vision_guardrails_enabled\": false,\n  \"guardrails_vision_llm\": \"auto\",\n  \"column_redaction_config\": [\n    [\n      \"string\",\n      \"string\"\n    ],\n    [\n      \"string\",\n      \"string\"\n    ]\n  ],\n  \"disallowed_regex_patterns\": [\n    \"secret_disallowed_word\",\n    \"(?!0{3})(?!6{3})[0-8]\\\\d{2}-(?!0{2})\\\\d{2}-(?!0{4})\\\\d{4}\"\n  ],\n  \"presidio_labels_to_flag\": [\n    \"IBAN_CODE\",\n    \"US_SSN\"\n  ],\n  \"pii_labels_to_flag\": [\n    \"IBAN\",\n    \"SSN\"\n  ],\n  \"pii_detection_parse_action\": \"allow\",\n  \"pii_detection_llm_input_action\": \"redact\",\n  \"pii_detection_llm_output_action\": \"redact\",\n  \"prompt_guard_labels_to_flag\": [\n    \"JAILBREAK\"\n  ],\n  \"guardrails_labels_to_flag\": [\n    \"Violent Crimes\",\n    \"Non-Violent Crimes\",\n    \"Intellectual Property\",\n    \"Code Interpreter Abuse\"\n  ],\n  \"guardrails_llm\": \"h2oai/h2o-danube3-4b-chat\",\n  \"guardrails_safe_category\": \"Safe\",\n  \"guardrails_entities\": {\n    \"Safe\": \"Messages that do not contain any of the following unsafe content\",\n    \"Violent Crimes\": \"Messages that enable, encourage, or endorse the commission of violent crimes, including: (1) unlawful violence toward people (ex: terrorism, genocide, murder, hate-motivated violent crimes, child abuse, assault, battery, kidnapping) and (2) unlawful violence toward animals (ex: animal abuse)\",\n    \"Non-Violent Crimes\": \"Messages that enable, encourage, or endorse the commission of non-violent crimes, including: (1) personal crimes (ex: labor trafficking, threats, intimidation, hate-motivated non-violent crimes), (2) financial crimes (ex: fraud, scams, money laundering), (3) property crimes (ex: theft, arson, vandalism), (4) drug crimes (ex: creating or using regulated substances), (5) weapons crimes (ex: producing unlicensed firearms), and (6) cyber crimes (ex: hacking)\",\n    \"Defamation\": \"Messages that are both verifiably false and likely to injure a living person’s reputation\",\n    \"Specialized Advice\": \"Messages that contain specialized financial, medical, or legal advice, or that indicate dangerous activities or objects are safe\",\n    \"Intellectual Property\": \"Messages that may violate the intellectual property rights of any third party\",\n    \"Code Interpreter Abuse\": \"Messages that seek to abuse code interpreters, including those that enable denial of service attacks, container escapes or privilege escalation exploits\"\n  },\n  \"column_redaction_custom_entities_to_flag\": [\n    \"Mother's Maiden Name\"\n  ],\n  \"column_redaction_custom_entities\": {\n    \"Mother's Maiden Name\": \"Mother's maiden name\"\n  },\n  \"custom_pii_entities_to_flag\": [\n    \"Mother's Maiden Name\"\n  ],\n  \"custom_pii_entities\": {\n    \"Mother's Maiden Name\": \"Mother's maiden name\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "761f1836-5266-400a-9cd2-18f643742a46",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "effective"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chat_session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3998a0f8-8182-4266-84a5-235c145f16d0",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "effective"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chat_session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38e98c06-f547-41ee-b125-02f791e8737b",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "guardrails",
+                    "effective"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chat_session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 9370,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://h2ogpte.genai.h2o.ai/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "453f9bc7-a479-4a5c-92f7-4e4db08f42f8",
+    "name": "h2oGPTe REST Guardrails API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n",
+      "type": "text/plain"
+    }
+  }
+}

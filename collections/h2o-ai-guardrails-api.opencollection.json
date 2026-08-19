@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Guardrails API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Guardrails",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get guardrail violation summary KPIs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/guardrails/violations/summary",
+            "params": [
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval to aggregate over (e.g. \"7 days\", \"30 days\", \"90 days\")."
+              }
+            ]
+          },
+          "docs": "Returns total violation counts, time-window breakdowns, violation rate, and per-type breakdown. Admin only."
+        },
+        {
+          "info": {
+            "name": "Get guardrail violations dashboard data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/guardrails/violations/dashboard",
+            "params": [
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval to aggregate over (e.g. \"7 days\", \"30 days\", \"90 days\")."
+              },
+              {
+                "name": "collection_id_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by collection ID."
+              },
+              {
+                "name": "user_id_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user ID."
+              }
+            ]
+          },
+          "docs": "Returns daily trend, breakdown by violation type, by collection, and by user. Admin only."
+        },
+        {
+          "info": {
+            "name": "List guardrail violations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/guardrails/violations",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval to filter by (e.g. \"7 days\", \"30 days\", \"90 days\")."
+              },
+              {
+                "name": "type_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by violation type (e.g. \"guardrails_safety\", \"presidio_pii\")."
+              },
+              {
+                "name": "collection_id_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by collection ID."
+              },
+              {
+                "name": "user_id_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user ID."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of guardrail violations with user and collection context. Admin only."
+        },
+        {
+          "info": {
+            "name": "Get effective guardrails settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/guardrails/effective",
+            "params": [
+              {
+                "name": "chat_session_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional chat session ID to check for chat-level settings"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional collection ID to check for collection-level settings"
+              }
+            ]
+          },
+          "docs": "Returns the effective guardrails settings based on the hierarchy (chat session > collection > global admin > defaults)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

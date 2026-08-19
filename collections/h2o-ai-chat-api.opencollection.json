@@ -1,0 +1,819 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Chat API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List chat sessions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to return."
+              }
+            ]
+          },
+          "docs": "List chat sessions."
+        },
+        {
+          "info": {
+            "name": "Creates chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Id of collection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates chat session with a collection if provided. Otherwise, the session will be with a generic LLM."
+        },
+        {
+          "info": {
+            "name": "Counts a number of chat sessions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/count"
+          },
+          "docs": "Counts a number of chat sessions."
+        },
+        {
+          "info": {
+            "name": "Creates job to delete chat sessions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/delete_job",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates job to delete chat sessions."
+        },
+        {
+          "info": {
+            "name": "Finds a chat session by id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ]
+          },
+          "docs": "Returns a single chat session by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Updates the name of a chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the name of a chat session."
+        },
+        {
+          "info": {
+            "name": "Deletes collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Deletes collection with a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Insert a synthetic user-question + AI-reply pair into chat history.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/synth_message_pair",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session to attach the pair to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Used by slash-command flows (e.g. /schedule, /create-assistant) that\nproduce an LLM response outside the normal streaming pipeline and need\nthe resulting prompt/response pair to show up in the chat history on\nreload. The pair is tagged with chat_message_meta(message_type=\"command_synth\",\ncontent=command_name) so UIs can identify these turns later.\n"
+        },
+        {
+          "info": {
+            "name": "Forks a chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/fork",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session to fork"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new independent copy of a chat session with all messages, references, metadata, and document associations preserved."
+        },
+        {
+          "info": {
+            "name": "Updates a collection reference of a chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/collection",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a collection reference of a chat session."
+        },
+        {
+          "info": {
+            "name": "Removes a collection reference from the chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/collection",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ]
+          },
+          "docs": "Removes a collection reference from the chat session."
+        },
+        {
+          "info": {
+            "name": "Updates a prompt template reference of a chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/prompt_template",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a prompt template reference of a chat session."
+        },
+        {
+          "info": {
+            "name": "Removes a prompt template reference from the chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/prompt_template",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ]
+          },
+          "docs": "Removes a prompt template reference from the chat session."
+        },
+        {
+          "info": {
+            "name": "Get guardrails settings for a chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/guardrails",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ]
+          },
+          "docs": "Returns the guardrails settings configured for a specific chat session."
+        },
+        {
+          "info": {
+            "name": "Lists agent server files.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/agent_server_files",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ]
+          },
+          "docs": "Lists agent server files."
+        },
+        {
+          "info": {
+            "name": "Deletes agent server files.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/agent_server_files",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              }
+            ]
+          },
+          "docs": "Deletes agent server files."
+        },
+        {
+          "info": {
+            "name": "Deletes agent server directories.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_ids/agent_server_directories",
+            "params": [
+              {
+                "name": "session_ids",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              },
+              {
+                "name": "dir_types",
+                "value": "",
+                "type": "query",
+                "description": "Types of agent directories to be deleted"
+              }
+            ]
+          },
+          "docs": "Deletes agent server directories.\n\nDeprecated: this endpoint will be removed in a future release. Agent\ndirectories are now cleaned up automatically as part of the\nchat-session delete cascade — call `DELETE /chats/{session_ids}`\ninstead. Deleting agent files mid-conversation leaves the agent in\nan inconsistent state (see h2oai/h2ogpte#7302), so this standalone\npath is no longer recommended.\n"
+        },
+        {
+          "info": {
+            "name": "Lists stats of  agent server directories.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/agent_server_directories/stats",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              },
+              {
+                "name": "detail_level",
+                "value": "",
+                "type": "query",
+                "description": "the higher value, more details are returned."
+              }
+            ]
+          },
+          "docs": "Lists stats of agent server directories."
+        },
+        {
+          "info": {
+            "name": "Gets stats of a agent server directory.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/agent_server_directories/:directory_name/stats",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              },
+              {
+                "name": "directory_name",
+                "value": "",
+                "type": "path",
+                "description": "Directory name"
+              },
+              {
+                "name": "detail_level",
+                "value": "",
+                "type": "query",
+                "description": "the higher value, more details are returned."
+              }
+            ]
+          },
+          "docs": "Gets stats of a agent server directory."
+        },
+        {
+          "info": {
+            "name": "get_completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/completions",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a chat session"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Asks question in a given chat session. If stream is enabled, the server sends stream of delta messages. The stream is terminated with the massage having property finished set to true. This message terminating message contains also the full completion."
+        },
+        {
+          "info": {
+            "name": "List suggested questions for a given chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/questions",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a chat session"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many questions to return."
+              }
+            ]
+          },
+          "docs": "List suggested questions for a given chat session."
+        },
+        {
+          "info": {
+            "name": "Fetches chat message and metadata for messages in a chat session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/chats/:session_id/messages",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat session"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many chat sessions to return."
+              }
+            ]
+          },
+          "docs": "Fetches chat message and metadata for messages in a chat session. Messages without a `reply_to` are from the end user, messages with a `reply_to` are from an LLM and a response to a specific user message."
+        },
+        {
+          "info": {
+            "name": "Deletes specific chat messages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:message_ids",
+            "params": [
+              {
+                "name": "message_ids",
+                "value": "",
+                "type": "path",
+                "description": "Ids of messages to be deleted"
+              }
+            ]
+          },
+          "docs": "Deletes specific chat messages."
+        },
+        {
+          "info": {
+            "name": "Fetches metadata for references of a chat message.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:message_id/references",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat message"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The number of references to consider based on the highest confidence scores."
+              }
+            ]
+          },
+          "docs": "Fetches metadata for references of a chat message. References are only available for messages sent from an LLM, an empty list will be returned for messages sent by the user."
+        },
+        {
+          "info": {
+            "name": "Fetches chat message meta information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:message_id/meta",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat message."
+              },
+              {
+                "name": "info_type",
+                "value": "",
+                "type": "query",
+                "description": "Metadata type to fetch."
+              }
+            ]
+          },
+          "docs": "Fetches chat message meta information."
+        },
+        {
+          "info": {
+            "name": "Changes the vote value of a chat message.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:message_id/votes",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the chat message."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set the exact value of a vote for a chat message. Any message type can be updated, but only LLM response votes will be visible in the UI. The expectation is 0 - unvoted, -1 - dislike, 1 - like. Values outside of this will not be viewable in the UI."
+        },
+        {
+          "info": {
+            "name": "Pause a streaming chat response.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:question_id/pause",
+            "params": [
+              {
+                "name": "question_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the chat question to pause."
+              }
+            ]
+          },
+          "docs": "Pauses the streaming generation of a chat message response. The message can be resumed later using the resume endpoint."
+        },
+        {
+          "info": {
+            "name": "Resume a paused chat response.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:question_id/resume",
+            "params": [
+              {
+                "name": "question_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the chat question to resume."
+              }
+            ]
+          },
+          "docs": "Resumes the streaming generation of a previously paused chat message response."
+        },
+        {
+          "info": {
+            "name": "Stop a streaming chat response immediately.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:question_id/stop",
+            "params": [
+              {
+                "name": "question_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the chat question to stop."
+              }
+            ]
+          },
+          "docs": "Immediately stops/cancels the streaming generation of a chat message response. This may result in an incomplete sentence or thought."
+        },
+        {
+          "info": {
+            "name": "Signal the LLM to finish its response gracefully.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:question_id/finish",
+            "params": [
+              {
+                "name": "question_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the chat question to finish gracefully."
+              }
+            ]
+          },
+          "docs": "Signals the LLM to complete its current thought and finish naturally, providing a more coherent ending than an immediate stop."
+        },
+        {
+          "info": {
+            "name": "Send a course correction message to a running agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/messages/:question_id/hitl",
+            "params": [
+              {
+                "name": "question_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the chat question (active streaming session)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a human-in-the-loop message to a running agent. The agent will incorporate this guidance before its next LLM call."
+        },
+        {
+          "info": {
+            "name": "Lists user's questions and answers that have a feedback.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/question_answer_feedbacks",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many feedbacks to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many feedbacks to return."
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by collection ID."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Filter by time interval (e.g. \"7 days\", \"30 days\", \"90 days\", \"1 year\")."
+              },
+              {
+                "name": "no_collection",
+                "value": "",
+                "type": "query",
+                "description": "If true, only return feedbacks with no collection."
+              }
+            ]
+          },
+          "docs": "Lists user's questions and answers that have a feedback."
+        },
+        {
+          "info": {
+            "name": "Update feedback for a specific answer to a question.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/question_answer_feedbacks/:answer_id",
+            "params": [
+              {
+                "name": "answer_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of and answer connected with a feedback."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update feedback for a specific answer to a question."
+        },
+        {
+          "info": {
+            "name": "Download a completed feedback CSV export.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/question_answer_feedbacks/export/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "The job ID of the completed export job."
+              }
+            ]
+          },
+          "docs": "Downloads the CSV file produced by an ExportFeedbackCSVJob."
+        },
+        {
+          "info": {
+            "name": "Counts a number of question-answer feedbacks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/question_answer_feedbacks/count",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by collection ID."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Filter by time interval (e.g. \"7 days\", \"30 days\", \"90 days\", \"1 year\")."
+              },
+              {
+                "name": "no_collection",
+                "value": "",
+                "type": "query",
+                "description": "If true, only return feedbacks with no collection."
+              }
+            ]
+          },
+          "docs": "Counts a number of question-answer feedbacks."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

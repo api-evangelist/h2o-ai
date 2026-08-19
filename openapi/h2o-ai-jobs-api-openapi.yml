@@ -1,0 +1,339 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Jobs API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Jobs
+paths:
+  /jobs:
+    get:
+      operationId: list_jobs
+      summary: Lists jobs associated with the user.
+      description: Lists jobs associated with the user making call.
+      tags:
+      - Jobs
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /jobs/pending/count:
+    get:
+      operationId: count_pending_jobs
+      summary: Counts the number of global, pending jobs on the server.
+      description: Counts the number of global, pending jobs on the server.
+      tags:
+      - Jobs
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountWithQueueDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /jobs/{job_id}:
+    get:
+      operationId: get_job
+      summary: Lists jobs associated with the user.
+      description: Lists jobs associated with the user calling this endpoint.
+      tags:
+      - Jobs
+      parameters:
+      - name: job_id
+        in: path
+        description: Id of the job
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: delete_job
+      summary: Deletes job.
+      description: Deletes job with a given unique identifier.
+      tags:
+      - Jobs
+      parameters:
+      - name: job_id
+        in: path
+        description: Id of the job
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /jobs/{job_id}/cancel:
+    post:
+      operationId: cancel_job
+      summary: Stops a specific job from running for the user.
+      description: Stops a specific job from running for the user.
+      tags:
+      - Jobs
+      parameters:
+      - name: job_id
+        in: path
+        description: Id of the job
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /user_jobs:
+    get:
+      operationId: list_user_jobs
+      summary: Lists all jobs running on the system for all users.
+      description: Lists all jobs running on the system for all users (to be used by admins only).
+      tags:
+      - Jobs
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserJobDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /user_jobs/{job_id}/cancel:
+    post:
+      operationId: cancel_user_job
+      summary: Stops a specific job from running on the server.
+      description: As an admin, stops a specific user job from running on the server.
+      tags:
+      - Jobs
+      parameters:
+      - name: job_id
+        in: path
+        description: Id of the job
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cancel_reason:
+                  type: string
+                  description: Optional reason for canceling the job.
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    Count:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
+    JobDetails:
+      required:
+      - id
+      - name
+      - overall_status
+      - passed_percentage
+      - failed_percentage
+      - progress
+      - created_at
+      - updated_at
+      - kind
+      - statuses
+      - errors
+      - duration
+      - duration_seconds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        overall_status:
+          type: string
+          enum:
+          - in progress
+          - completed
+          - failed
+          - canceled
+        status:
+          type: string
+        passed_percentage:
+          type: number
+          format: double
+        failed_percentage:
+          type: number
+          format: double
+        progress:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        kind:
+          type: string
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetailsStatus'
+        errors:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        duration_seconds:
+          type: number
+          format: double
+        canceled_by:
+          type: string
+        cancel_reason:
+          type: string
+        timeout:
+          type: number
+          format: double
+        start_time:
+          type: number
+          format: double
+    UserJobDetails:
+      type: object
+      required:
+      - username
+      - user_id
+      - jobs
+      properties:
+        username:
+          type: string
+        user_id:
+          type: string
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetails'
+    QueueDetails:
+      required:
+      - name
+      - length
+      properties:
+        name:
+          type: string
+        length:
+          type: integer
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    CountWithQueueDetails:
+      allOf:
+      - $ref: '#/components/schemas/Count'
+      - type: object
+        required:
+        - queue_infos
+        properties:
+          queue_infos:
+            type: array
+            items:
+              $ref: '#/components/schemas/QueueDetails'
+  responses:
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

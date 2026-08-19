@@ -1,0 +1,351 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Memory Blocks API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Memory Blocks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get default memory blocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current/default_memory_blocks"
+          },
+          "docs": "Returns the user's default memory blocks for LLM and agent scopes. The two scopes are independent with no cascade."
+        },
+        {
+          "info": {
+            "name": "Set a default memory block",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current/default_memory_blocks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets a default memory block for a given scope (llm or agent). Pass memory_block_id as null to clear."
+        },
+        {
+          "info": {
+            "name": "List memory blocks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many memory blocks to skip."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many memory blocks to return."
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter memory blocks by name (case-insensitive substring match)."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "Only return memory blocks updated at or after this timestamp (ISO 8601)."
+              }
+            ]
+          },
+          "docs": "List memory blocks accessible to the current user (owned, shared, or public)."
+        },
+        {
+          "info": {
+            "name": "Create a Memory Block",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new memory block for persistent agent memory. Memory blocks are cross-collection and per-user."
+        },
+        {
+          "info": {
+            "name": "Get a memory block by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ]
+          },
+          "docs": "Returns a specific memory block by its ID."
+        },
+        {
+          "info": {
+            "name": "Update a memory block.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the name, content, and/or system prompt amendment of a memory block."
+        },
+        {
+          "info": {
+            "name": "Delete a memory block.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ]
+          },
+          "docs": "Deletes a memory block. Only the owner can delete."
+        },
+        {
+          "info": {
+            "name": "List user share permissions for a memory block.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/permissions",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ]
+          },
+          "docs": "Returns the list of users with explicit (direct) share grants on the memory block. Does not include cascade access derived from collection sharing."
+        },
+        {
+          "info": {
+            "name": "List group share permissions for a memory block.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/group_permissions",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ]
+          },
+          "docs": "Returns the list of groups with explicit (direct) share grants on the memory block. Does not include cascade access derived from collection sharing."
+        },
+        {
+          "info": {
+            "name": "Share a memory block with a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the group that will obtain access to the memory block."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shares a memory block with a group, granting read and/or edit permissions."
+        },
+        {
+          "info": {
+            "name": "Remove sharing of a memory block from a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the group that will lose access to the memory block."
+              }
+            ]
+          },
+          "docs": "Removes sharing of a memory block from a group."
+        },
+        {
+          "info": {
+            "name": "Share a memory block with a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/permissions/:username",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "Username to share with."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shares a memory block with a user, granting read and/or edit permissions."
+        },
+        {
+          "info": {
+            "name": "Remove sharing of a memory block from a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/permissions/:username",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "Username to unshare from."
+              }
+            ]
+          },
+          "docs": "Removes sharing of a memory block from a user."
+        },
+        {
+          "info": {
+            "name": "Returns the public permissions for a memory block.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/public_permissions",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ]
+          },
+          "docs": "Returns the list of public permissions for a memory block. Returns an empty array if the memory block is not public or has no permissions. Read access is implicit for public memory blocks; an empty array on a public block means public read-only, while ['h2ogpte/memory_block/edit'] means public read + edit. Never raises 404 — unknown memory block ids also return an empty array (mirrors the collection endpoint)."
+        },
+        {
+          "info": {
+            "name": "Set memory block public or private.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/memory_blocks/:memory_block_id/privacy",
+            "params": [
+              {
+                "name": "memory_block_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the memory block."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Toggle whether a memory block is publicly accessible."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

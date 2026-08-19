@@ -1,0 +1,344 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Tags API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Tags
+paths:
+  /tags:
+    post:
+      operationId: create_tag
+      summary: Creates a new tag.
+      description: Creates a new tag that can be subsequently associated with a document.
+      tags:
+      - Tags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: list_tags
+      summary: List tags.
+      description: List all existing tags.
+      tags:
+      - Tags
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /tags/{tag_name}:
+    get:
+      tags:
+      - Tags
+      summary: Finds a tag by its name.
+      description: Returns a single tag by its unique name.
+      operationId: get_tag
+      parameters:
+      - name: tag_name
+        in: path
+        description: Name of a tag to return
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      tags:
+      - Tags
+      summary: Deletes a tag.
+      description: Deletes a tag by its name. Only the tag creator can delete it. All document-tag associations are removed.
+      operationId: delete_tag
+      parameters:
+      - name: tag_name
+        in: path
+        description: Name of the tag to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tag_id:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Tag not found or not owned by the requesting user
+        default:
+          $ref: '#/components/responses/Unexpected'
+    patch:
+      tags:
+      - Tags
+      summary: Updates attributes of a tag.
+      description: Updates attributes of an existing tag, particularly description and format.
+      operationId: update_tag
+      parameters:
+      - name: tag_name
+        in: path
+        description: Name of a tag to to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /tags/{tag_names}/documents:
+    get:
+      operationId: list_documents_for_tags
+      summary: List documents associated with a tag.
+      description: List documents associated with a tag.
+      tags:
+      - Tags
+      parameters:
+      - name: tag_names
+        in: path
+        description: Names of a tags to return documents for
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: collection_id
+        in: query
+        description: Id of a collection containing the documents
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    TagUpdateRequest:
+      type: object
+      properties:
+        description:
+          type: string
+        format:
+          type: string
+    Metadata:
+      type: object
+      additionalProperties: true
+    Tag:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: marvel
+        description:
+          type: string
+          example: Stories based on Marvel's comics.
+        format:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    Document:
+      required:
+      - id
+      - name
+      - username
+      - type
+      - size
+      - page_count
+      - created_at
+      - updated_at
+      - status
+      type: object
+      properties:
+        id:
+          description: A unique identifier of the document
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          description: Name of the document
+          type: string
+          example: The Hitchhiker's Guide to the Galaxy
+        username:
+          description: A username owning the document
+          type: string
+        type:
+          description: Type of the document
+          type: string
+        size:
+          description: Size of the document in bytes
+          type: integer
+        page_count:
+          description: A number of pages contained in the document
+          type: integer
+        status:
+          description: Status of the document
+          type: string
+          enum:
+          - unknown
+          - scheduled
+          - queued
+          - running
+          - completed
+          - failed
+          - canceled
+          - agent_only
+        usage_stats:
+          description: Usage stats
+          type: string
+        connector:
+          type: string
+        original_type:
+          type: string
+        original_mtime:
+          type: string
+          format: datetime
+        created_at:
+          description: Time when document was created
+          type: string
+          format: date-time
+        updated_at:
+          description: Last time when document was modified
+          type: string
+          format: date-time
+        uri:
+          type: string
+        summary:
+          type: string
+        summary_parameters:
+          type: string
+        metadata_dict:
+          $ref: '#/components/schemas/Metadata'
+        is_encrypted:
+          description: Whether the document files are encrypted at rest
+          type: boolean
+          default: false
+    TagCreateRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: marvel
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

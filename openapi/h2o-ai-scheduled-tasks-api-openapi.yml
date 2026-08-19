@@ -1,0 +1,930 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Scheduled Tasks API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Scheduled Tasks
+paths:
+  /scheduled_tasks:
+    post:
+      operationId: create_scheduled_task
+      summary: Create a scheduled task.
+      tags:
+      - Scheduled Tasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTaskCreateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTask'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: list_scheduled_tasks
+      summary: List scheduled tasks for the current user.
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: name_filter
+        in: query
+        schema:
+          type: string
+      - name: status_filter
+        in: query
+        schema:
+          type: string
+      - name: collection_id
+        in: query
+        description: Only tasks bound to this collection (UUID). Mutually exclusive with has_collection.
+        schema:
+          type: string
+      - name: has_collection
+        in: query
+        description: true = only collection-bound tasks; false = only tasks without a collection. Mutually exclusive with collection_id.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/summary:
+    get:
+      operationId: get_scheduled_task_summary
+      summary: Aggregate stats for the current user's scheduled tasks.
+      tags:
+      - Scheduled Tasks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/executions:
+    get:
+      operationId: list_all_user_scheduled_task_executions
+      summary: List all executions across the current user's tasks.
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: status_filter
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskExecutionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/batch_delete:
+    post:
+      operationId: delete_scheduled_tasks
+      summary: Delete multiple scheduled tasks.
+      tags:
+      - Scheduled Tasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTaskBatchDeleteRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskBatchDeleteResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/{task_id}:
+    get:
+      operationId: get_scheduled_task
+      summary: Get a scheduled task by id.
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTask'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    put:
+      operationId: update_scheduled_task
+      summary: Update a scheduled task (partial).
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTaskUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTask'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: delete_scheduled_task
+      summary: Delete a scheduled task.
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskDeleteResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/{task_id}/trigger:
+    post:
+      operationId: trigger_scheduled_task
+      summary: Manually trigger a scheduled task.
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskTriggerResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /scheduled_tasks/{task_id}/executions:
+    get:
+      operationId: list_scheduled_task_executions
+      summary: List executions for a scheduled task.
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskExecutionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/scheduled_tasks:
+    get:
+      operationId: list_scheduled_tasks_by_admin
+      summary: List all scheduled tasks (admin only).
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: name_filter
+        in: query
+        schema:
+          type: string
+      - name: status_filter
+        in: query
+        schema:
+          type: string
+      - name: user_filter
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/scheduled_tasks/summary:
+    get:
+      operationId: get_scheduled_task_summary_by_admin
+      summary: System-wide scheduled task summary (admin only).
+      tags:
+      - Scheduled Tasks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskAdminSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/scheduled_tasks/execution_stats:
+    get:
+      operationId: get_scheduled_task_execution_stats
+      summary: Execution stats over an interval (admin only).
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: interval
+        in: query
+        schema:
+          type: string
+        description: PostgreSQL interval, e.g. '7 days'. Default '7 days'.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskExecutionStats'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/scheduled_tasks/executions:
+    get:
+      operationId: list_scheduled_task_executions_by_admin
+      summary: List executions across all users (admin only).
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: query
+        schema:
+          type: string
+        description: Optional; if omitted, returns executions across all tasks.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskExecutionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/scheduled_tasks/batch_delete:
+    post:
+      operationId: delete_scheduled_tasks_by_admin
+      summary: Delete multiple scheduled tasks for any user (admin only).
+      tags:
+      - Scheduled Tasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTaskBatchDeleteRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskBatchDeleteResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/scheduled_tasks/{task_id}:
+    put:
+      operationId: update_scheduled_task_by_admin
+      summary: Update any scheduled task — status and metadata only (admin only).
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTaskAdminUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledTaskUpdateStatusResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  schemas:
+    ScheduledTaskDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: string
+    ScheduledTask:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        schedule_type:
+          type: string
+          enum:
+          - once
+          - recurring
+          - interval
+        schedule_expression:
+          type: string
+        task_type:
+          type: string
+          enum:
+          - chat_completion
+          - agent_task
+        task_config:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - completed
+          - expired
+        execution_status:
+          type: string
+          description: 'Runtime execution state: idle or running.'
+        last_execution_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        next_execution_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        execution_count:
+          type: integer
+        max_executions:
+          type:
+          - integer
+          - 'null'
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        is_owner:
+          type: boolean
+        notification_email:
+          type: string
+    ScheduledTaskAdminSummary:
+      type: object
+      properties:
+        total_tasks:
+          type: integer
+        active_tasks:
+          type: integer
+        currently_running_tasks:
+          type: integer
+        paused_tasks:
+          type: integer
+        completed_tasks:
+          type: integer
+        expired_tasks:
+          type: integer
+        recurring_tasks:
+          type: integer
+        one_time_tasks:
+          type: integer
+        chat_completion_tasks:
+          type: integer
+        agent_tasks:
+          type: integer
+        total_executions:
+          type: integer
+        tasks_executing_today:
+          type: integer
+        unique_users:
+          type: integer
+        failed_executions_today:
+          type: integer
+        running_executions:
+          type: integer
+    ScheduledTaskExecutionStats:
+      type: object
+      properties:
+        daily_executions:
+          type: array
+          items:
+            type: object
+            properties:
+              day:
+                type: string
+              total:
+                type: integer
+              completed:
+                type: integer
+              failed:
+                type: integer
+        totals:
+          type: object
+          properties:
+            total_executions:
+              type: integer
+            completed_executions:
+              type: integer
+            failed_executions:
+              type: integer
+            running_executions:
+              type: integer
+            total_tasks:
+              type: integer
+            active_tasks:
+              type: integer
+        top_tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              task_id:
+                type: string
+                format: uuid
+              task_name:
+                type: string
+              username:
+                type: string
+              task_type:
+                type: string
+              execution_count:
+                type: integer
+              completed_count:
+                type: integer
+              failed_count:
+                type: integer
+    ScheduledTaskBatchDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        count:
+          type: integer
+    ScheduledTaskExecutionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledTaskExecution'
+        total:
+          type: integer
+    ScheduledTaskCreateRequest:
+      type: object
+      required:
+      - name
+      - schedule_type
+      - schedule_expression
+      - task_type
+      - task_config
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        schedule_type:
+          type: string
+          enum:
+          - once
+          - recurring
+          - interval
+        schedule_expression:
+          type: string
+          description: ISO-8601 datetime for once, 5-field cron for recurring, "N minutes"/"N hours" for interval.
+        task_type:
+          type: string
+          enum:
+          - chat_completion
+          - agent_task
+        task_config:
+          type: object
+          additionalProperties: true
+          description: Must contain a non-empty "message" key (the question/prompt). May include "timezone", "collection_id", "llm_args".
+        max_executions:
+          type:
+          - integer
+          - 'null'
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        notification_email:
+          type: string
+    ScheduledTaskSummary:
+      type: object
+      properties:
+        total_tasks:
+          type: integer
+        active_tasks:
+          type: integer
+        currently_running_tasks:
+          type: integer
+        paused_tasks:
+          type: integer
+        completed_tasks:
+          type: integer
+        expired_tasks:
+          type: integer
+        recurring_tasks:
+          type: integer
+        one_time_tasks:
+          type: integer
+        chat_completion_tasks:
+          type: integer
+        agent_tasks:
+          type: integer
+        total_executions:
+          type: integer
+        tasks_executing_today:
+          type: integer
+    ScheduledTaskExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        scheduled_task_id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - running
+          - completed
+          - failed
+          - cancelled
+        trigger_source:
+          type:
+          - string
+          - 'null'
+          enum:
+          - scheduled
+          - manual
+        task_name:
+          type:
+          - string
+          - 'null'
+        username:
+          type:
+          - string
+          - 'null'
+        started_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        chat_session_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        result_summary:
+          type:
+          - string
+          - 'null'
+        error_message:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+    ScheduledTaskTriggerResponse:
+      type: object
+      properties:
+        execution_id:
+          type: string
+          format: uuid
+        session_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+    ScheduledTaskList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledTask'
+        total:
+          type: integer
+    ScheduledTaskAdminUpdateRequest:
+      type: object
+      description: 'Admin partial update — status and metadata only. max_executions and expires_at are intentionally NOT settable here (the admin SQL does not honor the clear-sentinels), matching the UI''s admin update which only changes status.
+
+        '
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        schedule_type:
+          type: string
+          enum:
+          - once
+          - recurring
+          - interval
+        schedule_expression:
+          type: string
+        task_type:
+          type: string
+          enum:
+          - chat_completion
+          - agent_task
+        task_config:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - completed
+          - expired
+        notification_email:
+          type: string
+    ScheduledTaskBatchDeleteRequest:
+      type: object
+      required:
+      - task_ids
+      properties:
+        task_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+    ScheduledTaskUpdateRequest:
+      type: object
+      description: 'Partial update. Omit a field to leave it unchanged. To CLEAR a nullable field, use the sentinel: max_executions = -1 clears it; expires_at = 1970-01-01T00:00:00Z clears it. To pause/resume, set status to "paused"/"active".
+
+        '
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        schedule_type:
+          type: string
+          enum:
+          - once
+          - recurring
+          - interval
+        schedule_expression:
+          type: string
+        task_type:
+          type: string
+          enum:
+          - chat_completion
+          - agent_task
+        task_config:
+          type: object
+          additionalProperties: true
+        task_config_patch:
+          type: object
+          additionalProperties: true
+          description: 'Partial task_config update. Top-level keys are merged into the stored task_config; a key whose value is JSON null is REMOVED (e.g. {"collection_id": null} unbinds the collection). Nested objects are replaced whole, not deep-merged. Mutually exclusive with task_config. The merged result must keep a non-empty ''message''.
+
+            '
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - completed
+          - expired
+        max_executions:
+          type:
+          - integer
+          - 'null'
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        notification_email:
+          type: string
+    ScheduledTaskUpdateStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

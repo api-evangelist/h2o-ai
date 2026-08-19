@@ -1,0 +1,2402 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Agents API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Agents
+paths:
+  /agents:
+    get:
+      operationId: get_all_agents
+      summary: Get all agents (built-in and custom)
+      description: Get all agents (both built-in and custom agents) with unified structure
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/directory_stats:
+    get:
+      operationId: list_agent_directory_stats
+      summary: Lists agent directory stats across all agent chat sessions.
+      description: Lists agent directory stats across all agent chat sessions.
+      tags:
+      - Agents
+      parameters:
+      - name: offset
+        in: query
+        description: How many agent chat sessions to skip before returning.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: How many agent chat sessions to return.
+        required: false
+        schema:
+          type: integer
+          default: 100
+      - name: filter_text
+        in: query
+        description: Applied text filter.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentServerDirectoryStatsPerAgentChatSession'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/tools:
+    get:
+      operationId: list_agent_tools
+      summary: Lists agent tools present on the system.
+      description: Lists agent tools present on the system.
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentToolSpec'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/tool_preference:
+    get:
+      operationId: list_agent_tool_preference
+      summary: Lists the agent tool preference for the user.
+      description: Lists the agent tool preference for the user.
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    post:
+      operationId: update_agent_tool_preference
+      summary: Creates or updates the agent tool preference for the user.
+      description: Creates or updates the agent tool preference for the user.
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reference_value
+              properties:
+                reference_value:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: delete_agent_tool_preference
+      summary: Deletes the agent tool preferences for the user.
+      description: Deletes the agent tool preferences for the user.
+      tags:
+      - Agents
+      responses:
+        '204':
+          description: Successful operation
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/keys:
+    get:
+      operationId: list_agent_keys
+      summary: Lists agent keys.
+      description: Lists agent keys.
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentKey'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    post:
+      operationId: create_agent_key
+      summary: Creates agent key.
+      description: Creates agent key.
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentKeyRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentKey'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/keys/{key_id}:
+    post:
+      operationId: update_agent_key
+      summary: Updates agent key.
+      description: Updates agent key.
+      tags:
+      - Agents
+      parameters:
+      - name: key_id
+        in: path
+        description: Id of the key to be updated.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAgentKeyRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentKey'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/keys/{key_ids}:
+    delete:
+      operationId: delete_agent_keys
+      summary: Deletes agent keys.
+      description: Deletes agent keys.
+      tags:
+      - Agents
+      parameters:
+      - name: key_ids
+        in: path
+        description: Ids of keys to be deleted.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/tool_association:
+    get:
+      operationId: list_agent_key_tool_associations
+      summary: Returns a list of tools and the user's associated keys.
+      description: Returns a list of tools and the user's associated keys.
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentToolKeyAssociations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    post:
+      operationId: create_agent_key_tool_associations
+      summary: Creates associations between a tool and user's keys.
+      description: Creates associations between a tool and user's keys.
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentToolKeyAssociationsRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentToolKeyAssociations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/tool_association/{associate_ids}:
+    delete:
+      operationId: delete_agent_tool_association
+      summary: Deletes agent tool key associations.
+      description: Deletes agent tool key associations given a list of associate ids belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: associate_ids
+        in: path
+        description: The unique identifiers of tool associations to be deleted.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agent_tool_associations:
+    get:
+      operationId: list_custom_agent_tool_associations
+      summary: Returns a list of custom agent tool associations.
+      description: Returns a list of custom agent tool associations, optionally filtered by agent_id or agent_name.
+      tags:
+      - Agents
+      parameters:
+      - name: agent_id
+        in: query
+        description: Filter by custom agent UUID
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: agent_name
+        in: query
+        description: Filter by custom agent name
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomAgentToolAssociation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    post:
+      operationId: create_custom_agent_tool_association
+      summary: Creates a custom agent tool association.
+      description: Creates a custom agent tool association.
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomAgentToolAssociationRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAgentToolAssociation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agent_tool_associations/{association_ids}:
+    delete:
+      operationId: delete_custom_agent_tool_associations
+      summary: Deletes custom agent tool associations.
+      description: Deletes custom agent tool associations given a list of association ids belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: association_ids
+        in: path
+        description: The unique identifiers of associations to be deleted.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCustomAgentToolAssociationsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agent_key_associations:
+    get:
+      operationId: list_custom_agent_key_associations
+      summary: Returns a list of custom agent key associations.
+      description: Returns a list of custom agent key associations, optionally filtered by agent_id.
+      tags:
+      - Agents
+      parameters:
+      - name: agent_id
+        in: query
+        description: Filter by custom agent UUID
+        required: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomAgentKeyAssociation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    post:
+      operationId: create_custom_agent_key_association
+      summary: Creates a custom agent key association.
+      description: Associates an env var (from envs.json or user-added) with an agent key.
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomAgentKeyAssociationRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAgentKeyAssociation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agent_key_associations/{association_ids}:
+    delete:
+      operationId: delete_custom_agent_key_associations
+      summary: Deletes custom agent key associations.
+      description: Deletes custom agent key associations given a list of association ids belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: association_ids
+        in: path
+        description: The unique identifiers of associations to be deleted.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCustomAgentKeyAssociationsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agents/{agent_id}/suggestions:
+    get:
+      operationId: get_agent_suggestions
+      summary: Get MCP tool suggestions for a custom agent.
+      description: Returns suggested MCP tool configurations for a custom agent based on its metadata. Helps users identify and configure required tools.
+      tags:
+      - Agents
+      parameters:
+      - name: agent_id
+        in: path
+        description: The unique identifier of the custom agent.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomAgentSuggestion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_tools:
+    post:
+      operationId: add_custom_agent_tool
+      summary: Add Custom Agent Tools
+      description: Add Custom Agent Tools
+      tags:
+      - Agents
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type:
+                  - string
+                  - 'null'
+                  format: binary
+                  description: 'The tool file to upload. Requirements vary by tool_type:
+
+                    - local_mcp: .zip file containing MCP server code
+
+                    - remote_mcp: Optional .json file with MCP configuration
+
+                    - browser_action: .py file (must start with ''browser_'') or .zip containing browser action scripts
+
+                    - general_code: .py or .zip file with custom code
+
+                    '
+                tool_type:
+                  type: string
+                  enum:
+                  - local_mcp
+                  - remote_mcp
+                  - browser_action
+                  - general_code
+                  description: 'The type of custom tool being added:
+
+                    - local_mcp: Model Context Protocol server running locally
+
+                    - remote_mcp: Model Context Protocol server running remotely
+
+                    - browser_action: Custom browser automation actions
+
+                    - general_code: General purpose code execution tools
+
+                    '
+                tool_args:
+                  type: string
+                  description: "JSON string containing tool-specific arguments. The structure varies by tool_type:\n\nFor remote_mcp:\n{\n  \"mcp_config_json\": \"JSON string with MCP server configuration\",\n  \"enable_by_default\": true/false (optional, defaults to true)\n}\n\nFor local_mcp, browser_action, and general_code:\n{\n  \"tool_name\": \"string (optional, defaults to filename without extension)\",\n  \"description\": \"string (optional, tool description)\",\n  \"enable_by_default\": true/false (optional, defaults to true),\n  \"should_unzip\": true/false (optional, for general_code .zip files only),\n  \"tool_usage_mode\": [\"runner\", \"creator\"] (optional list of strings),\n  \"system_prompt\": \"string (automatically added when generate_system_prompt=true)\"\n}\n"
+                  example: '{"tool_name": "my_tool", "description": "My custom tool", "enable_by_default": true}'
+                custom_tool_path:
+                  type:
+                  - string
+                  - 'null'
+                filename:
+                  type:
+                  - string
+                  - 'null'
+                  description: Optional filename to use when storing the uploaded file
+                generate_system_prompt:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: 'If true and tool_type is "general_code", generates a system prompt for the tool using LLM analysis.
+
+                    The generated system prompt will be automatically added to tool_args["system_prompt"] after generation completes.
+
+                    Only valid for general_code tool type.
+
+
+                    WARNING: This is a long-running synchronous operation. The server holds the HTTP connection open
+
+                    while the LLM analyzes the uploaded code. Ensure your HTTP client timeout and any intermediate
+
+                    proxies (nginx, ALB, Cloudflare, etc.) are configured with sufficient timeout. Default proxy
+
+                    timeouts of 60-120s will cause 504 Gateway Timeout errors. See `system_prompt_generation_timeout`
+
+                    to constrain the wait budget on the server side.
+
+                    '
+                system_prompt_generation_timeout:
+                  type:
+                  - number
+                  - 'null'
+                  format: double
+                  description: 'Optional wait budget in seconds for synchronous system prompt generation
+
+                    (only used when generate_system_prompt is true). Set this below your proxy/ingress
+
+                    read timeout so the API returns a 408 instead of letting the proxy emit a 504.
+
+                    If omitted, defaults to the server-side cap of 600 seconds (10 minutes).
+
+                    '
+              required:
+              - tool_type
+              - tool_args
+        required: true
+      responses:
+        '201':
+          description: Custom agent tool created successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    agent_custom_tool_id:
+                      type: string
+                      description: The ID of the created custom agent tool
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: list_custom_agent_tools
+      summary: List Custom Agent Tools
+      description: List all custom agent tools for the current user
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: The ID of the custom agent tool
+                    tool_name:
+                      type: string
+                      description: The name of the tool
+                    tool_type:
+                      type: string
+                      description: The type of the tool
+                    tool_args:
+                      type: object
+                      description: The tool arguments
+                    owner_email:
+                      type: string
+                      description: The owner's email
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_tools/{tool_ids}:
+    delete:
+      operationId: delete_custom_agent_tool
+      summary: Deletes custom agent tools
+      description: Deletes custom agent tool given a list of tool ids belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: tool_ids
+        in: path
+        description: The unique identifiers of tools to be deleted.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_tools/{tool_id}:
+    get:
+      operationId: get_custom_agent_tool
+      summary: Get a single custom agent tool
+      description: Get a single custom agent tool by ID for the current user
+      tags:
+      - Agents
+      parameters:
+      - name: tool_id
+        in: path
+        description: The unique identifier of the tool to retrieve.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  tool_name:
+                    type: string
+                  tool_type:
+                    type: string
+                  tool_args:
+                    type: object
+                  owner_email:
+                    type: string
+                  file_name:
+                    type: string
+                    description: Original filename with extension
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    put:
+      operationId: update_custom_agent_tool
+      summary: Updates a custom agent tool
+      description: Updates a custom agent tool given a tool id belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: tool_id
+        in: path
+        description: The unique identifier of the tool to be updated.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomAgentToolRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agent_custom_tool_id:
+                    type: string
+                    description: The ID of the updated custom agent tool
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_tools/{tool_id}/download:
+    get:
+      operationId: download_custom_agent_tool
+      summary: Download custom agent tool file
+      description: 'Downloads the file associated with a custom agent tool owned by the current user. Only local_mcp, browser_action, and general_code tool types support file download.
+
+        '
+      tags:
+      - Agents
+      parameters:
+      - name: tool_id
+        in: path
+        description: The unique identifier of the tool whose file should be downloaded.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File download successful
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agents:
+    post:
+      operationId: add_custom_agent
+      summary: Add Custom Agents
+      description: Add Custom Agents
+      tags:
+      - Agents
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                agent_type:
+                  type: string
+                agent_args:
+                  type: string
+                agent_name:
+                  type: string
+                  description: 'User-provided name for the agent. If provided and the zip contains
+
+                    exactly one agent, this name will be used instead of the folder name
+
+                    inside the zip. If not provided, the folder name is used.
+
+                    '
+              required:
+              - file
+              - agent_type
+              - agent_args
+        required: true
+      responses:
+        '201':
+          description: Custom agent created successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    agent_custom_agent_id:
+                      type: string
+                      description: The ID of the created custom agent
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: list_custom_agents
+      summary: List Custom Agents
+      description: List all custom agents for the current user
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomAgentDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agents/{agent_ids}:
+    delete:
+      operationId: delete_custom_agent
+      summary: Deletes custom agents
+      description: Deletes custom agents given a list of agent ids belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: agent_ids
+        in: path
+        description: The unique identifiers of agents to be deleted.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agents/{agent_id}:
+    get:
+      operationId: get_custom_agent
+      summary: Get a single custom agent
+      description: Get a single custom agent by ID for the current user
+      tags:
+      - Agents
+      parameters:
+      - name: agent_id
+        in: path
+        description: The unique identifier of the agent to retrieve.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomAgentDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    put:
+      operationId: update_custom_agent
+      summary: Updates a custom agent
+      description: Updates a custom agent given an agent id belonging to the user.
+      tags:
+      - Agents
+      parameters:
+      - name: agent_id
+        in: path
+        description: The unique identifier of the agent to be updated.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomAgentRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agent_custom_agent_id:
+                    type: string
+                    description: The ID of the updated custom agent
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/custom_agents/{agent_id}/download:
+    get:
+      operationId: download_custom_agent
+      summary: Download custom agent zip file
+      description: Downloads the zip file associated with a custom agent owned by the current user.
+      tags:
+      - Agents
+      parameters:
+      - name: agent_id
+        in: path
+        description: The unique identifier of the agent whose zip file should be downloaded.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File download successful
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/mcp/inspect_tool:
+    post:
+      operationId: inspect_mcp_tool
+      summary: Unified MCP tool inspection
+      description: 'Unified endpoint for inspecting MCP tools. Supports three modes: (1) tool_id — inspect an existing local or remote MCP tool by database ID, (2) servers — inspect one or more remote MCP server configs (pre-add), (3) file_name + file_data_base64 — inspect an uploaded package (pre-add). Returns a list of per-server inspection results.
+
+        '
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tool_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: ID of an existing MCP tool to inspect
+                servers:
+                  type:
+                  - object
+                  - 'null'
+                  description: Map of server_name to server config for pre-add remote inspection
+                  additionalProperties:
+                    type: object
+                file_name:
+                  type:
+                  - string
+                  - 'null'
+                  description: Filename for pre-add upload inspection
+                file_data_base64:
+                  type:
+                  - string
+                  - 'null'
+                  description: Base64-encoded file content for pre-add upload inspection
+                model:
+                  type:
+                  - string
+                  - 'null'
+                  description: LLM model for security inspection
+      responses:
+        '200':
+          description: Unified inspection result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  servers:
+                    type: array
+                    description: Per-server inspection results
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                        server_name:
+                          type: string
+                        server_type:
+                          type: string
+                        tools:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              description:
+                                type: string
+                              parameters:
+                                type: object
+                        tool_count:
+                          type: integer
+                        security:
+                          type:
+                          - object
+                          - 'null'
+                        error:
+                          type:
+                          - string
+                          - 'null'
+                        detection_method:
+                          type: string
+                  error:
+                    type:
+                    - string
+                    - 'null'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/mcp/list_tools:
+    post:
+      operationId: list_mcp_tools
+      summary: List tools from MCP servers
+      description: 'Lists tools from configured MCP servers, optionally filtered by config type and server names.
+
+        '
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                config_type:
+                  type: string
+                  description: Type of config ('runner' or 'creator')
+                  default: runner
+                server_names:
+                  type:
+                  - array
+                  - 'null'
+                  items:
+                    type: string
+                  description: Optional list of server names to filter
+                mcp_dir:
+                  type:
+                  - string
+                  - 'null'
+                  description: Override directory for MCP configs
+                include_remote:
+                  type: boolean
+                  description: Whether to include remote MCP servers
+                  default: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  servers:
+                    type: object
+                  total_servers:
+                    type: integer
+                  total_tools:
+                    type: integer
+                  error:
+                    type:
+                    - string
+                    - 'null'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/mcp/sdk_options:
+    get:
+      operationId: get_mcp_sdk_options
+      summary: Get Claude SDK options schema
+      description: 'Returns the schema of available Claude SDK options that can be configured for MCP tool runners. Includes permission modes, effort levels, available betas, hook actions, and limitations.
+
+        '
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  sdk_options_schema:
+                    type: object
+                  permission_modes:
+                    type: array
+                    items:
+                      type: string
+                  effort_levels:
+                    type: array
+                    items:
+                      type: string
+                  available_betas:
+                    type: array
+                    items:
+                      type: string
+                  hook_actions:
+                    type: array
+                    items:
+                      type: string
+                  hook_events:
+                    type: array
+                    items:
+                      type: string
+                  limitations:
+                    type: object
+                  error:
+                    type:
+                    - string
+                    - 'null'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/builtin_mcps:
+    get:
+      operationId: list_builtin_mcps
+      summary: Lists built-in MCPs
+      description: 'Returns the list of built-in predefined MCPs (Model Context Protocol servers) available for use. Includes information about which MCPs are already added as tools and which OAuth apps are connected.
+
+        '
+      tags:
+      - Agents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  oauth_apps:
+                    type: array
+                    items:
+                      type: object
+                    description: List of OAuth-based MCP applications
+                  api_key_apps:
+                    type: array
+                    items:
+                      type: object
+                    description: List of API key-based MCP applications
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/builtin_mcps/add:
+    post:
+      operationId: add_builtin_mcp
+      summary: Add a built-in MCP
+      description: 'Adds a built-in MCP (Model Context Protocol server) to the user''s tools. This endpoint configures and enables a predefined MCP for the user with direct file uploads.
+
+        '
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - mcp_id
+              properties:
+                mcp_id:
+                  type: string
+                  description: The ID of the built-in MCP to add
+                keys:
+                  type:
+                  - string
+                  - 'null'
+                  description: JSON string of agent key associations for the MCP
+                files:
+                  type:
+                  - array
+                  - 'null'
+                  description: File uploads for MCP configuration
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '201':
+          description: MCP successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tool_id:
+                    type: string
+                    description: The ID of the added MCP tool
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/builtin_mcps/admin:
+    post:
+      operationId: create_user_builtin_mcp
+      summary: Create a custom builtin MCP (Admin only)
+      description: 'Creates a new admin-defined predefined MCP that will be available in the builtin MCPs list. This endpoint is restricted to admin users only. Supports optional logo file upload.
+
+        '
+      tags:
+      - Agents
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - mcp_config
+              properties:
+                mcp_config:
+                  type: string
+                  description: JSON string containing the MCP configuration (name, description, type, mcp_config_json, etc.)
+                logo_file:
+                  type:
+                  - string
+                  - 'null'
+                  format: binary
+                  description: Optional logo image file to upload
+      responses:
+        '201':
+          description: MCP successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Database ID of the created MCP
+                  mcp_id:
+                    type: string
+                    description: The MCP identifier (ends with _builtin)
+                  config:
+                    type: object
+                    description: The MCP configuration
+                  user_id:
+                    type: string
+                    description: User ID of the creator
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Creation timestamp
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Last update timestamp
+        '400':
+          description: Bad request - Invalid configuration or MCP ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/builtin_mcps/admin/{mcp_id}:
+    put:
+      operationId: update_user_builtin_mcp
+      summary: Update a custom builtin MCP (Admin only)
+      description: 'Updates an existing admin-defined predefined MCP configuration. This endpoint is restricted to admin users only.
+
+        '
+      tags:
+      - Agents
+      parameters:
+      - name: mcp_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The MCP identifier to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - description
+              - type
+              - mcp_config_json
+              properties:
+                name:
+                  type: string
+                  description: Display name of the MCP
+                description:
+                  type: string
+                  description: Description of what the MCP does
+                type:
+                  type: string
+                  enum:
+                  - oauth_app
+                  - api_app
+                  description: Type of the MCP (oauth_app or api_app)
+                mcp_config_json:
+                  type: object
+                  description: The MCP server configuration JSON
+                image_url:
+                  type: string
+                  description: Optional URL to the MCP icon/image
+      responses:
+        '200':
+          description: MCP successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Database ID of the MCP
+                  mcp_id:
+                    type: string
+                    description: The MCP identifier
+                  config:
+                    type: object
+                    description: The updated MCP configuration
+                  user_id:
+                    type: string
+                    description: User ID of the owner
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Creation timestamp
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Last update timestamp
+        '400':
+          description: Bad request - Invalid configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: MCP not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: delete_user_builtin_mcp
+      summary: Delete a custom builtin MCP (Admin only)
+      description: 'Deletes an admin-defined predefined MCP from the system. This endpoint is restricted to admin users only.
+
+        '
+      tags:
+      - Agents
+      parameters:
+      - name: mcp_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The MCP identifier to delete
+      responses:
+        '200':
+          description: MCP successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: MCP not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /agents/builtin_mcps/admin/{mcp_id}/logo:
+    post:
+      operationId: update_admin_mcp_logo
+      summary: Update admin MCP logo (Admin only)
+      description: 'Updates the logo for an admin-defined predefined MCP by uploading a new logo file. This endpoint is restricted to admin users only.
+
+        '
+      tags:
+      - Agents
+      parameters:
+      - name: mcp_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The MCP identifier to update
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Logo image file to upload
+      responses:
+        '200':
+          description: Logo successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+                  logo_url:
+                    type: string
+                    description: URL of the uploaded logo
+        '400':
+          description: Bad request - Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: MCP not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    delete:
+      operationId: remove_admin_mcp_logo
+      summary: Remove admin MCP logo (Admin only)
+      description: 'Removes the logo from an admin-defined predefined MCP. This endpoint is restricted to admin users only.
+
+        '
+      tags:
+      - Agents
+      parameters:
+      - name: mcp_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The MCP identifier
+      responses:
+        '200':
+          description: Logo successfully removed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: MCP not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    AgentKeyAssociation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Environment variable name (env_key_name)
+        associated_key:
+          type:
+          - object
+          - 'null'
+          description: Associated agent key details if key is assigned
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Agent key ID
+            name:
+              type: string
+              description: Agent key name
+            owner_email:
+              type: string
+              description: Agent key owner email
+            description:
+              type: string
+              description: Agent key description
+    CustomAgentSuggestionMcpServer:
+      required:
+      - tool_name
+      - tool_args
+      type: object
+      properties:
+        tool_name:
+          type: string
+          description: MCP server name from agent metadata
+        tool_args:
+          type: string
+          description: JSON string containing tool configuration (empty if unresolved)
+    CustomAgentKeyAssociation:
+      required:
+      - id
+      - agent_id
+      - env_key_name
+      - user_id
+      - requirement_type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Association UUID
+        agent_id:
+          type: string
+          format: uuid
+          description: Custom agent UUID
+        env_key_name:
+          type: string
+          description: Env var name (from envs.json or user-added)
+        key_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Agent key UUID (null for placeholder associations)
+        user_id:
+          type: string
+          format: uuid
+          description: User UUID who owns the association
+        requirement_type:
+          type: string
+          enum:
+          - required
+          - optional_with_default
+          - optional_no_default
+          - custom
+          description: From envs.json value or custom if assigned after the fact
+        key_name:
+          type:
+          - string
+          - 'null'
+          description: Agent key name
+        owner_email:
+          type:
+          - string
+          - 'null'
+          description: Agent key owner email
+    UpdateAgentKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - private
+          - shared
+        value:
+          type: string
+        description:
+          type: string
+    KeyAssociation:
+      required:
+      - name
+      - key_id
+      type: object
+      properties:
+        name:
+          type: string
+        key_id:
+          type: string
+        associate_id:
+          type: string
+        user_id:
+          type: string
+        email:
+          type: string
+    AgentToolSpecApiKeys:
+      required:
+      - required
+      - optional
+      - internal
+      description: The specific keys associated with an agent tool.
+      type: object
+      properties:
+        required:
+          description: List of required keys set for the tool to function.
+          type: array
+          items:
+            type: string
+        optional:
+          description: The tool can still operate even if these keys are not set.
+          type: array
+          items:
+            type: string
+        internal:
+          description: Keys that are managed internally by the system.
+          type: array
+          items:
+            type: string
+    UpdateCustomAgentToolRequest:
+      required:
+      - tool_args
+      type: object
+      properties:
+        tool_args:
+          type: object
+          description: The new arguments for the custom agent tool
+    CustomAgentSuggestion:
+      type: object
+      properties:
+        mcp_servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomAgentSuggestionMcpServer'
+          description: List of MCP server suggestions with tool configurations
+    CreateAgentToolKeyAssociationsRequest:
+      required:
+      - tool
+      - keys
+      type: object
+      properties:
+        tool:
+          type: string
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewKeyAssociation'
+    AgentServerDirectoryStatsPerAgentChatSession:
+      required:
+      - agent_chat_session_id
+      - chat_preview
+      - stats
+      type: object
+      properties:
+        agent_chat_session_id:
+          type: string
+        chat_preview:
+          type: string
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentServerDirectoryStats'
+    DeleteCustomAgentKeyAssociationsResponse:
+      required:
+      - deleted_count
+      type: object
+      properties:
+        deleted_count:
+          type: integer
+          description: Number of associations deleted
+    AgentServerDirectoryStats:
+      required:
+      - id
+      - object
+      - size_bytes
+      - size_human_readable
+      - file_count
+      - directory_count
+      - created_timestamp
+      - modified_timestamp
+      - created_date
+      - modified_date
+      - is_empty
+      - top_level_contents
+      - owner
+      - permissions
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        size_bytes:
+          type: integer
+        size_human_readable:
+          type: string
+        file_count:
+          type: integer
+        directory_count:
+          type: integer
+        created_timestamp:
+          type: number
+        modified_timestamp:
+          type: number
+        created_date:
+          type: string
+        modified_date:
+          type: string
+        is_empty:
+          type: boolean
+        top_level_contents:
+          type: array
+          items:
+            type: string
+        owner:
+          type: string
+        permissions:
+          type: string
+        files:
+          description: Only populated when detail_level > 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentServerDirectoryFileStats'
+    AgentServerDirectoryFileStats:
+      required:
+      - name
+      - path
+      - size_bytes
+      - size_human_readable
+      - created_timestamp
+      - modified_timestamp
+      - created_date
+      - modified_date
+      - is_directory
+      - owner
+      - permissions
+      type: object
+      additionalProperties: true
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        size_bytes:
+          type: integer
+        size_human_readable:
+          type: string
+        created_timestamp:
+          type: number
+        modified_timestamp:
+          type: number
+        created_date:
+          type: string
+        modified_date:
+          type: string
+        is_directory:
+          type: boolean
+        owner:
+          description: Unix systems only
+          type: string
+        permissions:
+          description: Unix systems only
+          type: string
+        sha256:
+          description: Only for files, not directories
+          type: string
+    AgentToolSpec:
+      required:
+      - name
+      - description
+      - enabled
+      - default
+      - extendable
+      - api_keys
+      type: object
+      properties:
+        name:
+          description: The identifier representing the specific tool.
+          type: string
+        description:
+          description: Description of the tool.
+          type: string
+        enabled:
+          description: Specifies whether the tool is currently enabled in H2OGPT.
+          type: boolean
+        default:
+          description: Specifies if the tool is pre-selected by default when available.
+          type: boolean
+        extendable:
+          description: Specifies whether the tool supports custom API keys
+          type: boolean
+        api_keys:
+          $ref: '#/components/schemas/AgentToolSpecApiKeys'
+    AgentKey:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - private
+          - shared
+          - built_in
+        description:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        owner_email:
+          type: string
+    CreateCustomAgentToolAssociationRequest:
+      required:
+      - agent_id
+      - mcp_server_name
+      type: object
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+          description: Custom agent UUID
+        mcp_server_name:
+          type: string
+          description: MCP server name
+        tool_name:
+          type:
+          - string
+          - 'null'
+          description: Tool name to associate (null for unresolved)
+    CreateCustomAgentKeyAssociationRequest:
+      required:
+      - agent_id
+      - env_key_name
+      - key_id
+      type: object
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+          description: Custom agent UUID
+        env_key_name:
+          type: string
+          description: Env var name (from envs.json or user-added)
+        key_id:
+          type: string
+          format: uuid
+          description: Agent key UUID to associate
+    DeleteCustomAgentToolAssociationsResponse:
+      required:
+      - deleted_count
+      type: object
+      properties:
+        deleted_count:
+          type: integer
+          description: Number of associations deleted
+    CreateAgentKeyRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - private
+          - shared
+        value:
+          type: string
+        description:
+          type: string
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Agent ID (UUID for custom agents, string like "general-agent" for built-in)
+        value:
+          type: string
+          description: Agent identifier (agent_type for built-in, agent_name for custom)
+        label:
+          type: string
+          description: Display name for the agent
+        enabled:
+          type: boolean
+          description: Whether the agent is enabled (true if all required keys are associated)
+        type:
+          type: string
+          enum:
+          - built_in
+          - langgraph
+          - crewai
+          - openai
+          - claude
+          description: Agent type
+        owner:
+          type:
+          - string
+          - 'null'
+          description: Owner email (null for built-in agents)
+        description:
+          type: string
+          description: Agent description
+        api_keys:
+          type: object
+          description: Key associations grouped by requirement type
+          properties:
+            optional:
+              type: array
+              description: Optional key associations (with or without defaults)
+              items:
+                $ref: '#/components/schemas/AgentKeyAssociation'
+            required:
+              type: array
+              description: Required key associations
+              items:
+                $ref: '#/components/schemas/AgentKeyAssociation'
+            custom:
+              type: array
+              description: Custom key associations (added after agent creation)
+              items:
+                $ref: '#/components/schemas/AgentKeyAssociation'
+        mcp_servers:
+          type: array
+          description: MCP server associations (only for custom agents)
+          items:
+            type: object
+            properties:
+              tool_name:
+                type: string
+                description: MCP server name from agent metadata
+              tool_args:
+                type: string
+                description: Tool arguments as JSON string
+              associated_tool:
+                type:
+                - object
+                - 'null'
+                description: Associated tool details if tool is resolved
+                properties:
+                  id:
+                    type: string
+                    description: Tool ID
+                  name:
+                    type: string
+                    description: Tool name
+                  owner_email:
+                    type: string
+                    description: Tool owner email
+                  description:
+                    type: string
+                    description: Tool description
+    Count:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
+    CustomAgentToolAssociation:
+      required:
+      - id
+      - agent_id
+      - agent_name
+      - mcp_server_name
+      - user_id
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Association UUID
+        agent_id:
+          type: string
+          format: uuid
+          description: Custom agent UUID
+        agent_name:
+          type: string
+          description: Custom agent name
+        tool_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Associated tool UUID (null if unresolved)
+        tool_name:
+          type:
+          - string
+          - 'null'
+          description: Associated tool name (null if unresolved)
+        mcp_server_name:
+          type: string
+          description: MCP server name
+        user_id:
+          type: string
+          format: uuid
+          description: User UUID who owns the association
+    UpdateCustomAgentRequest:
+      required:
+      - agent_args
+      type: object
+      properties:
+        agent_args:
+          type: object
+          description: The new arguments for the custom agent
+        mcp_servers_mapping:
+          type:
+          - object
+          - 'null'
+          description: Optional dict mapping MCP server names to tool names (or null)
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+    AgentToolKeyAssociations:
+      required:
+      - tool
+      - keys
+      type: object
+      properties:
+        tool:
+          type: string
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyAssociation'
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    CustomAgentDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the custom agent
+        agent_name:
+          type: string
+          description: The name of the agent
+        agent_type:
+          type: string
+          description: The type of the agent
+        agent_args:
+          type: object
+          description: The agent arguments
+        owner_email:
+          type: string
+          description: The owner's email
+        mcp_servers:
+          type:
+          - array
+          - 'null'
+          description: Array of MCP server associations with tool details
+          items:
+            type: object
+            properties:
+              tool_name:
+                type: string
+                description: MCP server name from agent metadata
+              tool_args:
+                type: string
+                description: Tool arguments as JSON string
+              associated_tool:
+                type:
+                - object
+                - 'null'
+                description: Associated tool details if tool is resolved
+                properties:
+                  id:
+                    type: string
+                    description: Tool ID
+                  name:
+                    type: string
+                    description: Tool name
+                  owner_email:
+                    type: string
+                    description: Tool owner email
+                  description:
+                    type: string
+                    description: Tool description
+        api_keys:
+          type: array
+          description: Key associations (env var → agent key) for this agent
+          items:
+            $ref: '#/components/schemas/CustomAgentKeyAssociation'
+    NewKeyAssociation:
+      required:
+      - name
+      - key_id
+      type: object
+      properties:
+        name:
+          type: string
+        key_id:
+          type: string
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    UnsupportedMediaType:
+      description: Unsupported media type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

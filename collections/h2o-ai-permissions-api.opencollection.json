@@ -1,0 +1,696 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Permissions API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Permissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Checks if collection permission is granted for a given user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/permissions/is_granted",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Checks if collection permission is granted for a given user."
+        },
+        {
+          "info": {
+            "name": "Associates a user with a document they have permission on.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/documents/:document_id/users/:user_id",
+            "params": [
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the document"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the user that has the permission."
+              }
+            ]
+          },
+          "docs": "Associates a user with a document they have permission on."
+        },
+        {
+          "info": {
+            "name": "Returns a list of all registered users for the system.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many users to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many users to return."
+              }
+            ]
+          },
+          "docs": "Returns a list of all registered users for the system."
+        },
+        {
+          "info": {
+            "name": "Finds user for a given unique identifier.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              }
+            ]
+          },
+          "docs": "Finds user for a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Lists permissions of a given user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/permissions",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              }
+            ]
+          },
+          "docs": "Lists permissions of a given user."
+        },
+        {
+          "info": {
+            "name": "Request deletion of the current user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current"
+          },
+          "docs": "Creates a deletion request for the currently authenticated user. Returns a delete ID that must be used to confirm the deletion within 5 minutes."
+        },
+        {
+          "info": {
+            "name": "Confirm deletion of the current user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current/confirm-delete",
+            "params": [
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Confirms and executes the deletion of the currently authenticated user and all associated data using the delete ID from the initial request."
+        },
+        {
+          "info": {
+            "name": "Lists permissions of the user calling the endpoint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current/permissions"
+          },
+          "docs": "Lists permissions of the user calling the endpoint."
+        },
+        {
+          "info": {
+            "name": "Finds roles associated with a given user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/roles",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              }
+            ]
+          },
+          "docs": "Finds roles associated with a given user."
+        },
+        {
+          "info": {
+            "name": "Resets user roles.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/roles",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces all roles of the given user with a new set of roles"
+        },
+        {
+          "info": {
+            "name": "Finds roles associated with the user calling the endpoint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current/roles"
+          },
+          "docs": "Finds roles associated with the user calling the endpoint."
+        },
+        {
+          "info": {
+            "name": "Assigns roles to a given user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/roles/:role_names",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              },
+              {
+                "name": "role_names",
+                "value": "",
+                "type": "path",
+                "description": "The role names."
+              }
+            ]
+          },
+          "docs": "Assigns roles to a given user."
+        },
+        {
+          "info": {
+            "name": "Removes roles from a given user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/roles/:role_names",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              },
+              {
+                "name": "role_names",
+                "value": "",
+                "type": "path",
+                "description": "The role names."
+              }
+            ]
+          },
+          "docs": "Removes roles from a given user."
+        },
+        {
+          "info": {
+            "name": "Returns a list of all groups existing on the H2OGPTe instance.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups"
+          },
+          "docs": "Returns a list of all groups existing on the H2OGPTe instance."
+        },
+        {
+          "info": {
+            "name": "Creates a user group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a user group."
+        },
+        {
+          "info": {
+            "name": "Deletes groups for given group names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups",
+            "params": [
+              {
+                "name": "names",
+                "value": "",
+                "type": "query",
+                "description": "Names of groups to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes groups for given group names."
+        },
+        {
+          "info": {
+            "name": "Deletes groups for given unique identifiers.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups/:group_ids",
+            "params": [
+              {
+                "name": "group_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of groups to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes a groups for given unique identifiers."
+        },
+        {
+          "info": {
+            "name": "Finds roles associated with a given group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups/:group_id/roles",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of a group."
+              }
+            ]
+          },
+          "docs": "Finds roles associated with a given group."
+        },
+        {
+          "info": {
+            "name": "Resets group roles.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups/:group_id/roles",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of a group."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces all roles of the given group with a new set of roles"
+        },
+        {
+          "info": {
+            "name": "Assigns roles to a given group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups/:group_id/roles/:role_names",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of a group."
+              },
+              {
+                "name": "role_names",
+                "value": "",
+                "type": "path",
+                "description": "The role names."
+              }
+            ]
+          },
+          "docs": "Assigns roles to a given user."
+        },
+        {
+          "info": {
+            "name": "Removes roles from a given group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/groups/:group_id/roles/:role_names",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of a group."
+              },
+              {
+                "name": "role_names",
+                "value": "",
+                "type": "path",
+                "description": "The role names."
+              }
+            ]
+          },
+          "docs": "Removes roles from a given group."
+        },
+        {
+          "info": {
+            "name": "Lists permissions of a given group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/group/:group_id/permissions",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of a group."
+              }
+            ]
+          },
+          "docs": "Lists permissions of a given group."
+        },
+        {
+          "info": {
+            "name": "Returns all roles for in the H2OGPTe instance.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles"
+          },
+          "docs": "Returns all roles for in the H2OGPTe instance."
+        },
+        {
+          "info": {
+            "name": "Creates a role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a role."
+        },
+        {
+          "info": {
+            "name": "Deletes roles for given role names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles",
+            "params": [
+              {
+                "name": "names",
+                "value": "",
+                "type": "query",
+                "description": "Names of roles to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes roles for given role names."
+        },
+        {
+          "info": {
+            "name": "Finds role for a given unique identifier.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an role."
+              }
+            ]
+          },
+          "docs": "Finds role for a given unique identifier."
+        },
+        {
+          "info": {
+            "name": "Deletes roles for given unique identifiers.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_ids",
+            "params": [
+              {
+                "name": "role_ids",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifiers of roles to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes roles for given unique identifiers."
+        },
+        {
+          "info": {
+            "name": "Lists permissions of a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/permissions",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an role."
+              }
+            ]
+          },
+          "docs": "Lists permissions of a given role."
+        },
+        {
+          "info": {
+            "name": "Sets a new set of permissions for a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/permissions",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an role."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets a new set of permissions for a given role."
+        },
+        {
+          "info": {
+            "name": "Assigns permission to a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/permissions/:permission_name",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an user."
+              },
+              {
+                "name": "permission_name",
+                "value": "",
+                "type": "path",
+                "description": "The permission name."
+              }
+            ]
+          },
+          "docs": "Assigns permission to a given role."
+        },
+        {
+          "info": {
+            "name": "Removes permission from a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/permissions/:permission_name",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the role."
+              },
+              {
+                "name": "permission_name",
+                "value": "",
+                "type": "path",
+                "description": "The permission name."
+              }
+            ]
+          },
+          "docs": "Removes permission from a given role."
+        },
+        {
+          "info": {
+            "name": "Sets priority for a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/priority",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an role."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets priority for a given role."
+        },
+        {
+          "info": {
+            "name": "Returns system permissions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/permissions",
+            "params": [
+              {
+                "name": "group_names",
+                "value": "",
+                "type": "query",
+                "description": "If set, the output permissions will be related only to given groups."
+              },
+              {
+                "name": "role_names",
+                "value": "",
+                "type": "query",
+                "description": "If set, the output permissions will be related only to given roles."
+              }
+            ]
+          },
+          "docs": "Returns all system permissions or permissions for given groups"
+        },
+        {
+          "info": {
+            "name": "Checks if permission is granted for a given user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/permissions/is_granted",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Checks if permission is granted for a given user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

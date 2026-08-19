@@ -1,0 +1,357 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST API Keys API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: API Keys
+paths:
+  /admin/api_keys:
+    post:
+      operationId: create_api_key_for_user
+      summary: Create an API key
+      description: Allows admins to create an API key for another user.
+      tags:
+      - API Keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APIKeyCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKeyResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Unexpected'
+    get:
+      operationId: list_all_api_keys
+      summary: List API keys.
+      description: Allows admins to list all existing API keys.
+      tags:
+      - API Keys
+      parameters:
+      - name: offset
+        in: query
+        description: How many API keys to skip before returning.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: How many API keys to return.
+        required: false
+        schema:
+          type: integer
+          default: 100
+      - name: filter
+        in: query
+        description: Only returns keys for usernames matching this filter.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/APIKeyInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/api_keys/deactivate/{key_id}:
+    post:
+      operationId: deactivate_api_key
+      summary: Deactivate an API key
+      description: Allows admins to deactivate an API key.
+      tags:
+      - API Keys
+      parameters:
+      - name: key_id
+        in: path
+        description: Id of the key to deactivate.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/api_keys/expire/{key_id}:
+    patch:
+      operationId: update_api_key_expiry
+      summary: Update API key expiry.
+      description: Allows admins to update the expiration of an API key (either set a new expiry or remove one).
+      tags:
+      - API Keys
+      parameters:
+      - name: key_id
+        in: path
+        description: Id of the key to update.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APIKeyUpdateExpiryRequest'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/api_keys/inactivity_interval/{key_id}:
+    patch:
+      operationId: update_api_key_inactivity_interval
+      summary: Update API key inactivity interval.
+      description: Allows admins to update the inactivity interval of an API key (either set a new inactivity interval or remove one). The inactivity interval is the number of days a key can remain unused (no activity) before it becomes invalid.
+      tags:
+      - API Keys
+      parameters:
+      - name: key_id
+        in: path
+        description: Id of the key to update.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APIKeyUpdateInactivityIntervalRequest'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /admin/api_keys/{key_id}:
+    delete:
+      operationId: delete_api_key
+      summary: Delete an API key.
+      description: Allows admins to delete an API key.
+      tags:
+      - API Keys
+      parameters:
+      - name: key_id
+        in: path
+        description: Id of the key to delete.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  schemas:
+    APIKeyUpdateExpiryRequest:
+      type: object
+      properties:
+        expires_in:
+          description: Interval of when the API key should expire. Do not include if you would like to remove the expiry of a key.
+          type: string
+          example: 30 days
+    APIKeyResult:
+      required:
+      - secret_key
+      - api_key
+      type: object
+      properties:
+        secret_key:
+          description: The secret key associated with the newly generated API Key.
+          type: string
+        api_key:
+          $ref: '#/components/schemas/APIKeyInfo'
+    APIKeyUpdateInactivityIntervalRequest:
+      type: object
+      properties:
+        inactivity_interval:
+          description: The number of days the key can be inactive for (not used) before it becomes invalid. Do not include if you would like to remove the inactivity interval of a key.
+          type: integer
+          example: 60
+    APIKeyCreateRequest:
+      type: object
+      required:
+      - user_id
+      properties:
+        user_id:
+          description: Id of the user the key will be created for
+          type: string
+        name:
+          description: The name for the API key
+          type: string
+        collection_id:
+          description: The id of the collection you want the key to be configured to
+          type: string
+        expires_in:
+          description: Interval of when the API key should expire
+          type: string
+          example: 30 days
+        inactivity_interval:
+          description: The number of days a key can be unused for (no activity) before it becomes invalid.
+          type: integer
+          example: 60
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    APIKeyInfo:
+      required:
+      - id
+      - username
+      - name
+      - hint
+      - created_at
+      - is_global_key
+      - is_active
+      - total_calls
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the API key
+          type: string
+        username:
+          description: The username of the user this key belongs to
+          type: string
+        name:
+          description: The name of the API key
+          type: string
+        hint:
+          description: Hint for the secret key of the API key
+          type: string
+        created_at:
+          description: The date and time of when the API key was created
+          type: string
+          format: date-time
+        expires_at:
+          description: The date and time of the API key expiration
+          type: string
+          format: date-time
+        last_used_at:
+          description: The date and time of the most recent API call using this key
+          type: string
+          format: date-time
+        inactivity_interval:
+          description: The number of days this API key can be inactive for before becoming invalid
+          type: integer
+        total_calls:
+          description: Number of times this API key has been used
+          type: integer
+        is_active:
+          description: Status denoting if the API key is active or not
+          type: boolean
+        collection_name:
+          description: The name of the collection associated with the API key (if it has been configured to a collection)
+          type: string
+        collection_id:
+          description: The id of the collection associated with the API key (if it has been configured to a collection)
+          type: string
+        is_global_key:
+          description: Status denoting if the API key is global or collection specific
+          type: boolean
+  responses:
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

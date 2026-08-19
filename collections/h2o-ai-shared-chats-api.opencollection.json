@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Shared Chats API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shared Chats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List shared chats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/shared_chats",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many shared chats to skip."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many shared chats to return."
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter shared chats by name (case-insensitive substring match)."
+              },
+              {
+                "name": "filter_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter shared chats by type (all, private, public, frozen)."
+              },
+              {
+                "name": "showcase_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter shared chats by Showcase membership (all, featured, not_featured)."
+              }
+            ]
+          },
+          "docs": "List shared chats created by the current user."
+        },
+        {
+          "info": {
+            "name": "Share a chat session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/shared_chats",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a shared chat from an existing chat session. Returns a URL that can be used to access the shared chat."
+        },
+        {
+          "info": {
+            "name": "Get a shared chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/shared_chats/:shared_chat_id",
+            "params": [
+              {
+                "name": "shared_chat_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the shared chat."
+              }
+            ]
+          },
+          "docs": "Get a shared chat by its ID. Public shared chats are accessible without authentication. Private shared chats require authentication."
+        },
+        {
+          "info": {
+            "name": "Update a shared chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/shared_chats/:shared_chat_id",
+            "params": [
+              {
+                "name": "shared_chat_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the shared chat to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a shared chat's settings. Only the owner can update a shared chat."
+        },
+        {
+          "info": {
+            "name": "Delete a shared chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/shared_chats/:shared_chat_id",
+            "params": [
+              {
+                "name": "shared_chat_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the shared chat to delete."
+              }
+            ]
+          },
+          "docs": "Delete a single shared chat by its ID. Only the owner can delete a shared chat."
+        },
+        {
+          "info": {
+            "name": "Batch delete shared chats",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/shared_chats/batch_delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete multiple shared chats by their IDs. Only the owner can delete shared chats."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

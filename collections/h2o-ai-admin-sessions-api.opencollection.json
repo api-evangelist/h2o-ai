@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Admin Sessions API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Admin Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List live sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/sessions",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor returned by a previous call. Omit on the first call."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of sessions to return in this page. Defaults to 100, hard-capped at 500."
+              }
+            ]
+          },
+          "docs": "Allows admins to enumerate live sessions stored in Redis. Returns metadata only — never access tokens, refresh tokens, or CSRF values. Pagination is cursor-based; pass back the `next_cursor` from a previous response to continue, or omit to start fresh. Iteration is complete when `next_cursor` is absent."
+        },
+        {
+          "info": {
+            "name": "Get session inventory stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/sessions/stats"
+          },
+          "docs": "Returns aggregate counters across all live sessions (total, by transport, anonymous count, Azure exchange-cache count). Result is cached per-process for ~30 seconds; the `cache_age_seconds` field communicates freshness so a polling dashboard can render it."
+        },
+        {
+          "info": {
+            "name": "Revoke a session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/sessions/:session_id",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the session to revoke."
+              }
+            ]
+          },
+          "docs": "Force-revokes a live session by ID. Reuses the same revoke path as user-driven sign-out, so peer mux replicas drop their cached copy via pub/sub. DELETE is idempotent — returns 204 whether the session existed or not."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

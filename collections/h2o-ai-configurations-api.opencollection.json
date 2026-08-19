@@ -1,0 +1,282 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Configurations API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Configurations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Gets configurations for a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/configurations",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an role."
+              }
+            ]
+          },
+          "docs": "Gets configurations for a given role."
+        },
+        {
+          "info": {
+            "name": "Sets configuration item for a given role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/configurations/:key_name",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of an role."
+              },
+              {
+                "name": "key_name",
+                "value": "",
+                "type": "path",
+                "description": "The key of the configuration item that will be set."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets configuration item for a given role."
+        },
+        {
+          "info": {
+            "name": "Deletes role configuration items.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/roles/:role_id/configurations/:key_names",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the role."
+              },
+              {
+                "name": "key_names",
+                "value": "",
+                "type": "path",
+                "description": "Keys of the configuration items that will be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes role configuration items for a given role."
+        },
+        {
+          "info": {
+            "name": "Gets global configurations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/configurations",
+            "params": [
+              {
+                "name": "as_admin",
+                "value": "",
+                "type": "query",
+                "description": "If set, lists global configurations with admin permissions. The user must be admin."
+              }
+            ]
+          },
+          "docs": "Gets global configurations."
+        },
+        {
+          "info": {
+            "name": "Fetch HTML content from a URL.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/configurations/fetch-url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Fetches HTML content from a remote URL for use as an email template. Validates that content is HTML and under 100KB. Admin only.\n"
+        },
+        {
+          "info": {
+            "name": "Sets global configuration item.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/configurations/:key_name",
+            "params": [
+              {
+                "name": "key_name",
+                "value": "",
+                "type": "path",
+                "description": "The key of the configuration item that will be set."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets global configuration item (to be used by admins only)."
+        },
+        {
+          "info": {
+            "name": "Deletes global configuration items.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/configurations/:key_names",
+            "params": [
+              {
+                "name": "key_names",
+                "value": "",
+                "type": "path",
+                "description": "Keys of the configuration items that will be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes global configuration items (to be used by admins only)."
+        },
+        {
+          "info": {
+            "name": "Gets configurations for current users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/current/configurations"
+          },
+          "docs": "Gets configurations for current users."
+        },
+        {
+          "info": {
+            "name": "Gets user configurations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/configurations",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user."
+              }
+            ]
+          },
+          "docs": "Gets user configurations (to be used by admins only)."
+        },
+        {
+          "info": {
+            "name": "Sets user configuration item.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/configurations/:key_name",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user."
+              },
+              {
+                "name": "key_name",
+                "value": "",
+                "type": "path",
+                "description": "The key of the configuration item that will be set."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets user configuration item (to be used by admins only)."
+        },
+        {
+          "info": {
+            "name": "Resets user configuration item.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/configurations/:key_name/reset",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user."
+              },
+              {
+                "name": "key_name",
+                "value": "",
+                "type": "path",
+                "description": "The key of the configuration item that will be set."
+              }
+            ]
+          },
+          "docs": "Resets user configuration item (to be used by admins only)."
+        },
+        {
+          "info": {
+            "name": "Deletes user configuration items.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/users/:user_id/configurations/:key_names",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user."
+              },
+              {
+                "name": "key_names",
+                "value": "",
+                "type": "path",
+                "description": "Keys of the configuration items that will be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes user configuration items (to be used by admins only)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

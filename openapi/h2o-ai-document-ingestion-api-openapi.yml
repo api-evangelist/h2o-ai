@@ -1,0 +1,1327 @@
+openapi: 3.2.0
+info:
+  title: h2oGPTe REST Document Ingestion API
+  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  version: v1.0.0
+servers:
+- url: https://h2ogpte.genai.h2o.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Document Ingestion
+paths:
+  /uploads:
+    put:
+      operationId: upload_file
+      description: Uploads file to H2OGPTe instance
+      tags:
+      - Document Ingestion
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadedFile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /uploads/{upload_ids}/ingest:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Ingest uploaded document
+      description: Ingests uploaded document identified to a given collection
+      operationId: ingest_upload
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterUploadIds'
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/IngestionParameterRestricted'
+      - $ref: '#/components/parameters/IngestionParameterPermissions'
+      - $ref: '#/components/parameters/IngestionParameterEncryptDocument'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestUploadBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /uploads/{upload_ids}/ingest/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to ingest uploaded document
+      description: Creates a job to ingest uploaded document identified to a given collection
+      operationId: create_ingest_upload_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterUploadIds'
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/IngestionParameterRestricted'
+      - $ref: '#/components/parameters/IngestionParameterPermissions'
+      - $ref: '#/components/parameters/IngestionParameterEncryptDocument'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestUploadBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/file_system:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Adds files from the local system into a collection.
+      description: Adds files from the local system into a collection.
+      operationId: ingest_from_file_system
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromFileSystemBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/file_system/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to add files from the local system into a collection.
+      description: Creates a job to add files from the local system into a collection.
+      operationId: create_ingest_from_file_system_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromFileSystemBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/plain_text:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Adds plain text to a collection.
+      description: Adds plain text to a collection.
+      operationId: ingest_from_plain_text
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterFileName'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/Timeout'
+      - $ref: '#/components/parameters/IngestionParameterMetadata'
+      requestBody:
+        description: The text that will ingested into a collection.
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/plain_text/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to add plain text to a collection.
+      description: Creates a job to add plain text to a collection.
+      operationId: create_ingest_from_plain_text_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterFileName'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterMetadata'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        description: The text that will ingested into a collection.
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/website:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Crawls and ingest a URL into a collection.
+      description: Crawls and ingest a URL into a collection. The web page or document linked from this URL will be imported.
+      operationId: ingest_from_website
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterFollowLinks'
+      - $ref: '#/components/parameters/IngestionParameterMaxDepth'
+      - $ref: '#/components/parameters/IngestionParameterMaxDocuments'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromWebsiteBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/website/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to crawl and ingest a URL into a collection.
+      description: Creates a job to crawl and ingest a URL into a collection. The web page or document linked from this URL will be imported.
+      operationId: create_ingest_from_website_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterFollowLinks'
+      - $ref: '#/components/parameters/IngestionParameterMaxDepth'
+      - $ref: '#/components/parameters/IngestionParameterMaxDocuments'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromWebsiteBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/agent_only_to_standard:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Converts files uploaded in "agent_only" ingest mode  to PDF and parses them.
+      description: Converts files uploaded in "agent_only" ingest mode  to PDF and parses them.
+      operationId: ingest_agent_only_to_standard
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterDocumentId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterRestricted'
+      - $ref: '#/components/parameters/IngestionParameterPermissions'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/Timeout'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/agent_only_to_standard/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to parse files uploaded in "agent_only" ingest mode.
+      description: Creates a job to parse files uploaded in "agent_only" ingest mode.
+      operationId: create_ingest_agent_only_to_standard_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterDocumentId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterRestricted'
+      - $ref: '#/components/parameters/IngestionParameterPermissions'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/Timeout'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/s3:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Adds files from the AWS S3 storage into a collection.
+      description: Adds files from the AWS S3 storage into a collection.
+      operationId: ingest_from_s3
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromS3Body'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/s3/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to add files from the AWS S3 storage into a collection.
+      description: Creates a job to add files from the AWS S3 storage into a collection.
+      operationId: create_ingest_from_s3_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromS3Body'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/gcs:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Adds files from the Google Cloud Storage into a collection.
+      description: Adds files from the Google Cloud Storage into a collection.
+      operationId: ingest_from_gcs
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromGcsBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/gcs/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to add files from the Google Cloud Storage into a collection.
+      description: Creates a job to add files from the Google Cloud Storage into a collection.
+      operationId: create_ingest_from_gcs_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromGcsBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/azure_blob_storage:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Adds files from the Azure Blob Storage into a collection.
+      description: Adds files from the Azure Blob Storage into a collection.
+      operationId: ingest_from_azure_blob_storage
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromAzureBlobStorageBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/azure_blob_storage/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to add files from the Azure Blob Storage into a collection.
+      description: Creates a job to add files from the Azure Blob Storage into a collection.
+      operationId: create_ingest_from_azure_blob_storage_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromAzureBlobStorageBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/sharepoint_online:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Adds files from SharePoint Online into a collection.
+      description: 'Adds files from Microsoft SharePoint Online into a collection. Accepts a
+
+        list of entries — sites, drives, folders, or files — each identified by
+
+        the drive_id and object_id returned by the connector browse API.
+
+
+        To ingest from a drive that is only addressable by its drive_id (for
+
+        example a OneDrive personal drive, a Microsoft 365 group drive, or any
+
+        drive in a non-discoverable site) pass an entry with
+
+        entry_type="drive_by_id" and the drive_id field set.
+
+        '
+      operationId: ingest_from_sharepoint_online
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromSharepointOnlineBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/sharepoint_online/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to add files from SharePoint Online into a collection.
+      description: 'Creates a job to add files from Microsoft SharePoint Online into a
+
+        collection. See ingest_from_sharepoint_online for details on the entry
+
+        shape — including how to target a drive by its drive_id.
+
+        '
+      operationId: create_ingest_from_sharepoint_online_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromSharepointOnlineBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/confluence:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Ingests confluence pages into collection.
+      description: Ingests confluence pages into collection. If an ingested page has sub-pages, the subpages are also ingested.
+      operationId: ingest_from_confluence
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromConfluenceBody'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+  /ingest/confluence/job:
+    post:
+      tags:
+      - Document Ingestion
+      summary: Creates a job to ingest confluence pages into collection.
+      description: Creates a job to confluence pages into collection. If an ingested page has sub-pages, the subpages are also ingested.
+      operationId: create_ingest_from_confluence_job
+      parameters:
+      - $ref: '#/components/parameters/IngestionParameterCollectionId'
+      - $ref: '#/components/parameters/IngestionParameterGenDocSummaries'
+      - $ref: '#/components/parameters/IngestionParameterGenDocQuestions'
+      - $ref: '#/components/parameters/IngestionParameterAudioInputLanguage'
+      - $ref: '#/components/parameters/IngestionParameterOcrModel'
+      - $ref: '#/components/parameters/IngestionParameterTesseractLang'
+      - $ref: '#/components/parameters/IngestionParameterKeepTablesAsOneChunk'
+      - $ref: '#/components/parameters/IngestionParameterChunkByPage'
+      - $ref: '#/components/parameters/IngestionParameterHandwritingCheck'
+      - $ref: '#/components/parameters/IngestionParameterIngestMode'
+      - $ref: '#/components/parameters/Timeout'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestFromConfluenceBody'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/Unexpected'
+components:
+  parameters:
+    IngestionParameterMaxDepth:
+      name: max_depth
+      in: query
+      description: Max depth of recursion when following links, only when follow_links is `true`. Max_depth of 0 means don't follow any links, max_depth of 1 means follow only top-level links, etc. Use -1 for automatic (system settings).
+      schema:
+        type: integer
+        default: -1
+    IngestionParameterAudioInputLanguage:
+      name: audio_input_language
+      in: query
+      description: Language of audio files.
+      schema:
+        type: string
+        default: auto
+    IngestionParameterUploadIds:
+      name: upload_ids
+      in: path
+      description: Id of uploaded document
+      required: true
+      schema:
+        type: array
+        items:
+          type: string
+    IngestionParameterTesseractLang:
+      name: tesseract_lang
+      in: query
+      description: Which language to use when using ocr_model="tesseract".
+      schema:
+        type: string
+    IngestionParameterEncryptDocument:
+      name: encrypt_document
+      in: query
+      description: Whether to encrypt the document files at rest in object storage.
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterIngestMode:
+      name: ingest_mode
+      in: query
+      description: Ingest mode to use. - `standard` - Files will be ingested for use with RAG - `agent_only` - Bypasses standard ingestion. Files can only be used with agents.
+      schema:
+        type: string
+        enum:
+        - standard
+        - agent_only
+    IngestionParameterDocumentId:
+      name: document_id
+      in: query
+      description: String id of the document to be parsed.
+      required: true
+      schema:
+        type: string
+    IngestionParameterPermissions:
+      name: permissions
+      in: query
+      description: The list of usernames having permissions to the document.
+      schema:
+        type: array
+        items:
+          type: string
+    IngestionParameterGenDocQuestions:
+      name: gen_doc_questions
+      in: query
+      description: Whether to auto-generate sample questions for each document (uses LLM).
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterCollectionId:
+      name: collection_id
+      in: query
+      description: String id of the collection to add the ingested documents into.
+      required: true
+      schema:
+        type: string
+    Timeout:
+      name: timeout
+      in: query
+      description: Timeout in seconds
+      schema:
+        type: number
+        format: double
+    IngestionParameterFileName:
+      name: file_name
+      in: query
+      description: String of the file name to use for the document.
+      required: true
+      schema:
+        type: string
+    IngestionParameterGenDocSummaries:
+      name: gen_doc_summaries
+      in: query
+      description: Whether to auto-generate document summaries (uses LLM).
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterMetadata:
+      name: metadata
+      in: query
+      description: String with json-encoded metadata for the document.
+      schema:
+        type: string
+    IngestionParameterHandwritingCheck:
+      name: handwriting_check
+      in: query
+      description: Check pages for handwriting. Will use specialized models if handwriting is found.
+      schema:
+        type: boolean
+    IngestionParameterMaxDocuments:
+      name: max_documents
+      in: query
+      description: Max number of documents when following links, only when follow_links is `true`. Use None for automatic (system defaults). Use -1 for max (system limit).
+      schema:
+        type: integer
+    IngestionParameterRestricted:
+      name: restricted
+      in: query
+      description: Whether the document should be restricted only to certain users.
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterKeepTablesAsOneChunk:
+      name: keep_tables_as_one_chunk
+      in: query
+      description: When tables are identified by the table parser the table tokens will be kept in a single chunk.
+      schema:
+        type: boolean
+    IngestionParameterOcrModel:
+      name: ocr_model
+      in: query
+      description: Which method to use to extract text from images using AI-enabled optical character recognition (OCR) models. docTR is best for Latin text, PaddleOCR is best for certain non-Latin languages, Tesseract covers a wide range of languages. Mississippi works well on handwriting. - `auto` - Automatic will auto-select the best OCR model for every page. - `off` - Disable OCR for speed, but all images will then be skipped (also no image captions will be made).
+      schema:
+        type: string
+        default: auto
+    IngestionParameterFollowLinks:
+      name: follow_links
+      in: query
+      description: Whether to import all web pages linked from this URL will be imported. External links will be ignored. Links to other pages on the same domain will be followed as long as they are at the same level or below the URL you specify. Each page will be transformed into a PDF document.
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterChunkByPage:
+      name: chunk_by_page
+      in: query
+      description: Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`.
+      schema:
+        type: boolean
+  schemas:
+    AzureCredentials:
+      description: The object with Azure credentials. If container is private, set either `account_key` or `sas_token`.
+      type: object
+      properties:
+        account_key:
+          type: string
+        sas_token:
+          type: string
+    IngestFromSharepointOnlineBody:
+      type: object
+      required:
+      - entries
+      - credentials
+      properties:
+        entries:
+          description: 'Entries to ingest. Each entry is one of: a site (full subtree), a
+
+            drive (full drive contents), a drive_by_id (a drive identified
+
+            only by its drive_id), a directory, or a single file.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/SharepointIngestionEntry'
+        credentials:
+          $ref: '#/components/schemas/SharepointOnlineCredentials'
+        metadata:
+          description: Metadata for the documents.
+          type: object
+    GCSCredentials:
+      description: The object holding  JSON key of Google Cloud service account. If the object is not provided, only public buckets will be accessible.
+      required:
+      - service_account_json_key
+      type: object
+      properties:
+        service_account_json_key:
+          type: string
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    IngestFromWebsiteBody:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          description: String of the url to crawl.
+          type: string
+    IngestUploadBody:
+      type: object
+      properties:
+        metadata:
+          description: Metadata for the document.
+          type: object
+    IngestFromConfluenceBody:
+      type: object
+      required:
+      - base_url
+      - page_ids
+      - credentials
+      properties:
+        base_url:
+          description: Base url of the confluence instance.
+          type: string
+          example: https://h2oai.atlassian.net/wiki
+        page_ids:
+          description: Ids of pages to be ingested.
+          type: array
+          items:
+            type: string
+        include_attachments:
+          description: A flag indicating whether to also ingest attachments with the page.
+          type: boolean
+          default: false
+        credentials:
+          $ref: '#/components/schemas/ConfluenceCredentials'
+        metadata:
+          description: Metadata for the documents.
+          type: object
+    IngestFromS3Body:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          description: The path or list of paths of S3 files or directories.
+          type: array
+          items:
+            type: string
+          example: s3://bucket/file, s3://bucket/../dir/
+        region:
+          description: The name of the region used for interaction with AWS services.
+          type: string
+          default: us-east-1
+        credentials:
+          $ref: '#/components/schemas/S3Credentials'
+        metadata:
+          description: Metadata for the documents.
+          type: object
+    ConfluenceCredentials:
+      description: The object with Confluence credentials.
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        username:
+          description: Name or email of the user.
+          type: string
+        password:
+          description: Password or API token.
+          type: string
+    UploadedFile:
+      required:
+      - id
+      - filename
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        filename:
+          type: string
+          example: my_favourite_book.pdf
+    SharepointIngestionEntry:
+      description: 'A single SharePoint entry to ingest. entry_type determines which other
+
+        fields are required:
+
+        - "site": object_id is required.
+
+        - "drive": drive_id is required.
+
+        - "drive_by_id": drive_id is required. Use this for drives only reachable by direct drive_id (OneDrive personal, M365 group drives, drives in non-discoverable sites).
+
+        - "directory": drive_id and object_id are required.
+
+        - "file": drive_id and object_id are required.
+
+        '
+      type: object
+      required:
+      - entry_type
+      properties:
+        name:
+          description: Display name of the entry. Optional — used in logs.
+          type: string
+        entry_type:
+          type: string
+          enum:
+          - site
+          - drive
+          - drive_by_id
+          - directory
+          - file
+        web_url:
+          description: Web URL of the entry. Optional — derived from drive_id/object_id when omitted.
+          type: string
+        drive_id:
+          description: SharePoint drive identifier.
+          type: string
+        object_id:
+          description: SharePoint site/folder/file identifier.
+          type: string
+    IngestFromFileSystemBody:
+      type: object
+      required:
+      - root_dir
+      - glob
+      properties:
+        root_dir:
+          description: String path of where to look for files.
+          type: string
+        glob:
+          description: String of the glob pattern used to match files in the root directory.
+          type: string
+    SharepointOnlineCredentials:
+      description: 'Credentials for SharePoint Online. Provide either the app-auth triple
+
+        (tenant_name + client_id + client_secret) or the OAuth-user pair
+
+        (user_id + optional connector_id). The auth_type field must match.
+
+        '
+      type: object
+      properties:
+        auth_type:
+          description: '"app" for application credentials, "user" for delegated OAuth.'
+          type: string
+          enum:
+          - app
+          - user
+          default: app
+        tenant_name:
+          description: SharePoint tenant name (app auth only).
+          type: string
+        client_id:
+          description: Azure AD application client ID (app auth only).
+          type: string
+        client_secret:
+          description: Azure AD application client secret (app auth only).
+          type: string
+        user_id:
+          description: User ID owning the OAuth token (user auth only).
+          type: string
+        connector_id:
+          description: Optional connector ID when the user has more than one linked SharePoint connector.
+          type: string
+        admin_enumerate_drives:
+          description: 'App auth only. When true, discovery additionally enumerates every
+
+            drive in the tenant via /drives. Requires Files.Read.All /
+
+            Sites.Read.All on the application.
+
+            '
+          type: boolean
+          default: false
+    IngestFromGcsBody:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          description: The path or list of paths of GCS files or directories.
+          type: array
+          items:
+            type: string
+          example: gs://bucket/file, gs://bucket/../dir/
+        credentials:
+          $ref: '#/components/schemas/GCSCredentials'
+        metadata:
+          description: Metadata for the document.
+          type: object
+    IngestFromAzureBlobStorageBody:
+      type: object
+      required:
+      - container
+      - paths
+      - account_name
+      properties:
+        container:
+          description: Name of the Azure Blob Storage container.
+          type: string
+        paths:
+          description: Path or list of paths to files or directories within an Azure Blob Storage container.
+          type: array
+          items:
+            type: string
+          example: file1, dir1/file2, dir3/dir4/
+        account_name:
+          description: Name of a storage account
+          type: string
+        credentials:
+          $ref: '#/components/schemas/AzureCredentials'
+        metadata:
+          description: Metadata for the document.
+          type: object
+    S3Credentials:
+      description: The object with S3 credentials. If the object is not provided, only public buckets will be accessible. When use_irsa is true, access_key_id and secret_access_key are optional and the pod's service account will be used for authentication.
+      type: object
+      properties:
+        use_irsa:
+          type: boolean
+          description: Enable IAM Roles for Service Accounts (IRSA) to authenticate using the pod's service account. When enabled, explicit credentials are not required.
+          default: false
+        access_key_id:
+          type: string
+          description: AWS access key ID. Not required when using IRSA.
+        secret_access_key:
+          type: string
+          description: AWS secret access key. Not required when using IRSA.
+        session_token:
+          type: string
+          description: AWS session token for temporary credentials.
+        role_arn:
+          type: string
+          description: The Amazon Resource Name (ARN) of IAM Role that will be utilized for accessing the S3 storage. When IRSA is enabled, this role will be assumed from the service account identity (role chaining). When IRSA is disabled, it requires specification of other credentials to identify an identity the role will be associated with.
+        external_id:
+          type: string
+          description: Optional security token for assuming cross-account roles. This is used to prevent the 'confused deputy' problem when a third party assumes a role in your account. Only required if the role's trust policy requires an external ID.
+        endpoint_url:
+          type: string
+          description: 'Custom S3-compatible endpoint URL. Leave empty for standard AWS S3. Example: https://qumulo.example.com'
+    JobDetails:
+      required:
+      - id
+      - name
+      - overall_status
+      - passed_percentage
+      - failed_percentage
+      - progress
+      - created_at
+      - updated_at
+      - kind
+      - statuses
+      - errors
+      - duration
+      - duration_seconds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        overall_status:
+          type: string
+          enum:
+          - in progress
+          - completed
+          - failed
+          - canceled
+        status:
+          type: string
+        passed_percentage:
+          type: number
+          format: double
+        failed_percentage:
+          type: number
+          format: double
+        progress:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        kind:
+          type: string
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetailsStatus'
+        errors:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        duration_seconds:
+          type: number
+          format: double
+        canceled_by:
+          type: string
+        cancel_reason:
+          type: string
+        timeout:
+          type: number
+          format: double
+        start_time:
+          type: number
+          format: double
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Using an API key generated by H2OGPTe

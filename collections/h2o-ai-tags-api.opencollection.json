@@ -1,0 +1,136 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Tags API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List tags.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/tags"
+          },
+          "docs": "List all existing tags."
+        },
+        {
+          "info": {
+            "name": "Creates a new tag.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/tags",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new tag that can be subsequently associated with a document."
+        },
+        {
+          "info": {
+            "name": "Finds a tag by its name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/tags/:tag_name",
+            "params": [
+              {
+                "name": "tag_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of a tag to return"
+              }
+            ]
+          },
+          "docs": "Returns a single tag by its unique name."
+        },
+        {
+          "info": {
+            "name": "Updates attributes of a tag.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/tags/:tag_name",
+            "params": [
+              {
+                "name": "tag_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of a tag to to be updated"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates attributes of an existing tag, particularly description and format."
+        },
+        {
+          "info": {
+            "name": "Deletes a tag.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/tags/:tag_name",
+            "params": [
+              {
+                "name": "tag_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of the tag to delete"
+              }
+            ]
+          },
+          "docs": "Deletes a tag by its name. Only the tag creator can delete it. All document-tag associations are removed."
+        },
+        {
+          "info": {
+            "name": "List documents associated with a tag.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/tags/:tag_names/documents",
+            "params": [
+              {
+                "name": "tag_names",
+                "value": "",
+                "type": "path",
+                "description": "Names of a tags to return documents for"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Id of a collection containing the documents"
+              }
+            ]
+          },
+          "docs": "List documents associated with a tag."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

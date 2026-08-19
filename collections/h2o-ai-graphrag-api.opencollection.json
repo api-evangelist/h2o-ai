@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Graph RAG API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "GraphRAG",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get GraphRAG configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/graph/config"
+          },
+          "docs": "Returns GraphRAG configuration including allowed LLM models for graph building."
+        },
+        {
+          "info": {
+            "name": "Build a knowledge graph for a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/graph/:collection_id/build",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "The collection ID to build the graph for."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Triggers an asynchronous job that extracts entities and relationships from document chunks to build a knowledge graph using LightRAG. Returns 409 Conflict if a build is already in progress."
+        },
+        {
+          "info": {
+            "name": "Get graph build status for a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/graph/:collection_id/status",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "The collection ID to check."
+              }
+            ]
+          },
+          "docs": "Returns the current knowledge graph build status and metadata."
+        },
+        {
+          "info": {
+            "name": "Delete the knowledge graph for a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/graph/:collection_id",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "The collection whose graph should be deleted."
+              }
+            ]
+          },
+          "docs": "Tears down the collection's knowledge graph: removes the stored\ntarball from object storage, drops the in-memory per-collection\nlock and event loop, removes the local LightRAG cache directory,\nand resets graph_status to 'none'. The collection itself is\nunaffected. Auto-RAG selection will revert to normal RAG until\na new graph is built.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

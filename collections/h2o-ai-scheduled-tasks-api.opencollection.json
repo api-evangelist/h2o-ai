@@ -1,0 +1,376 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Scheduled Tasks API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scheduled Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List scheduled tasks for the current user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status_filter",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "Only tasks bound to this collection (UUID). Mutually exclusive with has_collection."
+              },
+              {
+                "name": "has_collection",
+                "value": "",
+                "type": "query",
+                "description": "true = only collection-bound tasks; false = only tasks without a collection. Mutually exclusive with collection_id."
+              }
+            ]
+          },
+          "docs": "List scheduled tasks for the current user."
+        },
+        {
+          "info": {
+            "name": "Create a scheduled task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a scheduled task."
+        },
+        {
+          "info": {
+            "name": "Aggregate stats for the current user's scheduled tasks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/summary"
+          },
+          "docs": "Aggregate stats for the current user's scheduled tasks."
+        },
+        {
+          "info": {
+            "name": "List all executions across the current user's tasks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/executions",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status_filter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all executions across the current user's tasks."
+        },
+        {
+          "info": {
+            "name": "Delete multiple scheduled tasks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/batch_delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete multiple scheduled tasks."
+        },
+        {
+          "info": {
+            "name": "Get a scheduled task by id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a scheduled task by id."
+        },
+        {
+          "info": {
+            "name": "Update a scheduled task (partial).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a scheduled task (partial)."
+        },
+        {
+          "info": {
+            "name": "Delete a scheduled task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a scheduled task."
+        },
+        {
+          "info": {
+            "name": "Manually trigger a scheduled task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/:task_id/trigger",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Manually trigger a scheduled task."
+        },
+        {
+          "info": {
+            "name": "List executions for a scheduled task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/scheduled_tasks/:task_id/executions",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List executions for a scheduled task."
+        },
+        {
+          "info": {
+            "name": "List all scheduled tasks (admin only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/scheduled_tasks",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status_filter",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all scheduled tasks (admin only)."
+        },
+        {
+          "info": {
+            "name": "System-wide scheduled task summary (admin only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/scheduled_tasks/summary"
+          },
+          "docs": "System-wide scheduled task summary (admin only)."
+        },
+        {
+          "info": {
+            "name": "Execution stats over an interval (admin only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/scheduled_tasks/execution_stats",
+            "params": [
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "PostgreSQL interval, e.g. '7 days'. Default '7 days'."
+              }
+            ]
+          },
+          "docs": "Execution stats over an interval (admin only)."
+        },
+        {
+          "info": {
+            "name": "List executions across all users (admin only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/scheduled_tasks/executions",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional; if omitted, returns executions across all tasks."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List executions across all users (admin only)."
+        },
+        {
+          "info": {
+            "name": "Delete multiple scheduled tasks for any user (admin only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/scheduled_tasks/batch_delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete multiple scheduled tasks for any user (admin only)."
+        },
+        {
+          "info": {
+            "name": "Update any scheduled task — status and metadata only (admin only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/admin/scheduled_tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update any scheduled task — status and metadata only (admin only)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

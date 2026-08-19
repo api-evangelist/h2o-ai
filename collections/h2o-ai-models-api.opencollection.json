@@ -1,0 +1,372 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Models API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Creates a topic model on the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/topic_model",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Creates a topic model on the collection."
+        },
+        {
+          "info": {
+            "name": "Deletes the topic model from the collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/collections/:collection_id/topic_model",
+            "params": [
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the collection"
+              }
+            ]
+          },
+          "docs": "Deletes the topic model from the collection."
+        },
+        {
+          "info": {
+            "name": "Lists all available large language models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models"
+          },
+          "docs": "Lists all available large language models."
+        },
+        {
+          "info": {
+            "name": "Lists all available embedding models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/embedding_models"
+          },
+          "docs": "Lists all available embedding models."
+        },
+        {
+          "info": {
+            "name": "Gets default embedding model.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/embedding_models/default"
+          },
+          "docs": "Gets default embedding model."
+        },
+        {
+          "info": {
+            "name": "Encode texts for semantic searching.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/embedding_models/:model_id/encode_chunks_for_retrieval",
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the embedding model that will be used for operation."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Encode texts for semantic searching."
+        },
+        {
+          "info": {
+            "name": "Runs a self-test for a given model.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/:model_name/self_test/:mode",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of LLM."
+              },
+              {
+                "name": "mode",
+                "value": "",
+                "type": "path",
+                "description": "Mode of the self test."
+              }
+            ]
+          },
+          "docs": "Runs a self-test for a given model."
+        },
+        {
+          "info": {
+            "name": "Send a message and get a response from an LLM.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/:model_name/answer_question",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of LLM. Use auto, when you are not interested in particular model."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a message and get a response from an LLM.\nNote: This method is only recommended if you are passing a chat conversation or for low-volume testing.\n      For general chat with an LLM, use \"POST /chats/{session_id}/completions\" endpoint.\n"
+        },
+        {
+          "info": {
+            "name": "Summarize one or more contexts using an LLM.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/:model_name/summarize_content",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of LLM. Use auto, when you are not interested in particular model."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Summarize one or more contexts using an LLM."
+        },
+        {
+          "info": {
+            "name": "Extract information from one or more contexts using an LLM.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/:model_name/extract_data",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of LLM. Use auto, when you are not interested in particular model."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Extract information from one or more contexts using an LLM.\n`pre_prompt_extract` and `prompt_extract` variables must be used together. If these\n        variables are not set, the inputs texts will be summarized into bullet points.\n"
+        },
+        {
+          "info": {
+            "name": "Lists names of available vision-capable multi-modal LLMs in the environment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/vision_capable_model_names"
+          },
+          "docs": "Lists names of available vision-capable multi-modal LLMs (that can natively handle images as input) in the environment."
+        },
+        {
+          "info": {
+            "name": "Get mapping of llm to its vision_model when [\"auto\"] is passed as visible_vision_models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/model_to_vision_model_mapping"
+          },
+          "docs": "Get mapping of llm to its vision_model when [\"auto\"] is passed as visible_vision_models."
+        },
+        {
+          "info": {
+            "name": "Lists names of available reasoning-capable (that can natively reason) in the environment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/reasoning_capable_model_names"
+          },
+          "docs": "Lists names of available reasoning-capable (that can natively reason) in the environment."
+        },
+        {
+          "info": {
+            "name": "Get mapping of llm to its reasoning_model when [\"auto\"] is passed as visible_reasoning_models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/models/model_to_reasoning_model_mapping"
+          },
+          "docs": "Get mapping of llm to its reasoning_model when [\"auto\"] is passed as visible_reasoning_models."
+        },
+        {
+          "info": {
+            "name": "Helper to get reasonable (easy to use) defaults for Guardrails/PII settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/guardrails_settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Helper to get reasonable (easy to use) defaults for Guardrails/PII settings. To be further customized."
+        },
+        {
+          "info": {
+            "name": "Returns usage statistics for all models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/stats/usage",
+            "params": [
+              {
+                "name": "interval",
+                "value": "24 hours",
+                "type": "query",
+                "description": "The length of an interval for which the stats will be obtained. The interval ends now."
+              }
+            ]
+          },
+          "docs": "Returns usage statistics for all models."
+        },
+        {
+          "info": {
+            "name": "Returns usage statistics grouped by models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/stats/usage_by_model",
+            "params": [
+              {
+                "name": "interval",
+                "value": "24 hours",
+                "type": "query",
+                "description": "The length of an interval for which the stats will be obtained. The interval ends now."
+              }
+            ]
+          },
+          "docs": "Returns usage statistics grouped by models."
+        },
+        {
+          "info": {
+            "name": "Returns usage statistics grouped by users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/stats/usage_by_user",
+            "params": [
+              {
+                "name": "interval",
+                "value": "24 hours",
+                "type": "query",
+                "description": "The length of an interval for which the stats will be obtained. The interval ends now."
+              }
+            ]
+          },
+          "docs": "Returns usage statistics grouped by users."
+        },
+        {
+          "info": {
+            "name": "Returns usage statistics grouped by models and users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/stats/usage_by_model_and_user",
+            "params": [
+              {
+                "name": "interval",
+                "value": "24 hours",
+                "type": "query",
+                "description": "The length of an interval for which the stats will be obtained. The interval ends now."
+              }
+            ]
+          },
+          "docs": "Returns usage statistics grouped by models and users."
+        },
+        {
+          "info": {
+            "name": "Returns performance statistics grouped by models.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/stats/performance_by_model",
+            "params": [
+              {
+                "name": "interval",
+                "value": "24 hours",
+                "type": "query",
+                "description": "The length of an interval for which the stats will be obtained. The interval ends now."
+              }
+            ]
+          },
+          "docs": "Returns performance statistics grouped by models."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

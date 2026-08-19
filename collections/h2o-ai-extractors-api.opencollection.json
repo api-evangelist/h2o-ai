@@ -1,0 +1,455 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "h2oGPTe REST Extractors API",
+    "version": "v1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extractors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns a list of users having access to given extractor.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/permissions",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              }
+            ]
+          },
+          "docs": "The returned list of permissions denotes who has access to the extractor."
+        },
+        {
+          "info": {
+            "name": "Resets and shares an extractor to a new list of users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/permissions",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of an extractor."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resets and shares an extractor to a new list of users."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of an extractor to all other users except the original owner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/permissions",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              }
+            ]
+          },
+          "docs": "Removes sharing of an extractor to all other users except the original owner."
+        },
+        {
+          "info": {
+            "name": "Returns a list of group access permissions for a given extractor.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/group_permissions",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              }
+            ]
+          },
+          "docs": "The returned list of group permissions denoting which groups have access to the extractor."
+        },
+        {
+          "info": {
+            "name": "Resets and shares an extractor to a new list of groups.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/group_permissions",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of an extractor"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resets and shares an extractor to a new list of groups."
+        },
+        {
+          "info": {
+            "name": "Updates a flag specifying whether an extractor is private or public.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/is_public",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a flag specifying whether an extractor is private or public."
+        },
+        {
+          "info": {
+            "name": "Shares an extractor to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/permissions/:username",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "User name that will obtain access to the extractor"
+              }
+            ]
+          },
+          "docs": "Shares an extractor to a user."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of an extractor to a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/permissions/:username",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "User name that will lose access to the extractor"
+              }
+            ]
+          },
+          "docs": "Removes sharing of an extractor to a user."
+        },
+        {
+          "info": {
+            "name": "Shares an extractor to a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a group that will obtain access to the extractor."
+              }
+            ]
+          },
+          "docs": "Shares an extractor to a group. The extractor_id attribute denotes the extractor to be shared."
+        },
+        {
+          "info": {
+            "name": "Removes sharing of an extractor from a group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/group_permissions/:group_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the extractor."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of a group that will lose access to the extractor."
+              }
+            ]
+          },
+          "docs": "Removes sharing of an extractor from a group."
+        },
+        {
+          "info": {
+            "name": "Fetch an extractor by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the extractor to get."
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves information about a specific extractor based on its unique ID. It requires an authenticated user and returns a JSON response containing the extractor's details.\n"
+        },
+        {
+          "info": {
+            "name": "Deletes extractor.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the extractor to delete."
+              }
+            ]
+          },
+          "docs": "Deletes extractor."
+        },
+        {
+          "info": {
+            "name": "List extractors.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many extractors to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many extractors to return."
+              },
+              {
+                "name": "name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter extractors by name."
+              }
+            ]
+          },
+          "docs": "List extractors. The output is sorted by create time in descending order."
+        },
+        {
+          "info": {
+            "name": "Creates extractor.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates extractor."
+        },
+        {
+          "info": {
+            "name": "Run an extractor on a collection, document, or uploaded files (synchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/run",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the extractor to run"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the collection to run the extractor on. Exactly one of collection_id or document_id must be provided."
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the single document to run the extractor on. Exactly one of collection_id or document_id must be provided."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "files",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Executes the specified extractor synchronously and returns results with a 200 OK response.\n\nExactly one of the following must be provided:\n- `collection_id` — run on all documents in a collection\n- `document_id` — run on a single document in a collection\n- `files` — one or more files uploaded directly in the request body (multipart/form-data) without adding them to a collection\n\nThis endpoint blocks and waits for the extraction to complete, then returns the results.\n\nThis endpoint is primarily i"
+        },
+        {
+          "info": {
+            "name": "Create a job to run an extractor on a collection or document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/job",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the extractor to run"
+              },
+              {
+                "name": "collection_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the collection to run the extractor on. Exactly one of collection_id or document_id must be provided."
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the single document to run the extractor on. Exactly one of collection_id or document_id must be provided."
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds"
+              }
+            ]
+          },
+          "docs": "Creates a job to execute the specified extractor by running it on all documents\nin a collection, or on a single document when document_id is specified.\nThis endpoint is designed for long-running extractions.\n\nThe endpoint immediately returns a 201 Created response with job details.\n\nExactly one of collection_id or document_id must be provided.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve extraction results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://h2ogpte.genai.h2o.ai/api/v1/extractors/:extractor_id/results",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the extractor"
+              },
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional job ID to retrieve results for a specific extraction run. If omitted, returns all results for this extractor."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "How many extraction results to skip before returning."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "How many extraction results to return."
+              }
+            ]
+          },
+          "docs": "Retrieves extraction results produced by this extractor. If job_id is specified,\nreturns results for that specific extraction run. If job_id is omitted, returns all\nresults produced by this extractor across all runs.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
