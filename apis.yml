@@ -23,6 +23,18 @@ modified: '2026-08-04'
 tags:
 - Company
 - Artificial Intelligence
+- Machine-Learning
+- MLOps
+- Generative AI
+- Large Language Models
+- Retrieval Augmented Generation
+- Data Science
+- Model Deployment
+- AI Agents
+- Enterprise AI
+tags_raw:
+- Company
+- Artificial Intelligence
 - Machine Learning
 - MLOps
 - Generative AI
@@ -44,6 +56,10 @@ apis:
   humanURL: https://github.com/h2oai/h2ogpte-mcp-server
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
+  - MCP
+  - AI Agents
+  - Generative AI
+  tags_raw:
   - Model Context Protocol
   - AI Agents
   - Generative AI
@@ -132,6 +148,8 @@ apis:
   humanURL: https://docs.h2o.ai/enterprise-h2ogpte/rest-api
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
+  - APIKeys
+  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI
@@ -180,6 +198,8 @@ apis:
   humanURL: https://docs.h2o.ai/enterprise-h2ogpte/rest-api
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
+  - Collection
+  tags_raw:
   - Collections
   properties:
   - type: OpenAPI
@@ -324,6 +344,8 @@ apis:
   humanURL: https://docs.h2o.ai/enterprise-h2ogpte/rest-api
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
+  - Graph RAG
+  tags_raw:
   - GraphRAG
   properties:
   - type: OpenAPI
@@ -372,6 +394,8 @@ apis:
   humanURL: https://docs.h2o.ai/enterprise-h2ogpte/rest-api
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
