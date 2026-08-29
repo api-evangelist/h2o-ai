@@ -11,6 +11,19 @@ description: 'H2O.ai is an open-source artificial-intelligence and machine-learn
   H2O.ai also ships a first-party MCP server that proxies the h2oGPTe REST API to
   agent clients, together with official Python, R, Java and JavaScript client libraries
   distributed via PyPI, CRAN, Maven Central and npm.'
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://avatars.githubusercontent.com/u/1402695?v=4
 url: https://raw.githubusercontent.com/api-evangelist/h2o-ai/refs/heads/main/apis.yml
 x-type: company
