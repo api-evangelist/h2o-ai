@@ -357,7 +357,7 @@ apis:
   humanURL: https://docs.h2o.ai/enterprise-h2ogpte/rest-api
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
-  - Graph RAG
+  - GraphRAG
   tags_raw:
   - GraphRAG
   properties:
