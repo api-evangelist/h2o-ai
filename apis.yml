@@ -24,6 +24,20 @@ deliveryModel:
   - repository-unlicensed
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source:
+  - authentication
+  - security
+  - sandbox
+  generated: '2026-09-03'
+  method: derived
 image: https://avatars.githubusercontent.com/u/1402695?v=4
 url: https://raw.githubusercontent.com/api-evangelist/h2o-ai/refs/heads/main/apis.yml
 x-type: company
