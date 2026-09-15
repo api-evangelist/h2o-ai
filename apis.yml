@@ -1,16 +1,14 @@
 aid: h2o-ai
 name: H2O.ai
-description: 'H2O.ai is an open-source artificial-intelligence and machine-learning
-  company whose platform spans H2O-3 (a distributed, in-memory ML engine), H2O Driverless
-  AI (automatic machine learning), H2O MLOps (model deployment, scoring and monitoring),
-  H2O Wave (a Python/R framework for realtime AI apps), H2O LLM Studio, and Enterprise
-  h2oGPTe (a private generative-AI, RAG and agent platform). Enterprise h2oGPTe publishes
-  a 422-operation OpenAPI 3.0.1 contract covering collections, document ingestion,
-  chat, agents, extractors, GraphRAG, guardrails, models, permissions and scheduled
-  tasks, and H2O MLOps publishes an OpenAPI contract for its model-scoring endpoints.
-  H2O.ai also ships a first-party MCP server that proxies the h2oGPTe REST API to
-  agent clients, together with official Python, R, Java and JavaScript client libraries
-  distributed via PyPI, CRAN, Maven Central and npm.'
+description: H2O.ai is an open-source artificial-intelligence and machine-learning company whose platform
+  spans H2O-3 (a distributed, in-memory ML engine), H2O Driverless AI (automatic machine learning), H2O
+  MLOps (model deployment, scoring and monitoring), H2O Wave (a Python/R framework for realtime AI apps),
+  H2O LLM Studio, and Enterprise h2oGPTe (a private generative-AI, RAG and agent platform). Enterprise
+  h2oGPTe publishes a 422-operation OpenAPI 3.0.1 contract covering collections, document ingestion, chat,
+  agents, extractors, GraphRAG, guardrails, models, permissions and scheduled tasks, and H2O MLOps publishes
+  an OpenAPI contract for its model-scoring endpoints. H2O.ai also ships a first-party MCP server that
+  proxies the h2oGPTe REST API to agent clients, together with official Python, R, Java and JavaScript
+  client libraries distributed via PyPI, CRAN, Maven Central and npm.
 deliveryModel:
   model: unknown
   open_source: unknown
@@ -72,14 +70,13 @@ tags_raw:
 - AI Agents
 - Enterprise AI
 apis:
-- aid: h2o-ai-h2ogpte-mcp
+- aid: h2o-ai:h2o-ai-h2ogpte-mcp
   name: h2oGPTe MCP Server
-  description: >-
-    H2OGPTe MCP Server is H2O.ai's first-party Model Context Protocol server for Enterprise h2oGPTe. It
-    runs locally over stdio and proxies traffic to the h2oGPTe REST API, generating one MCP tool per REST
-    operationId (GET operations can instead be exposed as MCP resources). Endpoint sets are selectable
-    — all, all_without_async_ingest (the default), basic, or a custom operationId list — so the tool surface
-    is a configurable projection of the same OpenAPI contract.
+  description: H2OGPTe MCP Server is H2O.ai's first-party Model Context Protocol server for Enterprise
+    h2oGPTe. It runs locally over stdio and proxies traffic to the h2oGPTe REST API, generating one MCP
+    tool per REST operationId (GET operations can instead be exposed as MCP resources). Endpoint sets
+    are selectable — all, all_without_async_ingest (the default), basic, or a custom operationId list
+    — so the tool surface is a configurable projection of the same OpenAPI contract.
   humanURL: https://github.com/h2oai/h2ogpte-mcp-server
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
