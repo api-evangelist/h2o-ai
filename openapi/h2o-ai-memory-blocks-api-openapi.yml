@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Memory Blocks API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -91,7 +94,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_memory_blocks
-      summary: List memory blocks.
+      summary: List memory blocks
       description: List memory blocks accessible to the current user (owned, shared, or public).
       tags:
       - Memory Blocks
@@ -149,7 +152,7 @@ paths:
   /memory_blocks/{memory_block_id}:
     get:
       operationId: get_memory_block
-      summary: Get a memory block by ID.
+      summary: Get a memory block by ID
       description: Returns a specific memory block by its ID.
       tags:
       - Memory Blocks
@@ -177,7 +180,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     put:
       operationId: update_memory_block
-      summary: Update a memory block.
+      summary: Update a memory block
       description: Updates the name, content, and/or system prompt amendment of a memory block.
       tags:
       - Memory Blocks
@@ -211,7 +214,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_memory_block
-      summary: Delete a memory block.
+      summary: Delete a memory block
       description: Deletes a memory block. Only the owner can delete.
       tags:
       - Memory Blocks
@@ -240,7 +243,7 @@ paths:
   /memory_blocks/{memory_block_id}/permissions:
     get:
       operationId: list_memory_block_permissions
-      summary: List user share permissions for a memory block.
+      summary: List user share permissions for a memory block
       description: Returns the list of users with explicit (direct) share grants on the memory block. Does not include cascade access derived from collection sharing.
       tags:
       - Memory Blocks
@@ -271,7 +274,7 @@ paths:
   /memory_blocks/{memory_block_id}/group_permissions:
     get:
       operationId: list_memory_block_group_permissions
-      summary: List group share permissions for a memory block.
+      summary: List group share permissions for a memory block
       description: Returns the list of groups with explicit (direct) share grants on the memory block. Does not include cascade access derived from collection sharing.
       tags:
       - Memory Blocks
@@ -302,7 +305,7 @@ paths:
   /memory_blocks/{memory_block_id}/group_permissions/{group_id}:
     put:
       operationId: share_memory_block_with_group
-      summary: Share a memory block with a group.
+      summary: Share a memory block with a group
       description: Shares a memory block with a group, granting read and/or edit permissions.
       tags:
       - Memory Blocks
@@ -337,7 +340,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: unshare_memory_block_from_group
-      summary: Remove sharing of a memory block from a group.
+      summary: Remove sharing of a memory block from a group
       description: Removes sharing of a memory block from a group.
       tags:
       - Memory Blocks
@@ -368,7 +371,7 @@ paths:
   /memory_blocks/{memory_block_id}/permissions/{username}:
     put:
       operationId: share_memory_block
-      summary: Share a memory block with a user.
+      summary: Share a memory block with a user
       description: Shares a memory block with a user, granting read and/or edit permissions.
       tags:
       - Memory Blocks
@@ -407,7 +410,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: unshare_memory_block
-      summary: Remove sharing of a memory block from a user.
+      summary: Remove sharing of a memory block from a user
       description: Removes sharing of a memory block from a user.
       tags:
       - Memory Blocks
@@ -442,7 +445,7 @@ paths:
   /memory_blocks/{memory_block_id}/public_permissions:
     get:
       operationId: list_public_memory_block_permissions
-      summary: Returns the public permissions for a memory block.
+      summary: Returns the public permissions for a memory block
       description: Returns the list of public permissions for a memory block. Returns an empty array if the memory block is not public or has no permissions. Read access is implicit for public memory blocks; an empty array on a public block means public read-only, while ['h2ogpte/memory_block/edit'] means public read + edit. Never raises 404 — unknown memory block ids also return an empty array (mirrors the collection endpoint).
       tags:
       - Memory Blocks
@@ -469,7 +472,7 @@ paths:
   /memory_blocks/{memory_block_id}/privacy:
     put:
       operationId: set_memory_block_privacy
-      summary: Set memory block public or private.
+      summary: Set memory block public or private
       description: Toggle whether a memory block is publicly accessible.
       tags:
       - Memory Blocks
@@ -503,16 +506,27 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    DefaultMemoryBlocksResponse:
+    SetDefaultMemoryBlockResponse:
       type: object
       properties:
-        defaults:
-          $ref: '#/components/schemas/DefaultMemoryBlocksByScope'
-    ShareMemoryBlockRequest:
+        scope:
+          type: string
+          enum:
+          - llm
+          - agent
+        memory_block:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
+    MemoryBlockPrivacyRequest:
       type: object
+      required:
+      - is_public
       properties:
+        is_public:
+          type: boolean
+          description: Whether the memory block should be public.
         permissions:
-          description: Individual permission levels for the memory block.
+          description: Public permission levels to grant when is_public is true (e.g. 'h2ogpte/memory_block/edit'). Read access is always granted to a public memory block. Ignored when is_public is false. When omitted, edit access is granted by default; pass an explicit empty array to make the block public read-only.
           type: array
           items:
             type: string
@@ -527,6 +541,72 @@ components:
           type: array
           items:
             type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    DefaultMemoryBlocksResponse:
+      type: object
+      properties:
+        defaults:
+          $ref: '#/components/schemas/DefaultMemoryBlocksByScope'
+    SetDefaultMemoryBlockRequest:
+      type: object
+      required:
+      - scope
+      properties:
+        scope:
+          type: string
+          description: Which scope to set.
+          enum:
+          - llm
+          - agent
+        memory_block_id:
+          type:
+          - string
+          - 'null'
+          description: UUID of the memory block to set as default, or null to clear.
+    MemoryBlockCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the memory block.
+        content:
+          type: string
+          description: Initial content of the memory block.
+        system_prompt_amendment:
+          type: string
+          description: System prompt amendment for agent mode that drives changes to the memory block.
+        injection_mode:
+          type: string
+          description: Where memory content is injected. 'system_prompt' (default) adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
+          enum:
+          - system_prompt
+          - user_instruction
+          - agent_file
+          - agent_tool
+        access_mode:
+          type: string
+          description: Controls whether the LLM/agent can read the memory, write to it, or both.
+          enum:
+          - read
+          - write
+          - read_write
+        max_content_length:
+          type: integer
+          default: 10000
+          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited. In LLM mode, new memories are appended and oldest content is trimmed when this limit is exceeded.
     DefaultMemoryBlocksByScope:
       type: object
       properties:
@@ -544,6 +624,44 @@ components:
         group_id:
           type: string
         permissions:
+          type: array
+          items:
+            type: string
+    MemoryBlockUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: New name for the memory block.
+        content:
+          type: string
+          description: Updated content of the memory block.
+        system_prompt_amendment:
+          type: string
+          description: Updated system prompt amendment.
+        injection_mode:
+          type: string
+          description: Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
+          enum:
+          - system_prompt
+          - user_instruction
+          - agent_file
+          - agent_tool
+        access_mode:
+          type: string
+          description: Controls whether the LLM/agent can read the memory, write to it, or both.
+          enum:
+          - read
+          - write
+          - read_write
+        max_content_length:
+          type: integer
+          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited.
+    ShareMemoryBlockRequest:
+      type: object
+      properties:
+        permissions:
+          description: Individual permission levels for the memory block.
           type: array
           items:
             type: string
@@ -619,130 +737,15 @@ components:
         group_count:
           type: integer
           description: The number of groups the memory block has been shared with.
-    SetDefaultMemoryBlockResponse:
-      type: object
-      properties:
-        scope:
-          type: string
-          enum:
-          - llm
-          - agent
-        memory_block:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
-    MemoryBlockPrivacyRequest:
-      type: object
-      required:
-      - is_public
-      properties:
-        is_public:
-          type: boolean
-          description: Whether the memory block should be public.
-        permissions:
-          description: Public permission levels to grant when is_public is true (e.g. 'h2ogpte/memory_block/edit'). Read access is always granted to a public memory block. Ignored when is_public is false. When omitted, edit access is granted by default; pass an explicit empty array to make the block public read-only.
-          type: array
-          items:
-            type: string
-    MemoryBlockCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name of the memory block.
-        content:
-          type: string
-          description: Initial content of the memory block.
-        system_prompt_amendment:
-          type: string
-          description: System prompt amendment for agent mode that drives changes to the memory block.
-        injection_mode:
-          type: string
-          description: Where memory content is injected. 'system_prompt' (default) adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
-          enum:
-          - system_prompt
-          - user_instruction
-          - agent_file
-          - agent_tool
-        access_mode:
-          type: string
-          description: Controls whether the LLM/agent can read the memory, write to it, or both.
-          enum:
-          - read
-          - write
-          - read_write
-        max_content_length:
-          type: integer
-          default: 10000
-          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited. In LLM mode, new memories are appended and oldest content is trimmed when this limit is exceeded.
-    SetDefaultMemoryBlockRequest:
-      type: object
-      required:
-      - scope
-      properties:
-        scope:
-          type: string
-          description: Which scope to set.
-          enum:
-          - llm
-          - agent
-        memory_block_id:
-          type:
-          - string
-          - 'null'
-          description: UUID of the memory block to set as default, or null to clear.
-    MemoryBlockUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: New name for the memory block.
-        content:
-          type: string
-          description: Updated content of the memory block.
-        system_prompt_amendment:
-          type: string
-          description: Updated system prompt amendment.
-        injection_mode:
-          type: string
-          description: Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
-          enum:
-          - system_prompt
-          - user_instruction
-          - agent_file
-          - agent_tool
-        access_mode:
-          type: string
-          description: Controls whether the LLM/agent can read the memory, write to it, or both.
-          enum:
-          - read
-          - write
-          - read_write
-        max_content_length:
-          type: integer
-          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited.
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
   responses:
-    Forbidden:
-      description: Forbidden
+    Conflict:
+      description: Conflict
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
+    Forbidden:
+      description: Forbidden
       content:
         application/json:
           schema:

@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Forums API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -13,7 +16,7 @@ paths:
   /forums/{forum_id}/permissions:
     get:
       operationId: list_forum_permissions
-      summary: List sharing permissions for a forum.
+      summary: List sharing permissions for a forum
       tags:
       - Forums
       parameters:
@@ -38,7 +41,7 @@ paths:
   /forums:
     post:
       operationId: create_forum
-      summary: Create a forum.
+      summary: Create a forum
       description: Creates a new forum (threaded message board).
       tags:
       - Forums
@@ -61,7 +64,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_forums
-      summary: List forums.
+      summary: List forums
       tags:
       - Forums
       parameters:
@@ -93,7 +96,7 @@ paths:
   /forums/{forum_id}:
     get:
       operationId: get_forum
-      summary: Get a forum by ID.
+      summary: Get a forum by ID
       tags:
       - Forums
       parameters:
@@ -115,7 +118,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     put:
       operationId: update_forum
-      summary: Update a forum.
+      summary: Update a forum
       tags:
       - Forums
       parameters:
@@ -143,7 +146,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_forum
-      summary: Delete a forum.
+      summary: Delete a forum
       tags:
       - Forums
       parameters:
@@ -162,7 +165,7 @@ paths:
   /forums/{forum_id}/permissions/{username}:
     put:
       operationId: share_forum
-      summary: Share a forum with a user.
+      summary: Share a forum with a user
       tags:
       - Forums
       parameters:
@@ -191,7 +194,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: unshare_forum
-      summary: Unshare a forum from a user.
+      summary: Unshare a forum from a user
       tags:
       - Forums
       parameters:
@@ -215,7 +218,7 @@ paths:
   /forums/{forum_id}/posts:
     get:
       operationId: list_forum_posts
-      summary: List forum posts.
+      summary: List forum posts
       tags:
       - Forums
       parameters:
@@ -265,7 +268,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: create_forum_post
-      summary: Create a post on a forum.
+      summary: Create a post on a forum
       tags:
       - Forums
       parameters:
@@ -294,7 +297,7 @@ paths:
   /forums/{forum_id}/posts/{post_id}:
     get:
       operationId: get_forum_post
-      summary: Get a single post with its thread.
+      summary: Get a single post with its thread
       tags:
       - Forums
       parameters:
@@ -321,7 +324,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     put:
       operationId: update_forum_post
-      summary: Edit a post (author only).
+      summary: Edit a post (author only)
       tags:
       - Forums
       parameters:
@@ -354,7 +357,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_forum_post
-      summary: Delete a post.
+      summary: Delete a post
       tags:
       - Forums
       parameters:
@@ -378,7 +381,7 @@ paths:
   /forums/{forum_id}/posts/{post_id}/reply:
     post:
       operationId: reply_to_forum_post
-      summary: Reply to a post.
+      summary: Reply to a post
       description: The parent post is determined by the post_id path parameter.
       tags:
       - Forums
@@ -413,7 +416,7 @@ paths:
   /forums/{forum_id}/posts/{post_id}/vote:
     post:
       operationId: vote_on_forum_post
-      summary: Vote on a post.
+      summary: Vote on a post
       tags:
       - Forums
       parameters:
@@ -443,7 +446,7 @@ paths:
   /forums/{forum_id}/posts/{post_id}/pin:
     post:
       operationId: pin_forum_post
-      summary: Pin or unpin a post.
+      summary: Pin or unpin a post
       tags:
       - Forums
       parameters:
@@ -472,6 +475,48 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
+    ShareForumRequest:
+      properties:
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
+    ForumUpdateRequest:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    ForumVoteRequest:
+      required:
+      - vote
+      properties:
+        vote:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+          description: +1 for upvote, -1 for downvote, 0 to clear/remove vote
+        assistant_id:
+          type: string
+          format: uuid
+          description: Optional assistant ID when voting on behalf of an assistant
     ForumPermission:
       properties:
         username:
@@ -480,6 +525,26 @@ components:
           type: boolean
         can_edit:
           type: boolean
+    ForumPostCreateRequest:
+      required:
+      - content
+      properties:
+        content:
+          type: string
+        parent_post_id:
+          type: string
+          format: uuid
+        author_assistant_id:
+          type: string
+          format: uuid
+          description: Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
+        file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        metadata:
+          type: object
     ForumPost:
       properties:
         id:
@@ -532,30 +597,6 @@ components:
           type: integer
         is_pinned:
           type: boolean
-    ForumReplyCreateRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-          description: The reply content.
-        author_assistant_id:
-          type: string
-          format: uuid
-          description: Optional assistant ID to reply on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
-        file_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        metadata:
-          type: object
-    ForumPinRequest:
-      required:
-      - pinned
-      properties:
-        pinned:
-          type: boolean
     Forum:
       properties:
         id:
@@ -584,42 +625,6 @@ components:
           type: integer
         assistant_count:
           type: integer
-    ShareForumRequest:
-      properties:
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    ForumVoteRequest:
-      required:
-      - vote
-      properties:
-        vote:
-          type: integer
-          enum:
-          - -1
-          - 0
-          - 1
-          description: +1 for upvote, -1 for downvote, 0 to clear/remove vote
-        assistant_id:
-          type: string
-          format: uuid
-          description: Optional assistant ID when voting on behalf of an assistant
     ForumCreateRequest:
       required:
       - name
@@ -634,25 +639,23 @@ components:
       properties:
         content:
           type: string
-    ForumUpdateRequest:
+    ForumPinRequest:
+      required:
+      - pinned
       properties:
-        name:
-          type: string
-        description:
-          type: string
-    ForumPostCreateRequest:
+        pinned:
+          type: boolean
+    ForumReplyCreateRequest:
       required:
       - content
       properties:
         content:
           type: string
-        parent_post_id:
-          type: string
-          format: uuid
+          description: The reply content.
         author_assistant_id:
           type: string
           format: uuid
-          description: Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
+          description: Optional assistant ID to reply on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
         file_ids:
           type: array
           items:

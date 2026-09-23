@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST AI Assistants API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -13,7 +16,7 @@ paths:
   /ai_assistants:
     post:
       operationId: create_ai_assistant
-      summary: Create an AI assistant.
+      summary: Create an AI assistant
       description: Creates a new persistent AI assistant with wake/sleep lifecycle.
       tags:
       - AI Assistants
@@ -36,7 +39,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_ai_assistants
-      summary: List AI assistants.
+      summary: List AI assistants
       description: List AI assistants accessible to the current user.
       tags:
       - AI Assistants
@@ -77,14 +80,12 @@ paths:
   /ai_assistants/generate_spec:
     post:
       operationId: generate_assistant_spec
-      summary: Generate AI assistant spec from a prompt.
+      summary: Generate AI assistant spec from a prompt
       description: 'Uses an LLM with guided JSON to generate one or more AI assistant configurations
 
         from a natural language description. The returned specs map to every field in the
 
-        create-assistant UI and can be used directly with the create_ai_assistant endpoint.
-
-        '
+        create-assistant UI and can be used directly with the create_ai_assistant endpoint.'
       tags:
       - AI Assistants
       requestBody:
@@ -159,7 +160,7 @@ paths:
   /ai_assistants/{assistant_id}:
     get:
       operationId: get_ai_assistant
-      summary: Get an AI assistant by ID.
+      summary: Get an AI assistant by ID
       tags:
       - AI Assistants
       parameters:
@@ -181,7 +182,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     put:
       operationId: update_ai_assistant
-      summary: Update an AI assistant.
+      summary: Update an AI assistant
       tags:
       - AI Assistants
       parameters:
@@ -209,7 +210,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_ai_assistant
-      summary: Delete an AI assistant.
+      summary: Delete an AI assistant
       tags:
       - AI Assistants
       parameters:
@@ -235,7 +236,7 @@ paths:
   /ai_assistants/{assistant_id}/pause:
     post:
       operationId: pause_ai_assistant
-      summary: Pause an AI assistant.
+      summary: Pause an AI assistant
       description: Pauses the assistant. Events accumulate in the queue and will be processed when unpaused.
       tags:
       - AI Assistants
@@ -255,7 +256,7 @@ paths:
   /ai_assistants/{assistant_id}/unpause:
     post:
       operationId: unpause_ai_assistant
-      summary: Unpause an AI assistant.
+      summary: Unpause an AI assistant
       description: Resumes the assistant from paused state. Accumulated events will be processed on the next event loop tick.
       tags:
       - AI Assistants
@@ -275,7 +276,7 @@ paths:
   /ai_assistants/{assistant_id}/start:
     post:
       operationId: start_ai_assistant
-      summary: Start an AI assistant.
+      summary: Start an AI assistant
       tags:
       - AI Assistants
       parameters:
@@ -294,16 +295,14 @@ paths:
   /ai_assistants/{assistant_id}/stop:
     post:
       operationId: stop_ai_assistant
-      summary: Stop an AI assistant and cancel any running agent.
+      summary: Stop an AI assistant and cancel any running agent
       description: 'Transitions the assistant to the stopped state. If the assistant is currently
 
         running an agent, the running agent is also cancelled by setting the Redis stop
 
         flag on the active chat question, which triggers a .terminate file push to the
 
-        agent container. The wake queue is drained and pending approvals are cancelled.
-
-        '
+        agent container. The wake queue is drained and pending approvals are cancelled.'
       tags:
       - AI Assistants
       parameters:
@@ -322,7 +321,7 @@ paths:
   /ai_assistants/{assistant_id}/wake:
     post:
       operationId: wake_ai_assistant
-      summary: Manually trigger a wake cycle.
+      summary: Manually trigger a wake cycle
       tags:
       - AI Assistants
       parameters:
@@ -348,7 +347,7 @@ paths:
   /ai_assistants/{assistant_id}/events:
     get:
       operationId: list_ai_assistant_events
-      summary: List assistant wake/sleep events.
+      summary: List assistant wake/sleep events
       tags:
       - AI Assistants
       parameters:
@@ -391,7 +390,7 @@ paths:
   /ai_assistants/{assistant_id}/messages:
     get:
       operationId: list_ai_assistant_messages
-      summary: List direct messages with an assistant.
+      summary: List direct messages with an assistant
       tags:
       - AI Assistants
       parameters:
@@ -429,7 +428,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: send_ai_assistant_message
-      summary: Send a message to an AI assistant.
+      summary: Send a message to an AI assistant
       tags:
       - AI Assistants
       parameters:
@@ -463,7 +462,7 @@ paths:
   /ai_assistants/{assistant_id}/permissions/{username}:
     put:
       operationId: share_ai_assistant
-      summary: Share an AI assistant with a user.
+      summary: Share an AI assistant with a user
       tags:
       - AI Assistants
       parameters:
@@ -492,7 +491,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: unshare_ai_assistant
-      summary: Unshare an AI assistant from a user.
+      summary: Unshare an AI assistant from a user
       tags:
       - AI Assistants
       parameters:
@@ -516,7 +515,7 @@ paths:
   /ai_assistants/{assistant_id}/tool:
     put:
       operationId: update_ai_assistant_tool
-      summary: Update custom tool definition.
+      summary: Update custom tool definition
       tags:
       - AI Assistants
       parameters:
@@ -540,7 +539,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: reset_ai_assistant_tool
-      summary: Reset tool to default definition.
+      summary: Reset tool to default definition
       tags:
       - AI Assistants
       parameters:
@@ -559,7 +558,7 @@ paths:
   /ai_assistants/{assistant_id}/forums:
     get:
       operationId: list_ai_assistant_forums
-      summary: List connected forums.
+      summary: List connected forums
       description: Supports optional `offset` and `limit` query parameters for pagination (default 0 and 100).
       tags:
       - AI Assistants
@@ -596,7 +595,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: connect_ai_assistant_forum
-      summary: Connect assistant to a forum.
+      summary: Connect assistant to a forum
       tags:
       - AI Assistants
       parameters:
@@ -621,7 +620,7 @@ paths:
   /ai_assistants/{assistant_id}/forums/{forum_id}:
     delete:
       operationId: disconnect_ai_assistant_forum
-      summary: Disconnect assistant from a forum.
+      summary: Disconnect assistant from a forum
       tags:
       - AI Assistants
       parameters:
@@ -645,7 +644,7 @@ paths:
   /ai_assistants/{assistant_id}/collections:
     get:
       operationId: list_ai_assistant_collections
-      summary: List collections connected to an assistant.
+      summary: List collections connected to an assistant
       tags:
       - AI Assistants
       parameters:
@@ -681,7 +680,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: connect_ai_assistant_collection
-      summary: Connect assistant to a collection.
+      summary: Connect assistant to a collection
       tags:
       - AI Assistants
       parameters:
@@ -706,7 +705,7 @@ paths:
   /ai_assistants/{assistant_id}/collections/{collection_id}:
     delete:
       operationId: disconnect_ai_assistant_collection
-      summary: Disconnect assistant from a collection.
+      summary: Disconnect assistant from a collection
       tags:
       - AI Assistants
       parameters:
@@ -730,7 +729,7 @@ paths:
   /ai_assistants/{assistant_id}/schedules:
     get:
       operationId: list_ai_assistant_schedules
-      summary: List connected scheduled tasks.
+      summary: List connected scheduled tasks
       description: Supports optional `offset` and `limit` query parameters for pagination (default 0 and 100).
       tags:
       - AI Assistants
@@ -767,7 +766,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: connect_ai_assistant_schedule
-      summary: Connect a scheduled task as wake trigger.
+      summary: Connect a scheduled task as wake trigger
       tags:
       - AI Assistants
       parameters:
@@ -792,7 +791,7 @@ paths:
   /ai_assistants/{assistant_id}/schedules/{scheduled_task_id}:
     delete:
       operationId: disconnect_ai_assistant_schedule
-      summary: Disconnect a scheduled task.
+      summary: Disconnect a scheduled task
       tags:
       - AI Assistants
       parameters:
@@ -816,7 +815,7 @@ paths:
   /ai_assistants/{assistant_id}/files:
     get:
       operationId: list_ai_assistant_files
-      summary: List files stored by an AI assistant.
+      summary: List files stored by an AI assistant
       description: Supports optional offset and limit query parameters for pagination (default offset=0, limit=100).
       tags:
       - AI Assistants
@@ -854,7 +853,7 @@ paths:
   /ai_assistants/{assistant_id}/files/{file_id}/content:
     get:
       operationId: download_ai_assistant_file
-      summary: Download an assistant file.
+      summary: Download an assistant file
       description: Proxies file content download from the file server.
       tags:
       - AI Assistants
@@ -886,12 +885,10 @@ paths:
   /ai_assistants/{assistant_id}/search_forum_posts:
     get:
       operationId: search_assistant_forum_posts
-      summary: Search forum posts by keyword.
+      summary: Search forum posts by keyword
       description: 'Full-text search across forums connected to the assistant (via ai_assistant_forum).
 
-        Supports natural language queries, phrases, boolean operators, and prefix matching.
-
-        '
+        Supports natural language queries, phrases, boolean operators, and prefix matching.'
       tags:
       - AI Assistants
       parameters:
@@ -1000,7 +997,7 @@ paths:
   /ai_assistants/{assistant_id}/history/chat:
     get:
       operationId: get_ai_assistant_chat_history
-      summary: Get the assistant's full chat history as formatted text.
+      summary: Get the assistant's full chat history as formatted text
       description: Returns the assistant's complete conversation history across all wake cycles as plain text. Proxied from the file server.
       tags:
       - AI Assistants
@@ -1038,7 +1035,7 @@ paths:
   /ai_assistants/{assistant_id}/history/events:
     get:
       operationId: get_ai_assistant_event_history
-      summary: Get the assistant's full event history as formatted text.
+      summary: Get the assistant's full event history as formatted text
       description: Returns the assistant's complete event/activity log across all wake cycles as plain text. Proxied from the file server.
       tags:
       - AI Assistants
@@ -1076,7 +1073,7 @@ paths:
   /ai_assistants/{assistant_id}/permissions:
     get:
       operationId: list_ai_assistant_permissions
-      summary: List sharing permissions for an AI assistant.
+      summary: List sharing permissions for an AI assistant
       tags:
       - AI Assistants
       parameters:
@@ -1101,7 +1098,7 @@ paths:
   /event_types:
     post:
       operationId: create_event_type
-      summary: Create a custom event type.
+      summary: Create a custom event type
       description: Creates a new custom event type that assistants can subscribe to and emit.
       tags:
       - AI Assistants
@@ -1124,7 +1121,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_event_types
-      summary: List custom event types.
+      summary: List custom event types
       description: Lists custom event types. Optionally filter by assistant_id to see subscription status.
       tags:
       - AI Assistants
@@ -1163,7 +1160,7 @@ paths:
   /event_types/{event_type_id}:
     get:
       operationId: get_event_type
-      summary: Get a custom event type by ID.
+      summary: Get a custom event type by ID
       tags:
       - AI Assistants
       parameters:
@@ -1185,7 +1182,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_event_type
-      summary: Delete a custom event type.
+      summary: Delete a custom event type
       description: Only the creator can delete an event type. Cascades to subscriptions.
       tags:
       - AI Assistants
@@ -1209,7 +1206,7 @@ paths:
   /ai_assistants/{assistant_id}/event_subscriptions:
     post:
       operationId: subscribe_to_event_type
-      summary: Subscribe an assistant to a custom event type.
+      summary: Subscribe an assistant to a custom event type
       tags:
       - AI Assistants
       parameters:
@@ -1237,7 +1234,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_event_subscriptions
-      summary: List an assistant's event subscriptions.
+      summary: List an assistant's event subscriptions
       tags:
       - AI Assistants
       parameters:
@@ -1274,7 +1271,7 @@ paths:
   /ai_assistants/{assistant_id}/event_subscriptions/{event_type_id}:
     delete:
       operationId: unsubscribe_from_event_type
-      summary: Unsubscribe an assistant from a custom event type.
+      summary: Unsubscribe an assistant from a custom event type
       tags:
       - AI Assistants
       parameters:
@@ -1302,7 +1299,7 @@ paths:
   /ai_assistants/{assistant_id}/emit_event:
     post:
       operationId: emit_custom_event
-      summary: Emit a custom event.
+      summary: Emit a custom event
       description: Emits a custom event that wakes subscribed sleeping assistants. Optionally target specific assistants.
       tags:
       - AI Assistants
@@ -1332,7 +1329,7 @@ paths:
   /ai_assistants/{assistant_id}/send_to_assistant:
     post:
       operationId: send_inter_assistant_message
-      summary: Send a message to another assistant.
+      summary: Send a message to another assistant
       description: Sends a direct message from one assistant to another, triggering a wake event on the recipient.
       tags:
       - AI Assistants
@@ -1361,185 +1358,57 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    EventSubscriptionRequest:
+    EmitEventRequest:
       required:
-      - event_type_id
+      - event_type_name
       properties:
-        event_type_id:
+        event_type_name:
           type: string
-          format: uuid
-    AiAssistantMessage:
-      properties:
-        id:
-          type: string
-          format: uuid
-        assistant_id:
-          type: string
-          format: uuid
-        sender_type:
-          type: string
-        sender_user_id:
-          type: string
-          format: uuid
-        sender_username:
-          type: string
-        assistant_name:
-          type: string
-        content:
-          type: string
-        file_ids:
+          description: Name of the event type to emit.
+        payload:
+          type: object
+          description: Optional event payload data.
+        target_assistant_ids:
           type: array
           items:
             type: string
             format: uuid
+          description: Optional list of specific assistant IDs to target.
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    EmitEventResponse:
+      properties:
+        status:
+          type: string
+        woken_count:
+          type: integer
+    InterAssistantMessage:
+      properties:
+        id:
+          type: string
+          format: uuid
+        sender_assistant_id:
+          type: string
+          format: uuid
+        recipient_assistant_id:
+          type: string
+          format: uuid
+        content:
+          type: string
         metadata:
           type: object
         wake_cycle:
           type: integer
-        created_at:
-          type: string
-          format: date-time
-    AiAssistantCollectionConnectRequest:
-      required:
-      - collection_id
-      properties:
-        collection_id:
-          type: string
-          format: uuid
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    EventType:
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        payload_schema:
-          type: object
-        user_id:
-          type: string
-          format: uuid
-        subscriber_count:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-    EventTypeCreateRequest:
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name of the custom event type (max 200 chars).
-        description:
-          type: string
-          description: Optional description (max 5000 chars).
-        payload_schema:
-          type: object
-          description: Optional JSON schema for event payloads.
-    AiAssistantPermission:
-      properties:
-        username:
-          type: string
-        can_read:
-          type: boolean
-        can_edit:
-          type: boolean
-    AiAssistantCreateRequest:
-      required:
-      - name
-      - llm
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        system_prompt:
-          type: string
-        llm:
-          type: string
-        llm_args:
-          type: object
-        custom_tool_definition:
-          type: string
-        mcp_servers:
-          type: array
-          items:
-            type: object
-        credential_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        memory_block_id:
-          type: string
-          format: uuid
-        notification_email:
-          type: string
-        history_management:
-          type: string
-          enum:
-          - compactification
-          - truncation
-          - semantic_retrieval
-          default: semantic_retrieval
-        history_max_chars:
-          type: integer
-        history_recent_chars:
-          type: integer
-          description: Maximum characters of recent chat history kept uncompacted (default 10000)
-        history_retrieval_chars:
-          type: integer
-          description: Maximum characters retrieved from vector DB for semantic retrieval (default 100000)
-        allowed_tool_actions:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'List of allowed tool action names. NULL means all actions allowed (default). Empty array means no actions allowed.
-
-            '
-        allowed_trigger_types:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'List of allowed trigger types. NULL means all triggers allowed (default). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.
-
-            '
-        default_wake_period:
-          type:
-          - integer
-          - 'null'
-          description: 'Default periodic wake interval in seconds. When set, the system automatically wakes the assistant at this interval with its name and description as context. Min 60 (1 min), max 86400 (24 hours). Default NULL (no periodic wake).
-
-            '
-    EventSubscription:
-      properties:
-        id:
-          type: string
-          format: uuid
-        assistant_id:
-          type: string
-          format: uuid
-        event_type_id:
-          type: string
-          format: uuid
-        event_type_name:
-          type: string
         created_at:
           type: string
           format: date-time
@@ -1574,17 +1443,34 @@ components:
           format: date-time
         execution_count:
           type: integer
-    AiAssistantFile:
+    InterAssistantMessageRequest:
+      required:
+      - recipient_assistant_id
+      - content
       properties:
-        file_id:
+        recipient_assistant_id:
           type: string
           format: uuid
-        created_at:
+        content:
           type: string
-          format: date-time
-        source:
+          description: Message content (max 100000 chars).
+        metadata:
+          type: object
+          description: Optional metadata.
+    AiAssistantCollectionConnectRequest:
+      required:
+      - collection_id
+      properties:
+        collection_id:
           type: string
-          description: 'Source of the file reference: ''message'' or ''forum_post'''
+          format: uuid
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
     AiAssistantForumLink:
       properties:
         junction_id:
@@ -1615,26 +1501,128 @@ components:
           format: date-time
         post_count:
           type: integer
-    InterAssistantMessage:
+    AiAssistantUpdateRequest:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        system_prompt:
+          type: string
+        llm:
+          type: string
+        llm_args:
+          type: object
+        custom_tool_definition:
+          type: string
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        credential_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        memory_block_id:
+          type: string
+          format: uuid
+        notification_email:
+          type: string
+        history_management:
+          type: string
+          enum:
+          - compactification
+          - truncation
+          - semantic_retrieval
+        history_max_chars:
+          type: integer
+        history_recent_chars:
+          type: integer
+          description: Maximum characters of recent chat history kept uncompacted (default 10000)
+        history_retrieval_chars:
+          type: integer
+          description: Maximum characters retrieved from vector DB for semantic retrieval (default 100000)
+        allowed_tool_actions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'List of allowed tool action names. NULL means all actions allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed).
+
+            '
+        allowed_trigger_types:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'List of allowed trigger types. NULL means all triggers allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.
+
+            '
+    AiAssistantToolRequest:
+      required:
+      - custom_tool_definition
+      properties:
+        custom_tool_definition:
+          type: string
+    EventSubscription:
       properties:
         id:
           type: string
           format: uuid
-        sender_assistant_id:
+        assistant_id:
           type: string
           format: uuid
-        recipient_assistant_id:
+        event_type_id:
           type: string
           format: uuid
-        content:
+        event_type_name:
           type: string
-        metadata:
-          type: object
-        wake_cycle:
-          type: integer
         created_at:
           type: string
           format: date-time
+    AiAssistantCollectionLink:
+      required:
+      - junction_id
+      - collection_id
+      - access_mode
+      - collection_name
+      - document_count
+      properties:
+        junction_id:
+          type: string
+          format: uuid
+        collection_id:
+          type: string
+          format: uuid
+        access_mode:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        collection_name:
+          type: string
+        collection_description:
+          type:
+          - string
+          - 'null'
+        user_id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        document_count:
+          type: integer
+    AiAssistantPermission:
+      properties:
+        username:
+          type: string
+        can_read:
+          type: boolean
+        can_edit:
+          type: boolean
     AiAssistant:
       properties:
         id:
@@ -1729,28 +1717,38 @@ components:
           type: string
         forum_count:
           type: integer
-    InterAssistantMessageRequest:
+    AiAssistantMessageRequest:
       required:
-      - recipient_assistant_id
       - content
       properties:
-        recipient_assistant_id:
-          type: string
-          format: uuid
         content:
           type: string
-          description: Message content (max 100000 chars).
-        metadata:
-          type: object
-          description: Optional metadata.
-    AiAssistantScheduleConnectRequest:
-      required:
-      - scheduled_task_id
+    EventType:
       properties:
-        scheduled_task_id:
+        id:
           type: string
           format: uuid
-    AiAssistantUpdateRequest:
+        name:
+          type: string
+        description:
+          type: string
+        payload_schema:
+          type: object
+        user_id:
+          type: string
+          format: uuid
+        subscriber_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AiAssistantCreateRequest:
+      required:
+      - name
+      - llm
       properties:
         name:
           type: string
@@ -1784,6 +1782,7 @@ components:
           - compactification
           - truncation
           - semantic_retrieval
+          default: semantic_retrieval
         history_max_chars:
           type: integer
         history_recent_chars:
@@ -1798,7 +1797,7 @@ components:
           - 'null'
           items:
             type: string
-          description: 'List of allowed tool action names. NULL means all actions allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed).
+          description: 'List of allowed tool action names. NULL means all actions allowed (default). Empty array means no actions allowed.
 
             '
         allowed_trigger_types:
@@ -1807,31 +1806,90 @@ components:
           - 'null'
           items:
             type: string
-          description: 'List of allowed trigger types. NULL means all triggers allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.
+          description: 'List of allowed trigger types. NULL means all triggers allowed (default). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.
 
             '
-    AiAssistantToolRequest:
+        default_wake_period:
+          type:
+          - integer
+          - 'null'
+          description: 'Default periodic wake interval in seconds. When set, the system automatically wakes the assistant at this interval with its name and description as context. Min 60 (1 min), max 86400 (24 hours). Default NULL (no periodic wake).
+
+            '
+    AiAssistantScheduleConnectRequest:
       required:
-      - custom_tool_definition
+      - scheduled_task_id
       properties:
-        custom_tool_definition:
+        scheduled_task_id:
           type: string
-    EmitEventRequest:
+          format: uuid
+    AiAssistantForumConnectRequest:
       required:
-      - event_type_name
+      - forum_id
       properties:
-        event_type_name:
+        forum_id:
           type: string
-          description: Name of the event type to emit.
-        payload:
-          type: object
-          description: Optional event payload data.
-        target_assistant_ids:
+          format: uuid
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
+    AiAssistantMessage:
+      properties:
+        id:
+          type: string
+          format: uuid
+        assistant_id:
+          type: string
+          format: uuid
+        sender_type:
+          type: string
+        sender_user_id:
+          type: string
+          format: uuid
+        sender_username:
+          type: string
+        assistant_name:
+          type: string
+        content:
+          type: string
+        file_ids:
           type: array
           items:
             type: string
             format: uuid
-          description: Optional list of specific assistant IDs to target.
+        metadata:
+          type: object
+        wake_cycle:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+    EventTypeCreateRequest:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the custom event type (max 200 chars).
+        description:
+          type: string
+          description: Optional description (max 5000 chars).
+        payload_schema:
+          type: object
+          description: Optional JSON schema for event payloads.
+    ShareAiAssistantRequest:
+      properties:
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
     AiAssistantEvent:
       properties:
         id:
@@ -1854,85 +1912,24 @@ components:
         created_at:
           type: string
           format: date-time
-    AiAssistantForumConnectRequest:
-      required:
-      - forum_id
+    AiAssistantFile:
       properties:
-        forum_id:
+        file_id:
           type: string
           format: uuid
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    ShareAiAssistantRequest:
-      properties:
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    AiAssistantMessageRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    AiAssistantCollectionLink:
-      required:
-      - junction_id
-      - collection_id
-      - access_mode
-      - collection_name
-      - document_count
-      properties:
-        junction_id:
-          type: string
-          format: uuid
-        collection_id:
-          type: string
-          format: uuid
-        access_mode:
-          type: string
         created_at:
           type: string
           format: date-time
-        collection_name:
+        source:
           type: string
-        collection_description:
-          type:
-          - string
-          - 'null'
-        user_id:
+          description: 'Source of the file reference: ''message'' or ''forum_post'''
+    EventSubscriptionRequest:
+      required:
+      - event_type_id
+      properties:
+        event_type_id:
           type: string
           format: uuid
-        username:
-          type: string
-        document_count:
-          type: integer
-    EmitEventResponse:
-      properties:
-        status:
-          type: string
-        woken_count:
-          type: integer
     AiAssistantSpec:
       description: LLM-generated assistant configuration spec.
       required:

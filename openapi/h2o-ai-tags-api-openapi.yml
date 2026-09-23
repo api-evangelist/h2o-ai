@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Tags API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -13,7 +16,7 @@ paths:
   /tags:
     post:
       operationId: create_tag
-      summary: Creates a new tag.
+      summary: Creates a new tag
       description: Creates a new tag that can be subsequently associated with a document.
       tags:
       - Tags
@@ -40,7 +43,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_tags
-      summary: List tags.
+      summary: List tags
       description: List all existing tags.
       tags:
       - Tags
@@ -63,7 +66,7 @@ paths:
     get:
       tags:
       - Tags
-      summary: Finds a tag by its name.
+      summary: Finds a tag by its name
       description: Returns a single tag by its unique name.
       operationId: get_tag
       parameters:
@@ -91,7 +94,7 @@ paths:
     delete:
       tags:
       - Tags
-      summary: Deletes a tag.
+      summary: Deletes a tag
       description: Deletes a tag by its name. Only the tag creator can delete it. All document-tag associations are removed.
       operationId: delete_tag
       parameters:
@@ -120,7 +123,7 @@ paths:
     patch:
       tags:
       - Tags
-      summary: Updates attributes of a tag.
+      summary: Updates attributes of a tag
       description: Updates attributes of an existing tag, particularly description and format.
       operationId: update_tag
       parameters:
@@ -154,7 +157,7 @@ paths:
   /tags/{tag_names}/documents:
     get:
       operationId: list_documents_for_tags
-      summary: List documents associated with a tag.
+      summary: List documents associated with a tag
       description: List documents associated with a tag.
       tags:
       - Tags
@@ -200,23 +203,6 @@ components:
     Metadata:
       type: object
       additionalProperties: true
-    Tag:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: marvel
-        description:
-          type: string
-          example: Stories based on Marvel's comics.
-        format:
-          type: string
     EndpointError:
       required:
       - code
@@ -304,6 +290,23 @@ components:
           description: Whether the document files are encrypted at rest
           type: boolean
           default: false
+    Tag:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: marvel
+        description:
+          type: string
+          example: Stories based on Marvel's comics.
+        format:
+          type: string
     TagCreateRequest:
       required:
       - name
@@ -325,14 +328,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

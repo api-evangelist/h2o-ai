@@ -1,0 +1,36 @@
+# Front Door AI Index — h2o-ai — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: h2o-ai
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: h2o.ai
+  final_host: h2o.ai
+  ownership: own
+  owner: h2o-ai
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 75
+  host_score: 75
+  density: 60.39
+  words: 1242
+  tiers:
+    agentic: 13
+    core: 61
+    model: 1
+  ambiguous: 28
+  top_terms:
+    AI: 37
+    agent: 20
+    LLMs: 7
+    gen ai: 7
+    AI agent: 4
+    predictive: 4
+    ML: 3
+    fine-tune: 3
+    generative ai: 3
+    AI assistant: 2
+    agentic: 2
+    automation: 2

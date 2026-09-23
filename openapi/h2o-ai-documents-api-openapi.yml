@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Documents API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -13,7 +16,7 @@ paths:
   /documents:
     get:
       operationId: list_documents
-      summary: List documents.
+      summary: List documents
       description: List documents for a given user. If sort_column is not specified, the output is sorted by by last update time in descending order.
       tags:
       - Documents
@@ -107,7 +110,7 @@ paths:
   /documents/count:
     get:
       operationId: get_document_count
-      summary: Counts a number of documents.
+      summary: Counts a number of documents
       description: Counts a number of documents the user has access to. If owned parameter is enabled, it counts only the documents owned by the user.
       tags:
       - Documents
@@ -136,7 +139,7 @@ paths:
     get:
       tags:
       - Documents
-      summary: Finds a document by id.
+      summary: Finds a document by id
       description: Returns a single document by its unique identifier.
       operationId: get_document
       parameters:
@@ -164,7 +167,7 @@ paths:
     delete:
       tags:
       - Documents
-      summary: Deletes a document.
+      summary: Deletes a document
       description: Deletes a document with a given unique identifier.
       operationId: delete_document
       parameters:
@@ -193,7 +196,7 @@ paths:
     patch:
       tags:
       - Documents
-      summary: Updates attributes of an existing document.
+      summary: Updates attributes of an existing document
       description: Updates attributes of an existing document, particularly name and uri.
       operationId: update_document
       parameters:
@@ -228,7 +231,7 @@ paths:
     get:
       tags:
       - Documents
-      summary: Returns all chunks for a specific document.
+      summary: Returns all chunks for a specific document
       description: Returns all chunks for a specific document.
       operationId: list_document_chunks
       parameters:
@@ -263,10 +266,8 @@ paths:
     post:
       tags:
       - Documents
-      summary: Creates job to process document.
-      description: 'Processes a document to either create a global or piecewise summary/extraction/transformation of a document.
-
-        '
+      summary: Creates job to process document
+      description: Processes a document to either create a global or piecewise summary/extraction/transformation of a document.
       operationId: create_process_document_job
       requestBody:
         required: true
@@ -291,7 +292,7 @@ paths:
     post:
       tags:
       - Documents
-      summary: Creates job to delete documents.
+      summary: Creates job to delete documents
       description: Creates job to delete documents with a given unique identifier.
       operationId: create_delete_document_job
       requestBody:
@@ -317,7 +318,7 @@ paths:
     get:
       tags:
       - Documents
-      summary: Lists collections for containing a given document.
+      summary: Lists collections for containing a given document
       description: Lists collections for containing a given document.
       operationId: list_collections_for_document
       parameters:
@@ -360,7 +361,7 @@ paths:
     post:
       tags:
       - Documents
-      summary: Assigns a tag to the document.
+      summary: Assigns a tag to the document
       description: Assigns a tag to the document.
       operationId: create_tag_on_document
       parameters:
@@ -395,7 +396,7 @@ paths:
     delete:
       tags:
       - Documents
-      summary: Removes a tag from a document.
+      summary: Removes a tag from a document
       description: Removes a tag from a document.
       operationId: delete_tag_from_document
       parameters:
@@ -432,7 +433,7 @@ paths:
   /documents/{document_id}/chats:
     get:
       operationId: list_chat_sessions_for_document
-      summary: List chat sessions for a given document.
+      summary: List chat sessions for a given document
       description: List chat sessions for a given document.
       tags:
       - Documents
@@ -475,7 +476,7 @@ paths:
   /documents/{document_id}/chats/count:
     get:
       operationId: get_chat_session_count_for_document
-      summary: Counts a number of chat sessions with the document.
+      summary: Counts a number of chat sessions with the document
       description: Counts a number of chat sessions with the document.
       tags:
       - Documents
@@ -503,7 +504,6 @@ paths:
     get:
       operationId: list_document_summaries
       summary: Fetches recent document summaries/extractions/transformations
-      description: Fetches recent document summaries/extractions/transformations
       tags:
       - Documents
       parameters:
@@ -545,7 +545,7 @@ paths:
   /documents/summaries/{summary_ids}:
     delete:
       operationId: delete_document_summaries
-      summary: Deletes document summaries.
+      summary: Deletes document summaries
       description: Deletes document summaries.
       tags:
       - Documents
@@ -570,7 +570,7 @@ paths:
   /documents/{document_id}/metadata:
     get:
       operationId: get_document_metadata
-      summary: Fetches document metadata.
+      summary: Fetches document metadata
       description: Returns details of document metadata
       tags:
       - Documents
@@ -598,7 +598,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     put:
       operationId: update_document_metadata
-      summary: Updates document metadata.
+      summary: Updates document metadata
       description: Recreates entire metadata of the document.
       tags:
       - Documents
@@ -626,7 +626,7 @@ paths:
   /documents/{document_id}/user_source_file:
     get:
       operationId: get_document_user_source_file
-      summary: Fetches document user source file.
+      summary: Fetches document user source file
       description: Returns document user source file.
       tags:
       - Documents
@@ -657,7 +657,7 @@ paths:
   /documents/{document_id}/page_ocr_model:
     get:
       operationId: get_document_page_ocr_model
-      summary: Fetches document page ocr model.
+      summary: Fetches document page ocr model
       description: Returns document page ocr model.
       tags:
       - Documents
@@ -688,7 +688,7 @@ paths:
   /documents/{document_id}/page_layout:
     get:
       operationId: get_document_page_layout
-      summary: Fetches document page layout.
+      summary: Fetches document page layout
       description: Returns document page layout.
       tags:
       - Documents
@@ -719,7 +719,7 @@ paths:
   /documents/{document_id}/internal_metadata:
     get:
       operationId: get_document_internal_metadata
-      summary: Fetches document internal metadata.
+      summary: Fetches document internal metadata
       description: Returns document internal metadata.
       tags:
       - Documents
@@ -750,7 +750,7 @@ paths:
   /documents/{document_id}/guardrails_settings:
     get:
       operationId: get_document_guardrails_settings
-      summary: Fetches document guardrails settings.
+      summary: Fetches document guardrails settings
       description: Returns document guardrails settings.
       tags:
       - Documents
@@ -781,7 +781,7 @@ paths:
   /document_summaries/{summary_id}:
     get:
       operationId: get_document_summary
-      summary: Fetches document summary.
+      summary: Fetches document summary
       description: Fetches document summary.
       tags:
       - Documents
@@ -809,13 +809,102 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    DocumentUpdateRequest:
+    ProcessDocumentJobRequest:
       type: object
+      required:
+      - document_id
       properties:
-        name:
+        document_id:
+          description: String id of the document to create a summary from.
           type: string
-        uri:
+        summary_id:
+          description: The requested identifier of the output document summary.
           type: string
+        system_prompt:
+          description: System prompt.
+          type: string
+        pre_prompt_summary:
+          description: Prompt that goes before each large piece of text to summarize.
+          type: string
+        prompt_summary:
+          description: Prompt that goes after each large piece of text to summarize.
+          type: string
+        image_batch_image_prompt:
+          description: Prompt for each image batch for vision models.
+          type: string
+        image_batch_final_prompt:
+          description: Prompt to reduce all answers each image batch for vision models.
+          type: string
+        llm:
+          description: LLM to use.
+          type: string
+        llm_args:
+          $ref: '#/components/schemas/ChatCompletionRequestLLMArgs'
+        max_num_chunks:
+          description: Max limit of chunks to send to the summarizer.
+          type: integer
+        sampling_strategy:
+          description: How to sample if the document has more chunks than max_num_chunks. Options are "auto", "uniform", "first", "first+last", default is "auto" (a hybrid of them all).
+          type: string
+          enum:
+          - auto
+          - uniform
+          - first
+          - first+last
+          default: auto
+        pages:
+          description: List of specific pages (of the ingested document in PDF form) to use from the document. 1-based indexing.
+          type: array
+          items:
+            type: integer
+        schema:
+          description: Optional JSON schema to use for guided json generation.
+          type: object
+        keep_intermediate_results:
+          description: Whether to keep intermediate results. If false, further LLM calls are applied to the intermediate results until one global summary is obtained - map+reduce (i.e., summary). If true, the results' content will be a list of strings (the results of applying the LLM to different pieces of document context) - map (i.e., extract).
+          type: boolean
+          default: false
+        guardrails_settings:
+          $ref: '#/components/schemas/GuardrailsSettings'
+        timeout:
+          description: Amount of time in seconds to allow the request to run. The default is 86400 seconds.
+          type: integer
+          default: 86400
+        meta_data_to_include:
+          description: "A map with flags that indicate whether each piece of document metadata is to be included as part of \nthe context for a chat with a collection.\n  * `name` **(type: boolean, default=True)**\n  * `text` **(type: boolean, default=True)**\n  * `page` **(type: boolean, default=True)**\n  * `captions` **(type: boolean, default=True)**\n  * `uri` **(type: boolean, default=False)**\n  * `connector` **(type: boolean, default=False)**\n  * `original_mtime` **(type: boolean, default=False)**\n  * `age` **(type: boolean, default=False)**\n  * `score` **(type: boolean, default=False)**\n"
+          type: object
+          additionalProperties:
+            type: boolean
+    DocumentSummary:
+      type: object
+      required:
+      - id
+      - document_id
+      - content
+      - error
+      - kwargs
+      - created_at
+      properties:
+        id:
+          description: A unique identifier of the document summary
+          type: string
+        document_id:
+          description: A unique identifier of the document
+          type: string
+        content:
+          type: string
+        error:
+          type: string
+        kwargs:
+          type: string
+        created_at:
+          type: string
+          format: datetime
+        usage_stats:
+          type: string
+    Metadata:
+      type: object
+      additionalProperties: true
     JobDetailsStatus:
       required:
       - id
@@ -826,6 +915,285 @@ components:
           type: string
         status:
           type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    ChatCompletionRequestLLMArgs:
+      type: object
+      description: "A map of arguments sent to LLM with query.\n  * `temperature` **(type=double, default=0.0)** - A value used to modulate the next token probabilities.\n    0 is the most deterministic and 1 is most creative.\n  * `top_k` **(type=integer, default=1)** - A number of highest probability vocabulary tokens to keep for top-k-filtering.\n  * `top_p` **(type=double, default=0.0)** - If set to a value < 1, only the smallest set of most probable\n    tokens with probabilities that add up to top_p or higher are kept for generation.\n  * `seed` **(type=integer, default=0)** - A seed for the random number generator when sampling during\n     generation (if temp>0 or top_k>1 or top_p<1), seed=0 picks a random seed.\n  * `repetition_penalty` **(type=double, default=1.07)** - A parameter for repetition penalty. 1.0 means no penalty.\n  * `max_new_tokens` **(type=double, default=1024)** - A maximum number of new tokens to generate.\n    This limit applies to each (map+reduce) step during summarization and each (map) step during extraction.\n  * `min_max_new_tokens` **(type=integer, default=512)** - A minimum value for max_new_tokens when auto-adjusting for content of prompt, docs, etc.\n  * `response_format` **(type=enum[text, json_object, json_code], default=text)** - An output type of LLM\n  * `guided_json` **(type=map)** - If specified, the output will follow the JSON schema.\n  * `guided_regex` **(type=string)** - If specified, the output will follow the regex pattern.\n    Only for models that support guided generation.\n  * `guided_choice` **(type=array[string])** - If specified, the output will be exactly one of the choices.\n    Only for models that support guided generation.\n  * `guided_grammar` **(type=string)** - If specified, the output will follow the context free grammar.\n    Only for models that support guided generation.\n  * `guided_whitespace_pattern` **(type=string)** - If specified, will override the default whitespace pattern for guided json decoding.\n    Only for models that support guided generation.\n  * `enable_vision` **(type=enum[on, off, auto], default=auto)** - Controls vision mode,\n    send images to the LLM in addition to text chunks.\n  * `visible_vision_models` **(type=array[string], default=[auto])** - Controls which vision model to use when processing images.\n    Must provide exactly one model. [auto] for automatic.\n  * `images_num_max` **(type=integer, default=None)** - Maximum number of images to process.\n  * `json_preserve_system_prompt` **(type=boolean, default=None)** - Whether to preserve system prompt in JSON response.\n  * `client_metadata` **(type=string, default=None)** - Additional metadata to send with the request.\n  * `min_chars_per_yield` **(type=integer, default=1)** - Minimum characters to yield in streaming response.\n  * `reasoning_effort` **(type=integer, default=0)** - Level of reasoning effort for the model (higher values = deeper reasoning, e.g., 10000-65000).\n    Use for models that support chain-of-thought reasoning. 0 means no additional reasoning effort.\n  * `cost_controls` **(type=map)** A map with cost controls settings:\n    * `max_cost` **(type=double)** - Sets the maximum allowed cost in USD per LLM call when doing Automatic model routing.\n      If the estimated cost based on input and output token counts is higher than this limit,\n      the request will fail as early as possible.\n    * `max_cost_per_million_tokens` **(type=double)** - Only consider models that cost less than this value in USD per million tokens\n      when doing automatic routing. Using the max of input and output cost.\n    * `model` **(type=array[string])** - Optional subset of models to consider when doing automatic routing.\n      If not specified, all models are considered.\n    * `willingness_to_pay` **(type=double)** - Controls the willingness to pay extra for a more accurate model for every LLM call\n      when doing automatic routing, in units of USD per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated cost divided by the increase in estimated accuracy\n      is no more than this value divided by 10%, up to the upper limit specified above.\n      Lower values will try to keep the cost as low as possible,\n      higher values will approach the cost limit to increase accuracy. 0 means unlimited.\n    * `willingness_to_wait` **(type=double)** - Controls the willingness to wait longer for a more accurate model for every LLM call\n      when doing automatic routing, in units of seconds per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated time divided by the increase in estimated accuracy\n      is no more than this value divided by 10%. Lower values will try to keep the time\n      as low as possible, higher values will take longer to increase accuracy. 0 means unlimited.\n  * `use_agent` **(type=boolean, default=False)** - If True, use the AI agent (with access to tools) to generate the response.\n  * `agent_accuracy` **(type=string, default=\"standard\")** - Effort level by the agent. Only if use_agent=True. One of [\"quick\", \"basic\", \"standard\", \"maximum\"].\n  * `agent_max_turns` **(type=union[string, integer], default=\"auto\")** - Optional max. number of back-and-forth turns with the agent. Only if use_agent=True. Either \"auto\" or an integer.\n  * `agent_tools` **(type=union[string, array[string]], default=\"auto\")** - Either \"auto\", \"all\", \"any\" to enable all available tools, or a specific list of tools to use. Only if use_agent=True.\n  * `agent_type` **(type=string, default=\"auto\")** - Type of agent to use for task processing.\n  * `agent_original_files` **(type=array[string], default=None)** - List of file paths for agent to process.\n  * `agent_timeout` **(type=integer, default=None)** - Timeout in seconds for each agent turn.\n  * `agent_total_timeout` **(type=integer, default=3600)** - Total timeout in seconds for all agent processing.\n  * `agent_code_writer_system_message` **(type=string, default=None)** - System message for agent code writer.\n  * `agent_num_executable_code_blocks_limit` **(type=integer, default=1)** - Maximum number of executable code blocks.\n  * `agent_system_site_packages` **(type=boolean, default=True)** - Whether agent has access to system site packages.\n  * `agent_main_model` **(type=string, default=None)** - Main model to use for agent.\n  * `agent_max_stream_length` **(type=integer, default=None)** - Maximum stream length for agent response.\n  * `agent_max_memory_usage` **(type=integer, default=16*1024**3)** - Maximum memory usage for agent in bytes (16GB default).\n  * `agent_main_reasoning_effort` **(type=integer, default=None)** - Effort level for main reasoning.\n  * `agent_advanced_reasoning_effort` **(type=integer, default=None)** - Effort level for advanced reasoning.\n  * `agent_max_confidence_level` **(type=integer, default=None)** - Maximum confidence level for agent responses.\n  * `agent_planning_forced_mode` **(type=boolean, default=None)** - Whether to force planning mode for agent.\n  * `agent_too_soon_forced_mode` **(type=boolean, default=None)** - Whether to force \"too soon\" mode for agent.\n  * `agent_critique_forced_mode` **(type=integer, default=None)** - Whether to force critique mode for agent.\n  * `agent_query_understanding_parallel_calls` **(type=integer, default=None)** - Number of parallel calls for query understanding.\n  * `task_tracking` **(type=boolean, default=None)** - Enable task tracking for agent.\n  * `task_update_steps` **(type=integer, default=None)** - Number of steps for task update tracking (0-5, None for auto).\n  * `tool_building_mode` **(type=string, default=None)** - Mode for tool building configuration.\n  * `agent_stream_files` **(type=boolean, default=True)** - Whether to stream files from agent.\n  * `final_answer_guidelines_mode` **(type=string, default=\"auto\")** - Mode for formatting agent final answers. Only applies when use_agent=True. Options: \"auto\" (chooses detailed, may later adapt), \"detailed\" (full final answer guidelines), \"detailed_no_file_links\", \"detailed_no_image_links\", \"detailed_no_links\", \"file_template\" (use custom template), \"raw_LLM\" (bypass final answer guidelines). Available modes may vary by deployment.\n"
+      additionalProperties: true
+    Chunk:
+      type: object
+      required:
+      - id
+      - text
+      - name
+      - size
+      - pages
+      properties:
+        text:
+          description: The text represented by the chunk
+          type: string
+        id:
+          description: The identifier of the chunk
+          type: integer
+        name:
+          type: string
+        size:
+          description: The size in bytes.
+          type: integer
+        pages:
+          type: string
+    TagCreateRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: marvel
+    Document:
+      required:
+      - id
+      - name
+      - username
+      - type
+      - size
+      - page_count
+      - created_at
+      - updated_at
+      - status
+      type: object
+      properties:
+        id:
+          description: A unique identifier of the document
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          description: Name of the document
+          type: string
+          example: The Hitchhiker's Guide to the Galaxy
+        username:
+          description: A username owning the document
+          type: string
+        type:
+          description: Type of the document
+          type: string
+        size:
+          description: Size of the document in bytes
+          type: integer
+        page_count:
+          description: A number of pages contained in the document
+          type: integer
+        status:
+          description: Status of the document
+          type: string
+          enum:
+          - unknown
+          - scheduled
+          - queued
+          - running
+          - completed
+          - failed
+          - canceled
+          - agent_only
+        usage_stats:
+          description: Usage stats
+          type: string
+        connector:
+          type: string
+        original_type:
+          type: string
+        original_mtime:
+          type: string
+          format: datetime
+        created_at:
+          description: Time when document was created
+          type: string
+          format: date-time
+        updated_at:
+          description: Last time when document was modified
+          type: string
+          format: date-time
+        uri:
+          type: string
+        summary:
+          type: string
+        summary_parameters:
+          type: string
+        metadata_dict:
+          $ref: '#/components/schemas/Metadata'
+        is_encrypted:
+          description: Whether the document files are encrypted at rest
+          type: boolean
+          default: false
+    JobDetails:
+      required:
+      - id
+      - name
+      - overall_status
+      - passed_percentage
+      - failed_percentage
+      - progress
+      - created_at
+      - updated_at
+      - kind
+      - statuses
+      - errors
+      - duration
+      - duration_seconds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        overall_status:
+          type: string
+          enum:
+          - in progress
+          - completed
+          - failed
+          - canceled
+        status:
+          type: string
+        passed_percentage:
+          type: number
+          format: double
+        failed_percentage:
+          type: number
+          format: double
+        progress:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        kind:
+          type: string
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetailsStatus'
+        errors:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        duration_seconds:
+          type: number
+          format: double
+        canceled_by:
+          type: string
+        cancel_reason:
+          type: string
+        timeout:
+          type: number
+          format: double
+        start_time:
+          type: number
+          format: double
+    Dictionary:
+      type: object
+      additionalProperties: true
+    ChunkSearchResult:
+      allOf:
+      - $ref: '#/components/schemas/Chunk'
+      - type: object
+        required:
+        - topic
+        - score
+        properties:
+          topic:
+            type: string
+          score:
+            type: number
+            format: double
+    ChatSession:
+      required:
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: Discussion about sci-fi heroes.
+        collection_id:
+          type: string
+          example: c91e7c84-65df-4b43-ba15-fbd3afb2e86f
+        collection_name:
+          type: string
+        prompt_template_id:
+          type: string
+          example: 4e400991-c459-455f-995c-dc6f55ffdb90
+        latest_message_content:
+          type: string
+          example: The strongest hero is superman!
+        updated_at:
+          type: string
+          format: date-time
+        workspace:
+          type: string
+        username:
+          type: string
+          description: Username of the session owner.
+    Tag:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: marvel
+        description:
+          type: string
+          example: Stories based on Marvel's comics.
+        format:
+          type: string
+    DocumentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        uri:
+          type: string
+    Count:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
+    DeleteDocumentsJobRequest:
+      type: object
+      required:
+      - document_ids
+      properties:
+        document_ids:
+          description: Ids of documents to be deleted.
+          type: array
+          items:
+            type: string
     Collection:
       required:
       - id
@@ -933,110 +1301,6 @@ components:
           enum:
           - enabled
           - disabled
-    DocumentSummary:
-      type: object
-      required:
-      - id
-      - document_id
-      - content
-      - error
-      - kwargs
-      - created_at
-      properties:
-        id:
-          description: A unique identifier of the document summary
-          type: string
-        document_id:
-          description: A unique identifier of the document
-          type: string
-        content:
-          type: string
-        error:
-          type: string
-        kwargs:
-          type: string
-        created_at:
-          type: string
-          format: datetime
-        usage_stats:
-          type: string
-    Dictionary:
-      type: object
-      additionalProperties: true
-    ChunkSearchResult:
-      allOf:
-      - $ref: '#/components/schemas/Chunk'
-      - type: object
-        required:
-        - topic
-        - score
-        properties:
-          topic:
-            type: string
-          score:
-            type: number
-            format: double
-    Metadata:
-      type: object
-      additionalProperties: true
-    ChatCompletionRequestLLMArgs:
-      type: object
-      description: "A map of arguments sent to LLM with query.\n  * `temperature` **(type=double, default=0.0)** - A value used to modulate the next token probabilities.\n    0 is the most deterministic and 1 is most creative.\n  * `top_k` **(type=integer, default=1)** - A number of highest probability vocabulary tokens to keep for top-k-filtering.\n  * `top_p` **(type=double, default=0.0)** - If set to a value < 1, only the smallest set of most probable\n    tokens with probabilities that add up to top_p or higher are kept for generation.\n  * `seed` **(type=integer, default=0)** - A seed for the random number generator when sampling during\n     generation (if temp>0 or top_k>1 or top_p<1), seed=0 picks a random seed.\n  * `repetition_penalty` **(type=double, default=1.07)** - A parameter for repetition penalty. 1.0 means no penalty.\n  * `max_new_tokens` **(type=double, default=1024)** - A maximum number of new tokens to generate.\n    This limit applies to each (map+reduce) step during summarization and each (map) step during extraction.\n  * `min_max_new_tokens` **(type=integer, default=512)** - A minimum value for max_new_tokens when auto-adjusting for content of prompt, docs, etc.\n  * `response_format` **(type=enum[text, json_object, json_code], default=text)** - An output type of LLM\n  * `guided_json` **(type=map)** - If specified, the output will follow the JSON schema.\n  * `guided_regex` **(type=string)** - If specified, the output will follow the regex pattern.\n    Only for models that support guided generation.\n  * `guided_choice` **(type=array[string])** - If specified, the output will be exactly one of the choices.\n    Only for models that support guided generation.\n  * `guided_grammar` **(type=string)** - If specified, the output will follow the context free grammar.\n    Only for models that support guided generation.\n  * `guided_whitespace_pattern` **(type=string)** - If specified, will override the default whitespace pattern for guided json decoding.\n    Only for models that support guided generation.\n  * `enable_vision` **(type=enum[on, off, auto], default=auto)** - Controls vision mode,\n    send images to the LLM in addition to text chunks.\n  * `visible_vision_models` **(type=array[string], default=[auto])** - Controls which vision model to use when processing images.\n    Must provide exactly one model. [auto] for automatic.\n  * `images_num_max` **(type=integer, default=None)** - Maximum number of images to process.\n  * `json_preserve_system_prompt` **(type=boolean, default=None)** - Whether to preserve system prompt in JSON response.\n  * `client_metadata` **(type=string, default=None)** - Additional metadata to send with the request.\n  * `min_chars_per_yield` **(type=integer, default=1)** - Minimum characters to yield in streaming response.\n  * `reasoning_effort` **(type=integer, default=0)** - Level of reasoning effort for the model (higher values = deeper reasoning, e.g., 10000-65000).\n    Use for models that support chain-of-thought reasoning. 0 means no additional reasoning effort.\n  * `cost_controls` **(type=map)** A map with cost controls settings:\n    * `max_cost` **(type=double)** - Sets the maximum allowed cost in USD per LLM call when doing Automatic model routing.\n      If the estimated cost based on input and output token counts is higher than this limit,\n      the request will fail as early as possible.\n    * `max_cost_per_million_tokens` **(type=double)** - Only consider models that cost less than this value in USD per million tokens\n      when doing automatic routing. Using the max of input and output cost.\n    * `model` **(type=array[string])** - Optional subset of models to consider when doing automatic routing.\n      If not specified, all models are considered.\n    * `willingness_to_pay` **(type=double)** - Controls the willingness to pay extra for a more accurate model for every LLM call\n      when doing automatic routing, in units of USD per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated cost divided by the increase in estimated accuracy\n      is no more than this value divided by 10%, up to the upper limit specified above.\n      Lower values will try to keep the cost as low as possible,\n      higher values will approach the cost limit to increase accuracy. 0 means unlimited.\n    * `willingness_to_wait` **(type=double)** - Controls the willingness to wait longer for a more accurate model for every LLM call\n      when doing automatic routing, in units of seconds per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated time divided by the increase in estimated accuracy\n      is no more than this value divided by 10%. Lower values will try to keep the time\n      as low as possible, higher values will take longer to increase accuracy. 0 means unlimited.\n  * `use_agent` **(type=boolean, default=False)** - If True, use the AI agent (with access to tools) to generate the response.\n  * `agent_accuracy` **(type=string, default=\"standard\")** - Effort level by the agent. Only if use_agent=True. One of [\"quick\", \"basic\", \"standard\", \"maximum\"].\n  * `agent_max_turns` **(type=union[string, integer], default=\"auto\")** - Optional max. number of back-and-forth turns with the agent. Only if use_agent=True. Either \"auto\" or an integer.\n  * `agent_tools` **(type=union[string, array[string]], default=\"auto\")** - Either \"auto\", \"all\", \"any\" to enable all available tools, or a specific list of tools to use. Only if use_agent=True.\n  * `agent_type` **(type=string, default=\"auto\")** - Type of agent to use for task processing.\n  * `agent_original_files` **(type=array[string], default=None)** - List of file paths for agent to process.\n  * `agent_timeout` **(type=integer, default=None)** - Timeout in seconds for each agent turn.\n  * `agent_total_timeout` **(type=integer, default=3600)** - Total timeout in seconds for all agent processing.\n  * `agent_code_writer_system_message` **(type=string, default=None)** - System message for agent code writer.\n  * `agent_num_executable_code_blocks_limit` **(type=integer, default=1)** - Maximum number of executable code blocks.\n  * `agent_system_site_packages` **(type=boolean, default=True)** - Whether agent has access to system site packages.\n  * `agent_main_model` **(type=string, default=None)** - Main model to use for agent.\n  * `agent_max_stream_length` **(type=integer, default=None)** - Maximum stream length for agent response.\n  * `agent_max_memory_usage` **(type=integer, default=16*1024**3)** - Maximum memory usage for agent in bytes (16GB default).\n  * `agent_main_reasoning_effort` **(type=integer, default=None)** - Effort level for main reasoning.\n  * `agent_advanced_reasoning_effort` **(type=integer, default=None)** - Effort level for advanced reasoning.\n  * `agent_max_confidence_level` **(type=integer, default=None)** - Maximum confidence level for agent responses.\n  * `agent_planning_forced_mode` **(type=boolean, default=None)** - Whether to force planning mode for agent.\n  * `agent_too_soon_forced_mode` **(type=boolean, default=None)** - Whether to force \"too soon\" mode for agent.\n  * `agent_critique_forced_mode` **(type=integer, default=None)** - Whether to force critique mode for agent.\n  * `agent_query_understanding_parallel_calls` **(type=integer, default=None)** - Number of parallel calls for query understanding.\n  * `task_tracking` **(type=boolean, default=None)** - Enable task tracking for agent.\n  * `task_update_steps` **(type=integer, default=None)** - Number of steps for task update tracking (0-5, None for auto).\n  * `tool_building_mode` **(type=string, default=None)** - Mode for tool building configuration.\n  * `agent_stream_files` **(type=boolean, default=True)** - Whether to stream files from agent.\n  * `final_answer_guidelines_mode` **(type=string, default=\"auto\")** - Mode for formatting agent final answers. Only applies when use_agent=True. Options: \"auto\" (chooses detailed, may later adapt), \"detailed\" (full final answer guidelines), \"detailed_no_file_links\", \"detailed_no_image_links\", \"detailed_no_links\", \"file_template\" (use custom template), \"raw_LLM\" (bypass final answer guidelines). Available modes may vary by deployment.\n"
-      additionalProperties: true
-    Tag:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: marvel
-        description:
-          type: string
-          example: Stories based on Marvel's comics.
-        format:
-          type: string
-    TagCreateRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          example: marvel
-    Count:
-      required:
-      - count
-      type: object
-      properties:
-        count:
-          type: integer
-    Chunk:
-      type: object
-      required:
-      - id
-      - text
-      - name
-      - size
-      - pages
-      properties:
-        text:
-          description: The text represented by the chunk
-          type: string
-        id:
-          description: The identifier of the chunk
-          type: integer
-        name:
-          type: string
-        size:
-          description: The size in bytes.
-          type: integer
-        pages:
-          type: string
     GuardrailsSettings:
       type: object
       properties:
@@ -1179,270 +1443,6 @@ components:
             type: string
           example:
             Mother's Maiden Name: Mother's maiden name
-    JobDetails:
-      required:
-      - id
-      - name
-      - overall_status
-      - passed_percentage
-      - failed_percentage
-      - progress
-      - created_at
-      - updated_at
-      - kind
-      - statuses
-      - errors
-      - duration
-      - duration_seconds
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        overall_status:
-          type: string
-          enum:
-          - in progress
-          - completed
-          - failed
-          - canceled
-        status:
-          type: string
-        passed_percentage:
-          type: number
-          format: double
-        failed_percentage:
-          type: number
-          format: double
-        progress:
-          type: number
-          format: double
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        kind:
-          type: string
-        statuses:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobDetailsStatus'
-        errors:
-          type: array
-          items:
-            type: string
-        duration:
-          type: string
-        duration_seconds:
-          type: number
-          format: double
-        canceled_by:
-          type: string
-        cancel_reason:
-          type: string
-        timeout:
-          type: number
-          format: double
-        start_time:
-          type: number
-          format: double
-    ProcessDocumentJobRequest:
-      type: object
-      required:
-      - document_id
-      properties:
-        document_id:
-          description: String id of the document to create a summary from.
-          type: string
-        summary_id:
-          description: The requested identifier of the output document summary.
-          type: string
-        system_prompt:
-          description: System prompt.
-          type: string
-        pre_prompt_summary:
-          description: Prompt that goes before each large piece of text to summarize.
-          type: string
-        prompt_summary:
-          description: Prompt that goes after each large piece of text to summarize.
-          type: string
-        image_batch_image_prompt:
-          description: Prompt for each image batch for vision models.
-          type: string
-        image_batch_final_prompt:
-          description: Prompt to reduce all answers each image batch for vision models.
-          type: string
-        llm:
-          description: LLM to use.
-          type: string
-        llm_args:
-          $ref: '#/components/schemas/ChatCompletionRequestLLMArgs'
-        max_num_chunks:
-          description: Max limit of chunks to send to the summarizer.
-          type: integer
-        sampling_strategy:
-          description: How to sample if the document has more chunks than max_num_chunks. Options are "auto", "uniform", "first", "first+last", default is "auto" (a hybrid of them all).
-          type: string
-          enum:
-          - auto
-          - uniform
-          - first
-          - first+last
-          default: auto
-        pages:
-          description: List of specific pages (of the ingested document in PDF form) to use from the document. 1-based indexing.
-          type: array
-          items:
-            type: integer
-        schema:
-          description: Optional JSON schema to use for guided json generation.
-          type: object
-        keep_intermediate_results:
-          description: Whether to keep intermediate results. If false, further LLM calls are applied to the intermediate results until one global summary is obtained - map+reduce (i.e., summary). If true, the results' content will be a list of strings (the results of applying the LLM to different pieces of document context) - map (i.e., extract).
-          type: boolean
-          default: false
-        guardrails_settings:
-          $ref: '#/components/schemas/GuardrailsSettings'
-        timeout:
-          description: Amount of time in seconds to allow the request to run. The default is 86400 seconds.
-          type: integer
-          default: 86400
-        meta_data_to_include:
-          description: "A map with flags that indicate whether each piece of document metadata is to be included as part of \nthe context for a chat with a collection.\n  * `name` **(type: boolean, default=True)**\n  * `text` **(type: boolean, default=True)**\n  * `page` **(type: boolean, default=True)**\n  * `captions` **(type: boolean, default=True)**\n  * `uri` **(type: boolean, default=False)**\n  * `connector` **(type: boolean, default=False)**\n  * `original_mtime` **(type: boolean, default=False)**\n  * `age` **(type: boolean, default=False)**\n  * `score` **(type: boolean, default=False)**\n"
-          type: object
-          additionalProperties:
-            type: boolean
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    Document:
-      required:
-      - id
-      - name
-      - username
-      - type
-      - size
-      - page_count
-      - created_at
-      - updated_at
-      - status
-      type: object
-      properties:
-        id:
-          description: A unique identifier of the document
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          description: Name of the document
-          type: string
-          example: The Hitchhiker's Guide to the Galaxy
-        username:
-          description: A username owning the document
-          type: string
-        type:
-          description: Type of the document
-          type: string
-        size:
-          description: Size of the document in bytes
-          type: integer
-        page_count:
-          description: A number of pages contained in the document
-          type: integer
-        status:
-          description: Status of the document
-          type: string
-          enum:
-          - unknown
-          - scheduled
-          - queued
-          - running
-          - completed
-          - failed
-          - canceled
-          - agent_only
-        usage_stats:
-          description: Usage stats
-          type: string
-        connector:
-          type: string
-        original_type:
-          type: string
-        original_mtime:
-          type: string
-          format: datetime
-        created_at:
-          description: Time when document was created
-          type: string
-          format: date-time
-        updated_at:
-          description: Last time when document was modified
-          type: string
-          format: date-time
-        uri:
-          type: string
-        summary:
-          type: string
-        summary_parameters:
-          type: string
-        metadata_dict:
-          $ref: '#/components/schemas/Metadata'
-        is_encrypted:
-          description: Whether the document files are encrypted at rest
-          type: boolean
-          default: false
-    ChatSession:
-      required:
-      - id
-      - updated_at
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: Discussion about sci-fi heroes.
-        collection_id:
-          type: string
-          example: c91e7c84-65df-4b43-ba15-fbd3afb2e86f
-        collection_name:
-          type: string
-        prompt_template_id:
-          type: string
-          example: 4e400991-c459-455f-995c-dc6f55ffdb90
-        latest_message_content:
-          type: string
-          example: The strongest hero is superman!
-        updated_at:
-          type: string
-          format: date-time
-        workspace:
-          type: string
-        username:
-          type: string
-          description: Username of the session owner.
-    DeleteDocumentsJobRequest:
-      type: object
-      required:
-      - document_ids
-      properties:
-        document_ids:
-          description: Ids of documents to be deleted.
-          type: array
-          items:
-            type: string
   responses:
     NotFound:
       description: Not found

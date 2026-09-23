@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Permissions API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -13,7 +16,7 @@ paths:
   /collections/{collection_id}/permissions/is_granted:
     post:
       operationId: is_collection_permission_granted
-      summary: Checks if collection permission is granted for a given user.
+      summary: Checks if collection permission is granted for a given user
       description: Checks if collection permission is granted for a given user.
       tags:
       - Permissions
@@ -48,7 +51,7 @@ paths:
   /documents/{document_id}/users/{user_id}:
     put:
       operationId: add_user_document_permission
-      summary: Associates a user with a document they have permission on.
+      summary: Associates a user with a document they have permission on
       description: Associates a user with a document they have permission on.
       tags:
       - Permissions
@@ -81,7 +84,7 @@ paths:
   /users:
     get:
       operationId: list_users
-      summary: Returns a list of all registered users for the system.
+      summary: Returns a list of all registered users for the system
       description: Returns a list of all registered users for the system.
       tags:
       - Permissions
@@ -118,7 +121,7 @@ paths:
   /users/{user_id}:
     get:
       operationId: get_user
-      summary: Finds user for a given unique identifier.
+      summary: Finds user for a given unique identifier
       description: Finds user for a given unique identifier.
       tags:
       - Permissions
@@ -147,7 +150,7 @@ paths:
   /users/{user_id}/permissions:
     get:
       operationId: get_user_permissions
-      summary: Lists permissions of a given user.
+      summary: Lists permissions of a given user
       description: Lists permissions of a given user.
       tags:
       - Permissions
@@ -177,7 +180,7 @@ paths:
     delete:
       tags:
       - Permissions
-      summary: Request deletion of the current user.
+      summary: Request deletion of the current user
       description: Creates a deletion request for the currently authenticated user. Returns a delete ID that must be used to confirm the deletion within 5 minutes.
       operationId: request_current_user_deletion
       responses:
@@ -195,7 +198,7 @@ paths:
     post:
       tags:
       - Permissions
-      summary: Confirm deletion of the current user.
+      summary: Confirm deletion of the current user
       description: Confirms and executes the deletion of the currently authenticated user and all associated data using the delete ID from the initial request.
       operationId: confirm_current_user_deletion
       requestBody:
@@ -224,7 +227,7 @@ paths:
   /users/current/permissions:
     get:
       operationId: get_current_user_permissions
-      summary: Lists permissions of the user calling the endpoint.
+      summary: Lists permissions of the user calling the endpoint
       description: Lists permissions of the user calling the endpoint.
       tags:
       - Permissions
@@ -246,7 +249,7 @@ paths:
   /users/{user_id}/roles:
     get:
       operationId: get_user_roles
-      summary: Finds roles associated with a given user.
+      summary: Finds roles associated with a given user
       description: Finds roles associated with a given user.
       tags:
       - Permissions
@@ -274,7 +277,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: reset_user_roles
-      summary: Resets user roles.
+      summary: Resets user roles
       description: Replaces all roles of the given user with a new set of roles
       tags:
       - Permissions
@@ -305,7 +308,7 @@ paths:
   /users/current/roles:
     get:
       operationId: get_current_user_roles
-      summary: Finds roles associated with the user calling the endpoint.
+      summary: Finds roles associated with the user calling the endpoint
       description: Finds roles associated with the user calling the endpoint.
       tags:
       - Permissions
@@ -327,7 +330,7 @@ paths:
   /users/{user_id}/roles/{role_names}:
     put:
       operationId: assign_roles_to_user
-      summary: Assigns roles to a given user.
+      summary: Assigns roles to a given user
       description: Assigns roles to a given user.
       tags:
       - Permissions
@@ -359,7 +362,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: remove_roles_from_user
-      summary: Removes roles from a given user.
+      summary: Removes roles from a given user
       description: Removes roles from a given user.
       tags:
       - Permissions
@@ -390,7 +393,7 @@ paths:
   /groups:
     get:
       operationId: list_groups
-      summary: Returns a list of all groups existing on the H2OGPTe instance.
+      summary: Returns a list of all groups existing on the H2OGPTe instance
       description: Returns a list of all groups existing on the H2OGPTe instance.
       tags:
       - Permissions
@@ -411,7 +414,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: create_group
-      summary: Creates a user group.
+      summary: Creates a user group
       description: Creates a user group.
       tags:
       - Permissions
@@ -436,7 +439,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_groups_by_names
-      summary: Deletes groups for given group names.
+      summary: Deletes groups for given group names
       description: Deletes groups for given group names.
       tags:
       - Permissions
@@ -463,7 +466,7 @@ paths:
   /groups/{group_ids}:
     delete:
       operationId: delete_groups
-      summary: Deletes groups for given unique identifiers.
+      summary: Deletes groups for given unique identifiers
       description: Deletes a groups for given unique identifiers.
       tags:
       - Permissions
@@ -490,7 +493,7 @@ paths:
   /groups/{group_id}/roles:
     get:
       operationId: get_group_roles
-      summary: Finds roles associated with a given group.
+      summary: Finds roles associated with a given group
       description: Finds roles associated with a given group.
       tags:
       - Permissions
@@ -518,7 +521,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: reset_group_roles
-      summary: Resets group roles.
+      summary: Resets group roles
       description: Replaces all roles of the given group with a new set of roles
       tags:
       - Permissions
@@ -549,7 +552,7 @@ paths:
   /groups/{group_id}/roles/{role_names}:
     put:
       operationId: assign_roles_to_group
-      summary: Assigns roles to a given group.
+      summary: Assigns roles to a given group
       description: Assigns roles to a given user.
       tags:
       - Permissions
@@ -581,7 +584,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: remove_roles_from_group
-      summary: Removes roles from a given group.
+      summary: Removes roles from a given group
       description: Removes roles from a given group.
       tags:
       - Permissions
@@ -612,7 +615,7 @@ paths:
   /group/{group_id}/permissions:
     get:
       operationId: get_group_permissions
-      summary: Lists permissions of a given group.
+      summary: Lists permissions of a given group
       description: Lists permissions of a given group.
       tags:
       - Permissions
@@ -641,7 +644,7 @@ paths:
   /roles:
     post:
       operationId: create_role
-      summary: Creates a role.
+      summary: Creates a role
       description: Creates a role.
       tags:
       - Permissions
@@ -666,7 +669,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_roles
-      summary: Returns all roles for in the H2OGPTe instance.
+      summary: Returns all roles for in the H2OGPTe instance
       description: Returns all roles for in the H2OGPTe instance.
       tags:
       - Permissions
@@ -687,7 +690,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: delete_roles_by_names
-      summary: Deletes roles for given role names.
+      summary: Deletes roles for given role names
       description: Deletes roles for given role names.
       tags:
       - Permissions
@@ -714,7 +717,7 @@ paths:
   /roles/{role_id}:
     get:
       operationId: get_role
-      summary: Finds role for a given unique identifier.
+      summary: Finds role for a given unique identifier
       description: Finds role for a given unique identifier.
       tags:
       - Permissions
@@ -743,7 +746,7 @@ paths:
   /roles/{role_ids}:
     delete:
       operationId: delete_roles
-      summary: Deletes roles for given unique identifiers.
+      summary: Deletes roles for given unique identifiers
       description: Deletes roles for given unique identifiers.
       tags:
       - Permissions
@@ -770,7 +773,7 @@ paths:
   /roles/{role_id}/permissions:
     get:
       operationId: get_role_permissions
-      summary: Lists permissions of a given role.
+      summary: Lists permissions of a given role
       description: Lists permissions of a given role.
       tags:
       - Permissions
@@ -798,7 +801,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     post:
       operationId: set_role_permissions
-      summary: Sets a new set of permissions for a given role.
+      summary: Sets a new set of permissions for a given role
       description: Sets a new set of permissions for a given role.
       tags:
       - Permissions
@@ -829,7 +832,7 @@ paths:
   /roles/{role_id}/permissions/{permission_name}:
     put:
       operationId: assign_permission_to_role
-      summary: Assigns permission to a given role.
+      summary: Assigns permission to a given role
       description: Assigns permission to a given role.
       tags:
       - Permissions
@@ -861,7 +864,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     delete:
       operationId: remove_permission_from_role
-      summary: Removes permission from a given role.
+      summary: Removes permission from a given role
       description: Removes permission from a given role.
       tags:
       - Permissions
@@ -894,7 +897,7 @@ paths:
   /roles/{role_id}/priority:
     put:
       operationId: set_role_priority
-      summary: Sets priority for a given role.
+      summary: Sets priority for a given role
       description: Sets priority for a given role.
       tags:
       - Permissions
@@ -930,7 +933,7 @@ paths:
   /permissions:
     get:
       operationId: list_permissions
-      summary: Returns system permissions.
+      summary: Returns system permissions
       description: Returns all system permissions or permissions for given groups
       tags:
       - Permissions
@@ -969,7 +972,7 @@ paths:
   /permissions/is_granted:
     post:
       operationId: is_permission_granted
-      summary: Checks if permission is granted for a given user.
+      summary: Checks if permission is granted for a given user
       description: Checks if permission is granted for a given user.
       tags:
       - Permissions
@@ -993,59 +996,7 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
-  responses:
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   schemas:
-    RolesResetRequest:
-      required:
-      - new_roles
-      type: object
-      properties:
-        new_roles:
-          type: array
-          items:
-            type: string
     RoleCreateRequest:
       required:
       - name
@@ -1056,26 +1007,6 @@ components:
           type: string
         description:
           type: string
-    GroupInfo:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-    UserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
     UserPermission:
       required:
       - id
@@ -1095,6 +1026,18 @@ components:
           type: array
           items:
             type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     RoleInfo:
       required:
       - id
@@ -1109,48 +1052,6 @@ components:
           type: string
         priority:
           type: integer
-    PermissionCheckRequest:
-      required:
-      - permission
-      type: object
-      properties:
-        permission:
-          type: string
-    GroupCreateRequest:
-      required:
-      - name
-      - description
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    SetRolePriorityRequest:
-      required:
-      - priority
-      type: object
-      properties:
-        priority:
-          type: integer
-          description: The priority to be set for the role.
-    PermissionResetRequest:
-      required:
-      - new_permissions
-      type: object
-      properties:
-        new_permissions:
-          type: array
-          items:
-            type: string
-    ConfirmUserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: The delete ID returned from the initial deletion request.
     UserInfo:
       required:
       - id
@@ -1164,18 +1065,120 @@ components:
           type: string
         email:
           type: string
-    EndpointError:
+    RolesResetRequest:
       required:
-      - code
-      - message
+      - new_roles
+      type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
+        new_roles:
+          type: array
+          items:
+            type: string
+    UserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
           type: string
-          description: Error message
+          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
+    SetRolePriorityRequest:
+      required:
+      - priority
+      type: object
+      properties:
+        priority:
+          type: integer
+          description: The priority to be set for the role.
+    GroupCreateRequest:
+      required:
+      - name
+      - description
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    PermissionCheckRequest:
+      required:
+      - permission
+      type: object
+      properties:
+        permission:
+          type: string
+    GroupInfo:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    ConfirmUserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
+          type: string
+          description: The delete ID returned from the initial deletion request.
+    PermissionResetRequest:
+      required:
+      - new_permissions
+      type: object
+      properties:
+        new_permissions:
+          type: array
+          items:
+            type: string
+  responses:
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

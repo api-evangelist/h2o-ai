@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Showcase API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -18,9 +21,7 @@ paths:
 
         `showcase_page_mode` global setting: `disabled` (404), `authenticated`
 
-        (login required, guests blocked), or `public` (anyone).
-
-        '
+        (login required, guests blocked), or `public` (anyone).'
       tags:
       - Showcase
       parameters:
@@ -59,9 +60,7 @@ paths:
 
         chats may be pinned; their tiles are only listed to authenticated
 
-        callers.
-
-        '
+        callers.'
       tags:
       - Showcase
       requestBody:
@@ -101,9 +100,7 @@ paths:
 
         the taxonomy with typos. Requires the `h2ogpte/chat/manage_showcase`
 
-        permission.
-
-        '
+        permission.'
       tags:
       - Showcase
       responses:
@@ -127,9 +124,7 @@ paths:
       summary: Reorder showcase chats
       description: 'Requires the `h2ogpte/chat/manage_showcase` permission. Atomically
 
-        reassigns sort_order for each entry.
-
-        '
+        reassigns sort_order for each entry.'
       tags:
       - Showcase
       requestBody:
@@ -161,9 +156,7 @@ paths:
 
         returns 400); category may be cleared by sending an empty string.
 
-        thumbnail_path is set exclusively by the upload endpoint.
-
-        '
+        thumbnail_path is set exclusively by the upload endpoint.'
       tags:
       - Showcase
       parameters:
@@ -198,9 +191,7 @@ paths:
 
         shared chat is untouched; only the tile (and its stored thumbnail) is
 
-        removed.
-
-        '
+        removed.'
       tags:
       - Showcase
       parameters:
@@ -230,9 +221,7 @@ paths:
 
         of an image (jpg/png/webp/gif, max 20 MB). Stored in object storage; the
 
-        resulting path is saved to the showcase entry.
-
-        '
+        resulting path is saved to the showcase entry.'
       tags:
       - Showcase
       parameters:
@@ -311,9 +300,7 @@ paths:
 
         thumbnail object from storage and clears the showcase row''s
 
-        thumbnail_path so the tile renders the placeholder icon.
-
-        '
+        thumbnail_path so the tile renders the placeholder icon.'
       tags:
       - Showcase
       parameters:
@@ -336,90 +323,14 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
-  responses:
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   schemas:
-    AddShowcaseChatRequest:
+    UploadShowcaseThumbnailResponse:
       type: object
       required:
-      - shared_chat_id
-      - title
-      - description
+      - thumbnail_path
       properties:
-        shared_chat_id:
+        thumbnail_path:
           type: string
-        title:
-          type: string
-          description: Required. Non-empty after trim.
-        description:
-          type: string
-          description: Required. Non-empty after trim.
-        category:
-          type: string
-          description: Optional free-text category used to group tiles in the listing.
-    ReorderShowcaseChatsRequest:
-      type: object
-      required:
-      - orders
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReorderShowcaseChatEntry'
-    AddShowcaseChatResponse:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-    UpdateShowcaseChatRequest:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
-        description:
-          type: string
-          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
-        category:
-          type: string
-          description: Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized).
     ShowcaseChat:
       type: object
       required:
@@ -474,16 +385,6 @@ components:
           type: string
         featured_by_username:
           type: string
-    ListShowcaseCategoriesResponse:
-      type: object
-      required:
-      - categories
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
     EndpointError:
       required:
       - code
@@ -496,13 +397,6 @@ components:
         message:
           type: string
           description: Error message
-    UploadShowcaseThumbnailResponse:
-      type: object
-      required:
-      - thumbnail_path
-      properties:
-        thumbnail_path:
-          type: string
     ReorderShowcaseChatEntry:
       type: object
       required:
@@ -513,6 +407,99 @@ components:
           type: string
         sort_order:
           type: integer
+    ListShowcaseCategoriesResponse:
+      type: object
+      required:
+      - categories
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
+    AddShowcaseChatResponse:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    AddShowcaseChatRequest:
+      type: object
+      required:
+      - shared_chat_id
+      - title
+      - description
+      properties:
+        shared_chat_id:
+          type: string
+        title:
+          type: string
+          description: Required. Non-empty after trim.
+        description:
+          type: string
+          description: Required. Non-empty after trim.
+        category:
+          type: string
+          description: Optional free-text category used to group tiles in the listing.
+    UpdateShowcaseChatRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
+        description:
+          type: string
+          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
+        category:
+          type: string
+          description: Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized).
+    ReorderShowcaseChatsRequest:
+      type: object
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReorderShowcaseChatEntry'
+  responses:
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

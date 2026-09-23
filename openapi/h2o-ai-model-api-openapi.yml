@@ -325,53 +325,22 @@ paths:
       - Model
 components:
   schemas:
-    ScoringType:
-      title: ScoringType
-      enum:
-      - REGRESSION
-      - CLASSIFICATION
-      - BINOMIAL
-      type: string
-      description: Enumeration of the supported scoring types.
-    PredictionInterval:
-      title: PredictionInterval
+    ContributionGroup:
+      title: ContributionGroup
       required:
-      - fields
-      - rows
+      - contributions
       type: object
       properties:
-        fields:
-          type: array
-          items:
-            type: string
-          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
-        rows:
+        output_group:
+          type: string
+          description: Name of the output group. It will be populated only for multinomial models. Shapley values are not supported for third party models yet, hence this field will not be populated.
+        contributions:
           type: array
           items:
             type: array
             items:
               type: string
-          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
-    ValidationError:
-      title: ValidationError
-      required:
-      - loc
-      - msg
-      - type
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-              format: int32
-          description: ''
-        msg:
-          type: string
-        type:
-          type: string
+          description: n array of rows consisting of the shapley contributions output corresponding to columns in the fields
     ScoreRequest:
       title: ScoreRequest
       required:
@@ -412,6 +381,112 @@ components:
           allOf:
           - $ref: '#/components/schemas/ShapleyType'
           - description: The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested.
+    PredictionInterval:
+      title: PredictionInterval
+      required:
+      - fields
+      - rows
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+    ContributionsResponse:
+      title: ContributionsResponse
+      required:
+      - features
+      - contributionGroups
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the rows of the  `contributions` property.
+        contributionGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionGroup'
+          description: An array of rows consisting of the shapley contributions output corresponding to an output group.
+    ContributionsRequest:
+      title: ContributionsRequest
+      required:
+      - requestShapleyValueType
+      - fields
+      - rows
+      type: object
+      properties:
+        requestShapleyValueType:
+          allOf:
+          - $ref: '#/components/schemas/ShapleyType'
+          - description: The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested.
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+    ValidationError:
+      title: ValidationError
+      required:
+      - loc
+      - msg
+      - type
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+              format: int32
+          description: ''
+        msg:
+          type: string
+        type:
+          type: string
+    DataType:
+      title: DataType
+      enum:
+      - Bool
+      - Bytes
+      - Int32
+      - Int64
+      - Float32
+      - Float64
+      - Str
+      - Time64
+      type: string
+      description: Enumeration of the supported input and output data types.
+    ModelProperties:
+      title: ModelProperties
+      type: object
+      properties:
+        scoringType:
+          allOf:
+          - $ref: '#/components/schemas/ScoringType'
+          - description: Enumeration of the supported scoring types.
+        scoringResponseLabels:
+          type: array
+          items:
+            type: string
+          description: ''
     ScoreResponse:
       title: ScoreResponse
       required:
@@ -441,22 +516,19 @@ components:
           allOf:
           - $ref: '#/components/schemas/PredictionInterval'
           - description: Prediction interval consist of an array of interval bound names and rows of array of bounds per bound name. Setting `requestPredictionIntervals` to true will enable populating the field. The field will be empty or an error response returned if prediction intervals arenot returned or supported by the model.
-    ContributionGroup:
-      title: ContributionGroup
+    DataField:
+      title: DataField
       required:
-      - contributions
+      - name
+      - dataType
       type: object
       properties:
-        output_group:
+        name:
           type: string
-          description: Name of the output group. It will be populated only for multinomial models. Shapley values are not supported for third party models yet, hence this field will not be populated.
-        contributions:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-          description: n array of rows consisting of the shapley contributions output corresponding to columns in the fields
+        dataType:
+          allOf:
+          - $ref: '#/components/schemas/DataType'
+          - description: Enumeration of the supported input and output data types.
     ShapleyType:
       title: ShapleyType
       enum:
@@ -465,6 +537,14 @@ components:
       - NONE
       type: string
       description: An enumeration.
+    ScoringType:
+      title: ScoringType
+      enum:
+      - REGRESSION
+      - CLASSIFICATION
+      - BINOMIAL
+      type: string
+      description: Enumeration of the supported scoring types.
     Model:
       title: Model
       required:
@@ -481,78 +561,6 @@ components:
           $ref: '#/components/schemas/ModelProperties'
         schema:
           $ref: '#/components/schemas/ModelSchema'
-    ModelProperties:
-      title: ModelProperties
-      type: object
-      properties:
-        scoringType:
-          allOf:
-          - $ref: '#/components/schemas/ScoringType'
-          - description: Enumeration of the supported scoring types.
-        scoringResponseLabels:
-          type: array
-          items:
-            type: string
-          description: ''
-    DataField:
-      title: DataField
-      required:
-      - name
-      - dataType
-      type: object
-      properties:
-        name:
-          type: string
-        dataType:
-          allOf:
-          - $ref: '#/components/schemas/DataType'
-          - description: Enumeration of the supported input and output data types.
-    HTTPValidationError:
-      title: HTTPValidationError
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          description: ''
-    ContributionsRequest:
-      title: ContributionsRequest
-      required:
-      - requestShapleyValueType
-      - fields
-      - rows
-      type: object
-      properties:
-        requestShapleyValueType:
-          allOf:
-          - $ref: '#/components/schemas/ShapleyType'
-          - description: The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested.
-        fields:
-          type: array
-          items:
-            type: string
-          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
-        rows:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
-    DataType:
-      title: DataType
-      enum:
-      - Bool
-      - Bytes
-      - Int32
-      - Int64
-      - Float32
-      - Float64
-      - Str
-      - Time64
-      type: string
-      description: Enumeration of the supported input and output data types.
     ModelSchema:
       title: ModelSchema
       type: object
@@ -567,20 +575,12 @@ components:
           items:
             $ref: '#/components/schemas/DataField'
           description: ''
-    ContributionsResponse:
-      title: ContributionsResponse
-      required:
-      - features
-      - contributionGroups
+    HTTPValidationError:
+      title: HTTPValidationError
       type: object
       properties:
-        features:
+        detail:
           type: array
           items:
-            type: string
-          description: An array holding the names of fields in the order of appearance in the rows of the  `contributions` property.
-        contributionGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContributionGroup'
-          description: An array of rows consisting of the shapley contributions output corresponding to an output group.
+            $ref: '#/components/schemas/ValidationError'
+          description: ''

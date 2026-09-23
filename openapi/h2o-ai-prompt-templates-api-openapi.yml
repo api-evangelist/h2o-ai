@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: h2oGPTe REST Prompt Templates API
-  description: "\n# Overview \n\nUsers can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.\n\n## Authorization: Getting an API key\n\nSign up/in at Enterprise h2oGPTe and generate one of the following two types of API keys: \n\n- **Global API key**: If a Collection is not specified when creating a new API Key, that key is considered to be a global API Key. Use global API Keys to grant full user impersonation and system-wide access to all of your work. Anyone with access to one of your global API Keys can create, delete, or interact with any of your past, current, and future Collections, Documents, Chats, and settings.\n\n- **Collection-specific API key**: Use Collection-specific API Keys to grant external access to only Chat with a specified Collection and make related API calls to it. Collection-specific API keys do not allow other API calls, such as creation, deletion, or access to other Collections or Chats.\n \nAccess Enterprise h2oGPTe through your [H2O Generative AI](https://genai.h2o.ai/appstore) app store account, available with a freemium tier.\n\n## Authorization: Using an API key \n\nAll h2oGPTe REST API requests must include an API Key in the \"Authorization\" HTTP header, formatted as follows:\n\n```\nAuthorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n```\n\n```sh\ncurl -X 'POST' \\\n  'https://h2ogpte.genai.h2o.ai/api/v1/collections' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Bearer sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' \\\n  -d '{\n    \"name\": \"The name of my Collection\",\n    \"description\": \"The description of my Collection\",\n    \"embedding_model\": \"BAAI/bge-large-en-v1.5\"\n  }'\n```\n    \n## Interactive h2oGPTe API testing\n\nThis page only showcases the h2oGPTe REST API; you can test it directly in the [Swagger UI](https://h2ogpte.genai.h2o.ai/swagger-ui/). Ensure that you are logged into your Enterprise h2oGPTe account.\n"
+  description: '# Overview
+
+
+    Users can easily interact with the h2oGPTe API through its REST API, allowing HTTP requests from any programming language.'
   version: v1.0.0
 servers:
 - url: https://h2ogpte.genai.h2o.ai/api/v1
@@ -13,7 +16,7 @@ paths:
   /prompt_templates:
     post:
       operationId: create_prompt_template
-      summary: Creates a new prompt template.
+      summary: Creates a new prompt template
       description: Creates a new prompt template that can be subsequently associated with a collection.
       tags:
       - Prompt Templates
@@ -40,7 +43,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     get:
       operationId: list_prompt_templates
-      summary: List prompt templates.
+      summary: List prompt templates
       description: List all existing prompt templates.
       tags:
       - Prompt Templates
@@ -116,7 +119,7 @@ paths:
   /prompt_templates/all:
     get:
       operationId: list_all_prompt_templates
-      summary: Lists prompt templates, including hidden default templates.
+      summary: Lists prompt templates, including hidden default templates
       description: Lists prompt templates, including hidden default templates. Only for users who have the permission to manage prompt templates.
       tags:
       - Prompt Templates
@@ -193,7 +196,7 @@ paths:
   /prompt_templates/count:
     get:
       operationId: get_prompt_template_count
-      summary: Counts a number of prompt templates.
+      summary: Counts a number of prompt templates
       description: Counts a number of prompt templates.
       tags:
       - Prompt Templates
@@ -214,7 +217,7 @@ paths:
     get:
       tags:
       - Prompt Templates
-      summary: Returns the default prompt template.
+      summary: Returns the default prompt template
       description: Returns the default prompt template.
       operationId: get_default_prompt_template
       responses:
@@ -234,7 +237,7 @@ paths:
     get:
       tags:
       - Prompt Templates
-      summary: Finds a prompt template by id.
+      summary: Finds a prompt template by id
       description: Returns a single prompt template by its unique identifier.
       operationId: get_prompt_template
       parameters:
@@ -261,7 +264,7 @@ paths:
           $ref: '#/components/responses/Unexpected'
     patch:
       operationId: update_prompt_template
-      summary: Updates attributes of a given prompt template.
+      summary: Updates attributes of a given prompt template
       description: Updates attributes of a given prompt template.
       tags:
       - Prompt Templates
@@ -296,7 +299,7 @@ paths:
     delete:
       tags:
       - Prompt Templates
-      summary: Deletes a prompt template.
+      summary: Deletes a prompt template
       description: Deletes a prompt template with a given unique identifier.
       operationId: delete_prompt_template
       parameters:
@@ -321,7 +324,7 @@ paths:
     get:
       tags:
       - Prompt Templates
-      summary: Returns a list of access permissions for a given prompt template.
+      summary: Returns a list of access permissions for a given prompt template
       description: The returned list of permissions denotes who has access to the prompt template.
       operationId: get_prompt_template_permissions
       parameters:
@@ -349,7 +352,7 @@ paths:
     put:
       tags:
       - Prompt Templates
-      summary: Resets and shares a prompt template to a new list of users.
+      summary: Resets and shares a prompt template to a new list of users
       description: Resets and shares a prompt template to a new list of users.
       operationId: reset_and_share_prompt_template
       parameters:
@@ -380,7 +383,7 @@ paths:
     delete:
       tags:
       - Prompt Templates
-      summary: Removes sharing of a prompt template to all other users except the original owner.
+      summary: Removes sharing of a prompt template to all other users except the original…
       description: Removes sharing of a prompt template to all other users except the original owner.
       operationId: unshare_prompt_template_for_all
       parameters:
@@ -405,7 +408,7 @@ paths:
     put:
       tags:
       - Prompt Templates
-      summary: Shares a prompt template to a user.
+      summary: Shares a prompt template to a user
       description: Shares a prompt template to a user.
       operationId: share_prompt_template
       parameters:
@@ -435,7 +438,7 @@ paths:
     delete:
       tags:
       - Prompt Templates
-      summary: Removes sharing of a prompt template to a user.
+      summary: Removes sharing of a prompt template to a user
       description: Removes sharing of a prompt template to a user.
       operationId: unshare_prompt_template
       parameters:
@@ -466,7 +469,7 @@ paths:
     get:
       tags:
       - Prompt Templates
-      summary: Returns a list of group access permissions for a given prompt template.
+      summary: Returns a list of group access permissions for a given prompt template
       description: The returned list of group permissions denotes which groups have access to the prompt template.
       operationId: get_prompt_template_group_permissions
       parameters:
@@ -496,7 +499,7 @@ paths:
     put:
       tags:
       - Prompt Templates
-      summary: Resets and shares a prompt template to a new list of groups.
+      summary: Resets and shares a prompt template to a new list of groups
       description: Resets and shares a prompt template to a new list of groups.
       operationId: reset_and_share_prompt_template_with_groups
       parameters:
@@ -528,7 +531,7 @@ paths:
     put:
       tags:
       - Prompt Templates
-      summary: Shares a prompt template with a group.
+      summary: Shares a prompt template with a group
       description: Shares a prompt template with a user.
       operationId: share_prompt_template_with_group
       parameters:
@@ -558,7 +561,7 @@ paths:
     delete:
       tags:
       - Prompt Templates
-      summary: Removes access to a prompt template for a group.
+      summary: Removes access to a prompt template for a group
       description: Removes access to a prompt template for a group.
       operationId: unshare_prompt_template_from_group
       parameters:
@@ -589,7 +592,7 @@ paths:
     post:
       tags:
       - Prompt Templates
-      summary: Updates a flag specifying whether a prompt template is private or public.
+      summary: Updates a flag specifying whether a prompt template is private or public
       description: Updates a flag specifying whether a prompt template is private or public.
       operationId: update_prompt_template_privacy
       parameters:
@@ -626,7 +629,7 @@ paths:
     put:
       tags:
       - Prompt Templates
-      summary: Updates a flag specifying whether a default prompt template is visible or hidden to users.
+      summary: Updates a flag specifying whether a default prompt template is visible or…
       description: Updates a flag specifying whether a default prompt template is visible or hidden to users.
       operationId: update_default_prompt_template_visibility
       parameters:
@@ -661,15 +664,38 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    ResetAndShareWithGroupsRequest:
+    Count:
       required:
-      - groups
+      - count
       type: object
       properties:
-        groups:
+        count:
+          type: integer
+    PromptTemplateUpdateRequest:
+      $ref: '#/components/schemas/PromptTemplateBase'
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
           type: array
           items:
             type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     PromptTemplate:
       allOf:
       - $ref: '#/components/schemas/PromptTemplateBase'
@@ -714,23 +740,12 @@ components:
           is_system_default:
             description: A flag identifying if a default prompt template is the system default.
             type: boolean
-    PromptTemplateCreateRequest:
-      allOf:
-      - $ref: '#/components/schemas/PromptTemplateBase'
-      - type: object
-        required:
-        - name
-        properties:
-          name:
-            type: string
-    SharePermission:
+    ResetAndShareWithGroupsRequest:
       required:
-      - username
+      - groups
       type: object
       properties:
-        username:
-          type: string
-        permissions:
+        groups:
           type: array
           items:
             type: string
@@ -743,26 +758,6 @@ components:
           type: array
           items:
             type: string
-    Count:
-      required:
-      - count
-      type: object
-      properties:
-        count:
-          type: integer
-    GroupSharePermission:
-      required:
-      - group_id
-      type: object
-      properties:
-        group_id:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    PromptTemplateUpdateRequest:
-      $ref: '#/components/schemas/PromptTemplateBase'
     PromptTemplateBase:
       type: object
       properties:
@@ -822,18 +817,26 @@ components:
         image_batch_final_prompt:
           type: string
           description: A prompt for each image batch for vision models.
-    EndpointError:
+    GroupSharePermission:
       required:
-      - code
-      - message
+      - group_id
+      type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
+        group_id:
           type: string
-          description: Error message
+        permissions:
+          type: array
+          items:
+            type: string
+    PromptTemplateCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - name
+        properties:
+          name:
+            type: string
   responses:
     Conflict:
       description: Conflict
@@ -859,14 +862,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
