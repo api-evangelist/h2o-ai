@@ -997,6 +997,28 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
+    RoleInfo:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        priority:
+          type: integer
+    SetRolePriorityRequest:
+      required:
+      - priority
+      type: object
+      properties:
+        priority:
+          type: integer
+          description: The priority to be set for the role.
     RoleCreateRequest:
       required:
       - name
@@ -1038,7 +1060,33 @@ components:
         message:
           type: string
           description: Error message
-    RoleInfo:
+    UserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
+          type: string
+          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
+    ConfirmUserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
+          type: string
+          description: The delete ID returned from the initial deletion request.
+    GroupCreateRequest:
+      required:
+      - name
+      - description
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    GroupInfo:
       required:
       - id
       - name
@@ -1050,8 +1098,15 @@ components:
           type: string
         description:
           type: string
-        priority:
-          type: integer
+    PermissionResetRequest:
+      required:
+      - new_permissions
+      type: object
+      properties:
+        new_permissions:
+          type: array
+          items:
+            type: string
     UserInfo:
       required:
       - id
@@ -1074,32 +1129,6 @@ components:
           type: array
           items:
             type: string
-    UserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
-    SetRolePriorityRequest:
-      required:
-      - priority
-      type: object
-      properties:
-        priority:
-          type: integer
-          description: The priority to be set for the role.
-    GroupCreateRequest:
-      required:
-      - name
-      - description
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     PermissionCheckRequest:
       required:
       - permission
@@ -1107,44 +1136,9 @@ components:
       properties:
         permission:
           type: string
-    GroupInfo:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-    ConfirmUserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: The delete ID returned from the initial deletion request.
-    PermissionResetRequest:
-      required:
-      - new_permissions
-      type: object
-      properties:
-        new_permissions:
-          type: array
-          items:
-            type: string
   responses:
     Conflict:
       description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
       content:
         application/json:
           schema:
@@ -1155,8 +1149,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:
@@ -1167,14 +1161,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    NotFound:
+      description: Not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
     InternalServerError:
       description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

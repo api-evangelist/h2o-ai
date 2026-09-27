@@ -185,48 +185,6 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    GuardrailViolationsDashboard:
-      type: object
-      properties:
-        daily_trend:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsDailyTrend'
-        by_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByType'
-        by_collection:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByCollection'
-        by_user:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByUser'
-        available_types:
-          type: array
-          items:
-            type: string
-    GuardrailViolationsSummary:
-      type: object
-      properties:
-        total_violations:
-          type: integer
-        last_24h:
-          type: integer
-        last_7d:
-          type: integer
-        last_30d:
-          type: integer
-        violation_rate:
-          type:
-          - number
-          - 'null'
-        by_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByType'
     GuardrailViolation:
       type: object
       properties:
@@ -250,42 +208,12 @@ components:
           type: string
         violation_message:
           type: string
-    GuardrailViolationsByCollection:
+    GuardrailViolationsByUser:
       type: object
       properties:
-        collection_name:
+        username:
           type: string
-        collection_id:
-          type:
-          - string
-          - 'null'
-        total:
-          type: integer
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    GuardrailViolationsList:
-      type: object
-      properties:
-        total:
-          type: integer
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolation'
-    GuardrailViolationsDailyTrend:
-      type: object
-      properties:
-        day:
+        email:
           type: string
         total:
           type: integer
@@ -296,15 +224,15 @@ components:
           type: string
         total:
           type: integer
-    GuardrailViolationsByUser:
+    GuardrailViolationsList:
       type: object
       properties:
-        username:
-          type: string
-        email:
-          type: string
         total:
           type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolation'
     GuardrailsSettings:
       type: object
       properties:
@@ -447,7 +375,85 @@ components:
             type: string
           example:
             Mother's Maiden Name: Mother's maiden name
+    GuardrailViolationsDashboard:
+      type: object
+      properties:
+        daily_trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsDailyTrend'
+        by_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByType'
+        by_collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByCollection'
+        by_user:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByUser'
+        available_types:
+          type: array
+          items:
+            type: string
+    GuardrailViolationsByCollection:
+      type: object
+      properties:
+        collection_name:
+          type: string
+        collection_id:
+          type:
+          - string
+          - 'null'
+        total:
+          type: integer
+    GuardrailViolationsSummary:
+      type: object
+      properties:
+        total_violations:
+          type: integer
+        last_24h:
+          type: integer
+        last_7d:
+          type: integer
+        last_30d:
+          type: integer
+        violation_rate:
+          type:
+          - number
+          - 'null'
+        by_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByType'
+    GuardrailViolationsDailyTrend:
+      type: object
+      properties:
+        day:
+          type: string
+        total:
+          type: integer
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
   responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
     Forbidden:
       description: Forbidden
       content:
@@ -456,12 +462,6 @@ components:
             $ref: '#/components/schemas/EndpointError'
     Unexpected:
       description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:

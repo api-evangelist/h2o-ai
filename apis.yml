@@ -10,17 +10,20 @@ description: H2O.ai is an open-source artificial-intelligence and machine-learni
   proxies the h2oGPTe REST API to agent clients, together with official Python, R, Java and JavaScript
   client libraries distributed via PyPI, CRAN, Maven Central and npm.
 deliveryModel:
-  model: unknown
+  model: saas
+  license_evidence:
+    not_product:
+    - h2oai/h2ogpte-mcp-server
   open_source: unknown
   commercial: true
   callable_host: true
-  label: Delivery model not determined — needs a product licence on record
+  label: Hosted service · you call their endpoint
   confidence: low
   source:
   - openapi
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
@@ -48,7 +51,7 @@ modified: '2026-08-04'
 tags:
 - Company
 - Artificial Intelligence
-- Machine-Learning
+- Machine Learning
 - MLOps
 - Generative AI
 - LLM
@@ -69,6 +72,7 @@ tags_raw:
 - Model Deployment
 - AI Agents
 - Enterprise AI
+- Machine-Learning
 apis:
 - aid: h2o-ai:h2o-ai-h2ogpte-mcp
   name: h2oGPTe MCP Server

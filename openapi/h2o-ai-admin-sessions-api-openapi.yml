@@ -98,6 +98,69 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
+    AdminSessionsStatsResponse:
+      required:
+      - total
+      - by_transport
+      - anonymous_count
+      - azure_cache_count
+      - computed_at
+      - cache_age_seconds
+      - session_default_ttl
+      type: object
+      properties:
+        total:
+          description: Total number of live sessions.
+          type: integer
+          format: int64
+        by_transport:
+          description: Counters partitioned by `transport` (keycloak, anonymous, spoof, unknown).
+          type: object
+          additionalProperties:
+            type: integer
+        anonymous_count:
+          description: Number of guest / anonymous sessions.
+          type: integer
+        azure_cache_count:
+          description: Number of distinct Azure tokens currently cached for federation exchange. Approximate; not a user count.
+          type: integer
+          format: int64
+        computed_at:
+          description: When the cached stats were computed.
+          type: string
+          format: date-time
+        cache_age_seconds:
+          description: Wall-clock age of the cached stats, in seconds. Useful for rendering freshness in a polling UI.
+          type: integer
+          format: int64
+        session_default_ttl:
+          description: Configured default TTL for session keys (Go duration string, e.g. `168h0m0s`).
+          type: string
+    AdminSessionsListResponse:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          description: Page of session metadata.
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminSessionItem'
+        next_cursor:
+          description: Opaque cursor for the next page. Absent when iteration is complete.
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     AdminSessionItem:
       required:
       - session_id
@@ -139,76 +202,7 @@ components:
           description: Access-token expiry from the underlying OAuth2 token. Zero for anonymous or spoofed sessions.
           type: string
           format: date-time
-    AdminSessionsListResponse:
-      required:
-      - items
-      type: object
-      properties:
-        items:
-          description: Page of session metadata.
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminSessionItem'
-        next_cursor:
-          description: Opaque cursor for the next page. Absent when iteration is complete.
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    AdminSessionsStatsResponse:
-      required:
-      - total
-      - by_transport
-      - anonymous_count
-      - azure_cache_count
-      - computed_at
-      - cache_age_seconds
-      - session_default_ttl
-      type: object
-      properties:
-        total:
-          description: Total number of live sessions.
-          type: integer
-          format: int64
-        by_transport:
-          description: Counters partitioned by `transport` (keycloak, anonymous, spoof, unknown).
-          type: object
-          additionalProperties:
-            type: integer
-        anonymous_count:
-          description: Number of guest / anonymous sessions.
-          type: integer
-        azure_cache_count:
-          description: Number of distinct Azure tokens currently cached for federation exchange. Approximate; not a user count.
-          type: integer
-          format: int64
-        computed_at:
-          description: When the cached stats were computed.
-          type: string
-          format: date-time
-        cache_age_seconds:
-          description: Wall-clock age of the cached stats, in seconds. Useful for rendering freshness in a polling UI.
-          type: integer
-          format: int64
-        session_default_ttl:
-          description: Configured default TTL for session keys (Go duration string, e.g. `168h0m0s`).
-          type: string
   responses:
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     Unauthorized:
       description: Unauthorized - Invalid or missing API key
       content:
@@ -217,6 +211,12 @@ components:
             $ref: '#/components/schemas/EndpointError'
     InternalServerError:
       description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:

@@ -176,18 +176,25 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    EndpointError:
+    H2OGPTGPUInfo:
       required:
-      - code
-      - message
+      - name
+      type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
+        name:
           type: string
-          description: Error message
+        temperature:
+          type: number
+        utilization:
+          type: number
+        memory_total:
+          type: integer
+        memory_used:
+          type: integer
+        power_usage:
+          type: number
+        fan_speed:
+          type: integer
     H2OGPTSystemInfo:
       required:
       - timestamp
@@ -314,34 +321,27 @@ components:
           type: array
           items:
             type: object
-    H2OGPTGPUInfo:
+    EndpointError:
       required:
-      - name
-      type: object
+      - code
+      - message
       properties:
-        name:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
           type: string
-        temperature:
-          type: number
-        utilization:
-          type: number
-        memory_total:
-          type: integer
-        memory_used:
-          type: integer
-        power_usage:
-          type: number
-        fan_speed:
-          type: integer
+          description: Error message
   responses:
-    Unexpected:
-      description: Unexpected error
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:

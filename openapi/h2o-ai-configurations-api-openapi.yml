@@ -464,35 +464,6 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    UserConfigurationItem:
-      required:
-      - key_name
-      - string_value
-      - value_type
-      type: object
-      properties:
-        key_name:
-          type: string
-        string_value:
-          type: string
-        value_type:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          description: When this override was last saved.
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
     GlobalConfigurationItem:
       required:
       - key_name
@@ -535,21 +506,38 @@ components:
             the cache-TTL seconds to propagate across all mux replicas.
 
             '
+    UserConfigurationItem:
+      required:
+      - key_name
+      - string_value
+      - value_type
+      type: object
+      properties:
+        key_name:
+          type: string
+        string_value:
+          type: string
+        value_type:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          description: When this override was last saved.
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
   responses:
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     NotFound:
       description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
       content:
         application/json:
           schema:
@@ -560,14 +548,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

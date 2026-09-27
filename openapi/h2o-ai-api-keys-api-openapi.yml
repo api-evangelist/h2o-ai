@@ -203,6 +203,17 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
+    APIKeyResult:
+      required:
+      - secret_key
+      - api_key
+      type: object
+      properties:
+        secret_key:
+          description: The secret key associated with the newly generated API Key.
+          type: string
+        api_key:
+          $ref: '#/components/schemas/APIKeyInfo'
     APIKeyCreateRequest:
       type: object
       required:
@@ -232,36 +243,6 @@ components:
           description: The number of days the key can be inactive for (not used) before it becomes invalid. Do not include if you would like to remove the inactivity interval of a key.
           type: integer
           example: 60
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    APIKeyResult:
-      required:
-      - secret_key
-      - api_key
-      type: object
-      properties:
-        secret_key:
-          description: The secret key associated with the newly generated API Key.
-          type: string
-        api_key:
-          $ref: '#/components/schemas/APIKeyInfo'
-    APIKeyUpdateExpiryRequest:
-      type: object
-      properties:
-        expires_in:
-          description: Interval of when the API key should expire. Do not include if you would like to remove the expiry of a key.
-          type: string
-          example: 30 days
     APIKeyInfo:
       required:
       - id
@@ -316,21 +297,28 @@ components:
         is_global_key:
           description: Status denoting if the API key is global or collection specific
           type: boolean
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    APIKeyUpdateExpiryRequest:
+      type: object
+      properties:
+        expires_in:
+          description: Interval of when the API key should expire. Do not include if you would like to remove the expiry of a key.
+          type: string
+          example: 30 days
   responses:
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     NotFound:
       description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
       content:
         application/json:
           schema:
@@ -341,14 +329,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

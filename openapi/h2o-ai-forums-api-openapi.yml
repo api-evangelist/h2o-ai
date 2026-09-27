@@ -475,21 +475,14 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    ShareForumRequest:
+    ForumPermission:
       properties:
-        access_mode:
+        username:
           type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    ForumUpdateRequest:
-      properties:
-        name:
-          type: string
-        description:
-          type: string
+        can_read:
+          type: boolean
+        can_edit:
+          type: boolean
     EndpointError:
       required:
       - code
@@ -502,6 +495,29 @@ components:
         message:
           type: string
           description: Error message
+    ShareForumRequest:
+      properties:
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
+    ForumCreateRequest:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    ForumUpdateRequest:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     ForumVoteRequest:
       required:
       - vote
@@ -517,34 +533,6 @@ components:
           type: string
           format: uuid
           description: Optional assistant ID when voting on behalf of an assistant
-    ForumPermission:
-      properties:
-        username:
-          type: string
-        can_read:
-          type: boolean
-        can_edit:
-          type: boolean
-    ForumPostCreateRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-        parent_post_id:
-          type: string
-          format: uuid
-        author_assistant_id:
-          type: string
-          format: uuid
-          description: Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
-        file_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        metadata:
-          type: object
     ForumPost:
       properties:
         id:
@@ -597,6 +585,32 @@ components:
           type: integer
         is_pinned:
           type: boolean
+    ForumPostCreateRequest:
+      required:
+      - content
+      properties:
+        content:
+          type: string
+        parent_post_id:
+          type: string
+          format: uuid
+        author_assistant_id:
+          type: string
+          format: uuid
+          description: Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
+        file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        metadata:
+          type: object
+    ForumPinRequest:
+      required:
+      - pinned
+      properties:
+        pinned:
+          type: boolean
     Forum:
       properties:
         id:
@@ -625,26 +639,12 @@ components:
           type: integer
         assistant_count:
           type: integer
-    ForumCreateRequest:
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     ForumPostUpdateRequest:
       required:
       - content
       properties:
         content:
           type: string
-    ForumPinRequest:
-      required:
-      - pinned
-      properties:
-        pinned:
-          type: boolean
     ForumReplyCreateRequest:
       required:
       - content
@@ -664,14 +664,14 @@ components:
         metadata:
           type: object
   responses:
-    Unexpected:
-      description: Unexpected error
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:

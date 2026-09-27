@@ -193,28 +193,6 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    TagUpdateRequest:
-      type: object
-      properties:
-        description:
-          type: string
-        format:
-          type: string
-    Metadata:
-      type: object
-      additionalProperties: true
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
     Document:
       required:
       - id
@@ -290,6 +268,14 @@ components:
           description: Whether the document files are encrypted at rest
           type: boolean
           default: false
+    TagCreateRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: marvel
     Tag:
       required:
       - id
@@ -307,14 +293,28 @@ components:
           example: Stories based on Marvel's comics.
         format:
           type: string
-    TagCreateRequest:
-      required:
-      - name
+    TagUpdateRequest:
       type: object
       properties:
-        name:
+        description:
           type: string
-          example: marvel
+        format:
+          type: string
+    Metadata:
+      type: object
+      additionalProperties: true
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
   responses:
     NotFound:
       description: Not found
@@ -322,14 +322,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:

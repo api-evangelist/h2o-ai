@@ -671,31 +671,6 @@ components:
       properties:
         count:
           type: integer
-    PromptTemplateUpdateRequest:
-      $ref: '#/components/schemas/PromptTemplateBase'
-    SharePermission:
-      required:
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
     PromptTemplate:
       allOf:
       - $ref: '#/components/schemas/PromptTemplateBase'
@@ -740,21 +715,14 @@ components:
           is_system_default:
             description: A flag identifying if a default prompt template is the system default.
             type: boolean
-    ResetAndShareWithGroupsRequest:
+    SharePermission:
       required:
-      - groups
+      - username
       type: object
       properties:
-        groups:
-          type: array
-          items:
-            type: string
-    ResetAndShareRequest:
-      required:
-      - usernames
-      type: object
-      properties:
-        usernames:
+        username:
+          type: string
+        permissions:
           type: array
           items:
             type: string
@@ -817,6 +785,47 @@ components:
         image_batch_final_prompt:
           type: string
           description: A prompt for each image batch for vision models.
+    PromptTemplateCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - name
+        properties:
+          name:
+            type: string
+    PromptTemplateUpdateRequest:
+      $ref: '#/components/schemas/PromptTemplateBase'
+    ResetAndShareRequest:
+      required:
+      - usernames
+      type: object
+      properties:
+        usernames:
+          type: array
+          items:
+            type: string
+    ResetAndShareWithGroupsRequest:
+      required:
+      - groups
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     GroupSharePermission:
       required:
       - group_id
@@ -828,36 +837,9 @@ components:
           type: array
           items:
             type: string
-    PromptTemplateCreateRequest:
-      allOf:
-      - $ref: '#/components/schemas/PromptTemplateBase'
-      - type: object
-        required:
-        - name
-        properties:
-          name:
-            type: string
   responses:
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     NotFound:
       description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
       content:
         application/json:
           schema:
@@ -870,6 +852,24 @@ components:
             $ref: '#/components/schemas/EndpointError'
     InternalServerError:
       description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

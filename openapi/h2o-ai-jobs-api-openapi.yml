@@ -189,43 +189,6 @@ components:
       properties:
         count:
           type: integer
-    JobDetailsStatus:
-      required:
-      - id
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    UserJobDetails:
-      type: object
-      required:
-      - username
-      - user_id
-      - jobs
-      properties:
-        username:
-          type: string
-        user_id:
-          type: string
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobDetails'
     CountWithQueueDetails:
       allOf:
       - $ref: '#/components/schemas/Count'
@@ -307,6 +270,43 @@ components:
         start_time:
           type: number
           format: double
+    UserJobDetails:
+      type: object
+      required:
+      - username
+      - user_id
+      - jobs
+      properties:
+        username:
+          type: string
+        user_id:
+          type: string
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetails'
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
     QueueDetails:
       required:
       - name
@@ -317,6 +317,12 @@ components:
         length:
           type: integer
   responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
     Unexpected:
       description: Unexpected error
       content:
@@ -325,12 +331,6 @@ components:
             $ref: '#/components/schemas/EndpointError'
     BadRequest:
       description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
