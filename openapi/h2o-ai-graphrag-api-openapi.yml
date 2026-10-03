@@ -175,6 +175,12 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
     Unauthorized:
       description: Unauthorized - Invalid or missing API key
       content:
@@ -189,12 +195,6 @@ components:
             $ref: '#/components/schemas/EndpointError'
     Unexpected:
       description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
       content:
         application/json:
           schema:
@@ -270,6 +270,16 @@ components:
         start_time:
           type: number
           format: double
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
     EndpointError:
       required:
       - code
@@ -282,16 +292,6 @@ components:
         message:
           type: string
           description: Error message
-    JobDetailsStatus:
-      required:
-      - id
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

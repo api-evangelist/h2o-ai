@@ -997,6 +997,81 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
+    RolesResetRequest:
+      required:
+      - new_roles
+      type: object
+      properties:
+        new_roles:
+          type: array
+          items:
+            type: string
+    PermissionResetRequest:
+      required:
+      - new_permissions
+      type: object
+      properties:
+        new_permissions:
+          type: array
+          items:
+            type: string
+    ConfirmUserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
+          type: string
+          description: The delete ID returned from the initial deletion request.
+    UserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
+          type: string
+          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
+    PermissionCheckRequest:
+      required:
+      - permission
+      type: object
+      properties:
+        permission:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    GroupInfo:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    GroupCreateRequest:
+      required:
+      - name
+      - description
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     RoleInfo:
       required:
       - id
@@ -1011,24 +1086,6 @@ components:
           type: string
         priority:
           type: integer
-    SetRolePriorityRequest:
-      required:
-      - priority
-      type: object
-      properties:
-        priority:
-          type: integer
-          description: The priority to be set for the role.
-    RoleCreateRequest:
-      required:
-      - name
-      - description
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     UserPermission:
       required:
       - id
@@ -1048,35 +1105,15 @@ components:
           type: array
           items:
             type: string
-    EndpointError:
+    SetRolePriorityRequest:
       required:
-      - code
-      - message
+      - priority
+      type: object
       properties:
-        code:
+        priority:
           type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    UserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
-    ConfirmUserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: The delete ID returned from the initial deletion request.
-    GroupCreateRequest:
+          description: The priority to be set for the role.
+    RoleCreateRequest:
       required:
       - name
       - description
@@ -1086,27 +1123,6 @@ components:
           type: string
         description:
           type: string
-    GroupInfo:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-    PermissionResetRequest:
-      required:
-      - new_permissions
-      type: object
-      properties:
-        new_permissions:
-          type: array
-          items:
-            type: string
     UserInfo:
       required:
       - id
@@ -1120,37 +1136,9 @@ components:
           type: string
         email:
           type: string
-    RolesResetRequest:
-      required:
-      - new_roles
-      type: object
-      properties:
-        new_roles:
-          type: array
-          items:
-            type: string
-    PermissionCheckRequest:
-      required:
-      - permission
-      type: object
-      properties:
-        permission:
-          type: string
   responses:
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -1161,20 +1149,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
+    Forbidden:
+      description: Forbidden
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
     BadRequest:
       description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:

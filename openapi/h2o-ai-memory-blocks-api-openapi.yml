@@ -505,88 +505,44 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    SharePermission:
-      required:
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    ShareMemoryBlockRequest:
-      type: object
-      properties:
-        permissions:
-          description: Individual permission levels for the memory block.
-          type: array
-          items:
-            type: string
-    SetDefaultMemoryBlockResponse:
-      type: object
-      properties:
-        scope:
-          type: string
-          enum:
-          - llm
-          - agent
-        memory_block:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
-    MemoryBlockUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: New name for the memory block.
-        content:
-          type: string
-          description: Updated content of the memory block.
-        system_prompt_amendment:
-          type: string
-          description: Updated system prompt amendment.
-        injection_mode:
-          type: string
-          description: Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
-          enum:
-          - system_prompt
-          - user_instruction
-          - agent_file
-          - agent_tool
-        access_mode:
-          type: string
-          description: Controls whether the LLM/agent can read the memory, write to it, or both.
-          enum:
-          - read
-          - write
-          - read_write
-        max_content_length:
-          type: integer
-          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited.
-    DefaultMemoryBlocksByScope:
-      type: object
-      properties:
-        llm:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
-        agent:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
     MemoryBlockCreateRequest:
       type: object
       required:
@@ -620,6 +576,69 @@ components:
           type: integer
           default: 10000
           description: Maximum number of characters allowed in memory content. Set to 0 for unlimited. In LLM mode, new memories are appended and oldest content is trimmed when this limit is exceeded.
+    DefaultMemoryBlocksByScope:
+      type: object
+      properties:
+        llm:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
+        agent:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
+    ShareMemoryBlockRequest:
+      type: object
+      properties:
+        permissions:
+          description: Individual permission levels for the memory block.
+          type: array
+          items:
+            type: string
+    SetDefaultMemoryBlockRequest:
+      type: object
+      required:
+      - scope
+      properties:
+        scope:
+          type: string
+          description: Which scope to set.
+          enum:
+          - llm
+          - agent
+        memory_block_id:
+          type:
+          - string
+          - 'null'
+          description: UUID of the memory block to set as default, or null to clear.
+    MemoryBlockUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: New name for the memory block.
+        content:
+          type: string
+          description: Updated content of the memory block.
+        system_prompt_amendment:
+          type: string
+          description: Updated system prompt amendment.
+        injection_mode:
+          type: string
+          description: Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
+          enum:
+          - system_prompt
+          - user_instruction
+          - agent_file
+          - agent_tool
+        access_mode:
+          type: string
+          description: Controls whether the LLM/agent can read the memory, write to it, or both.
+          enum:
+          - read
+          - write
+          - read_write
+        max_content_length:
+          type: integer
+          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited.
     MemoryBlock:
       type: object
       required:
@@ -692,27 +711,6 @@ components:
         group_count:
           type: integer
           description: The number of groups the memory block has been shared with.
-    DefaultMemoryBlocksResponse:
-      type: object
-      properties:
-        defaults:
-          $ref: '#/components/schemas/DefaultMemoryBlocksByScope'
-    SetDefaultMemoryBlockRequest:
-      type: object
-      required:
-      - scope
-      properties:
-        scope:
-          type: string
-          description: Which scope to set.
-          enum:
-          - llm
-          - agent
-        memory_block_id:
-          type:
-          - string
-          - 'null'
-          description: UUID of the memory block to set as default, or null to clear.
     MemoryBlockPrivacyRequest:
       type: object
       required:
@@ -726,6 +724,22 @@ components:
           type: array
           items:
             type: string
+    DefaultMemoryBlocksResponse:
+      type: object
+      properties:
+        defaults:
+          $ref: '#/components/schemas/DefaultMemoryBlocksByScope'
+    SetDefaultMemoryBlockResponse:
+      type: object
+      properties:
+        scope:
+          type: string
+          enum:
+          - llm
+          - agent
+        memory_block:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
     GroupSharePermission:
       required:
       - group_id
@@ -737,43 +751,29 @@ components:
           type: array
           items:
             type: string
-  responses:
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
   securitySchemes:
     bearerAuth:
       type: http

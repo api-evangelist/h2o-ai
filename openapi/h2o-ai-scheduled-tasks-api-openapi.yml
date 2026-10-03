@@ -463,309 +463,16 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    ScheduledTaskDeleteResponse:
+    ScheduledTaskTriggerResponse:
       type: object
       properties:
-        status:
-          type: string
-    ScheduledTaskAdminUpdateRequest:
-      type: object
-      description: 'Admin partial update — status and metadata only. max_executions and expires_at are intentionally NOT settable here (the admin SQL does not honor the clear-sentinels), matching the UI''s admin update which only changes status.
-
-        '
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        schedule_type:
-          type: string
-          enum:
-          - once
-          - recurring
-          - interval
-        schedule_expression:
-          type: string
-        task_type:
-          type: string
-          enum:
-          - chat_completion
-          - agent_task
-        task_config:
-          type: object
-          additionalProperties: true
-        status:
-          type: string
-          enum:
-          - active
-          - paused
-          - completed
-          - expired
-        notification_email:
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    ScheduledTaskSummary:
-      type: object
-      properties:
-        total_tasks:
-          type: integer
-        active_tasks:
-          type: integer
-        currently_running_tasks:
-          type: integer
-        paused_tasks:
-          type: integer
-        completed_tasks:
-          type: integer
-        expired_tasks:
-          type: integer
-        recurring_tasks:
-          type: integer
-        one_time_tasks:
-          type: integer
-        chat_completion_tasks:
-          type: integer
-        agent_tasks:
-          type: integer
-        total_executions:
-          type: integer
-        tasks_executing_today:
-          type: integer
-    ScheduledTaskBatchDeleteRequest:
-      type: object
-      required:
-      - task_ids
-      properties:
-        task_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-    ScheduledTaskExecution:
-      type: object
-      properties:
-        id:
+        execution_id:
           type: string
           format: uuid
-        scheduled_task_id:
-          type: string
-          format: uuid
-        user_id:
+        session_id:
           type: string
           format: uuid
         status:
-          type: string
-          enum:
-          - running
-          - completed
-          - failed
-          - cancelled
-        trigger_source:
-          type:
-          - string
-          - 'null'
-          enum:
-          - scheduled
-          - manual
-        task_name:
-          type:
-          - string
-          - 'null'
-        username:
-          type:
-          - string
-          - 'null'
-        started_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        chat_session_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        result_summary:
-          type:
-          - string
-          - 'null'
-        error_message:
-          type:
-          - string
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-    ScheduledTaskUpdateStatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-    ScheduledTaskBatchDeleteResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        count:
-          type: integer
-    ScheduledTaskExecutionStats:
-      type: object
-      properties:
-        daily_executions:
-          type: array
-          items:
-            type: object
-            properties:
-              day:
-                type: string
-              total:
-                type: integer
-              completed:
-                type: integer
-              failed:
-                type: integer
-        totals:
-          type: object
-          properties:
-            total_executions:
-              type: integer
-            completed_executions:
-              type: integer
-            failed_executions:
-              type: integer
-            running_executions:
-              type: integer
-            total_tasks:
-              type: integer
-            active_tasks:
-              type: integer
-        top_tasks:
-          type: array
-          items:
-            type: object
-            properties:
-              task_id:
-                type: string
-                format: uuid
-              task_name:
-                type: string
-              username:
-                type: string
-              task_type:
-                type: string
-              execution_count:
-                type: integer
-              completed_count:
-                type: integer
-              failed_count:
-                type: integer
-    ScheduledTaskAdminSummary:
-      type: object
-      properties:
-        total_tasks:
-          type: integer
-        active_tasks:
-          type: integer
-        currently_running_tasks:
-          type: integer
-        paused_tasks:
-          type: integer
-        completed_tasks:
-          type: integer
-        expired_tasks:
-          type: integer
-        recurring_tasks:
-          type: integer
-        one_time_tasks:
-          type: integer
-        chat_completion_tasks:
-          type: integer
-        agent_tasks:
-          type: integer
-        total_executions:
-          type: integer
-        tasks_executing_today:
-          type: integer
-        unique_users:
-          type: integer
-        failed_executions_today:
-          type: integer
-        running_executions:
-          type: integer
-    ScheduledTaskExecutionList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScheduledTaskExecution'
-        total:
-          type: integer
-    ScheduledTaskUpdateRequest:
-      type: object
-      description: 'Partial update. Omit a field to leave it unchanged. To CLEAR a nullable field, use the sentinel: max_executions = -1 clears it; expires_at = 1970-01-01T00:00:00Z clears it. To pause/resume, set status to "paused"/"active".
-
-        '
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        schedule_type:
-          type: string
-          enum:
-          - once
-          - recurring
-          - interval
-        schedule_expression:
-          type: string
-        task_type:
-          type: string
-          enum:
-          - chat_completion
-          - agent_task
-        task_config:
-          type: object
-          additionalProperties: true
-        task_config_patch:
-          type: object
-          additionalProperties: true
-          description: 'Partial task_config update. Top-level keys are merged into the stored task_config; a key whose value is JSON null is REMOVED (e.g. {"collection_id": null} unbinds the collection). Nested objects are replaced whole, not deep-merged. Mutually exclusive with task_config. The merged result must keep a non-empty ''message''.
-
-            '
-        status:
-          type: string
-          enum:
-          - active
-          - paused
-          - completed
-          - expired
-        max_executions:
-          type:
-          - integer
-          - 'null'
-        expires_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        notification_email:
           type: string
     ScheduledTask:
       type: object
@@ -839,6 +546,217 @@ components:
           type: boolean
         notification_email:
           type: string
+    ScheduledTaskExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        scheduled_task_id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - running
+          - completed
+          - failed
+          - cancelled
+        trigger_source:
+          type:
+          - string
+          - 'null'
+          enum:
+          - scheduled
+          - manual
+        task_name:
+          type:
+          - string
+          - 'null'
+        username:
+          type:
+          - string
+          - 'null'
+        started_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        chat_session_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        result_summary:
+          type:
+          - string
+          - 'null'
+        error_message:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+    ScheduledTaskBatchDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        count:
+          type: integer
+    ScheduledTaskAdminSummary:
+      type: object
+      properties:
+        total_tasks:
+          type: integer
+        active_tasks:
+          type: integer
+        currently_running_tasks:
+          type: integer
+        paused_tasks:
+          type: integer
+        completed_tasks:
+          type: integer
+        expired_tasks:
+          type: integer
+        recurring_tasks:
+          type: integer
+        one_time_tasks:
+          type: integer
+        chat_completion_tasks:
+          type: integer
+        agent_tasks:
+          type: integer
+        total_executions:
+          type: integer
+        tasks_executing_today:
+          type: integer
+        unique_users:
+          type: integer
+        failed_executions_today:
+          type: integer
+        running_executions:
+          type: integer
+    ScheduledTaskList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledTask'
+        total:
+          type: integer
+    ScheduledTaskUpdateStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+    ScheduledTaskUpdateRequest:
+      type: object
+      description: 'Partial update. Omit a field to leave it unchanged. To CLEAR a nullable field, use the sentinel: max_executions = -1 clears it; expires_at = 1970-01-01T00:00:00Z clears it. To pause/resume, set status to "paused"/"active".
+
+        '
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        schedule_type:
+          type: string
+          enum:
+          - once
+          - recurring
+          - interval
+        schedule_expression:
+          type: string
+        task_type:
+          type: string
+          enum:
+          - chat_completion
+          - agent_task
+        task_config:
+          type: object
+          additionalProperties: true
+        task_config_patch:
+          type: object
+          additionalProperties: true
+          description: 'Partial task_config update. Top-level keys are merged into the stored task_config; a key whose value is JSON null is REMOVED (e.g. {"collection_id": null} unbinds the collection). Nested objects are replaced whole, not deep-merged. Mutually exclusive with task_config. The merged result must keep a non-empty ''message''.
+
+            '
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - completed
+          - expired
+        max_executions:
+          type:
+          - integer
+          - 'null'
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        notification_email:
+          type: string
+    ScheduledTaskAdminUpdateRequest:
+      type: object
+      description: 'Admin partial update — status and metadata only. max_executions and expires_at are intentionally NOT settable here (the admin SQL does not honor the clear-sentinels), matching the UI''s admin update which only changes status.
+
+        '
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        schedule_type:
+          type: string
+          enum:
+          - once
+          - recurring
+          - interval
+        schedule_expression:
+          type: string
+        task_type:
+          type: string
+          enum:
+          - chat_completion
+          - agent_task
+        task_config:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - completed
+          - expired
+        notification_email:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     ScheduledTaskCreateRequest:
       type: object
       required:
@@ -881,47 +799,129 @@ components:
           format: date-time
         notification_email:
           type: string
-    ScheduledTaskTriggerResponse:
+    ScheduledTaskSummary:
       type: object
       properties:
-        execution_id:
-          type: string
-          format: uuid
-        session_id:
-          type: string
-          format: uuid
+        total_tasks:
+          type: integer
+        active_tasks:
+          type: integer
+        currently_running_tasks:
+          type: integer
+        paused_tasks:
+          type: integer
+        completed_tasks:
+          type: integer
+        expired_tasks:
+          type: integer
+        recurring_tasks:
+          type: integer
+        one_time_tasks:
+          type: integer
+        chat_completion_tasks:
+          type: integer
+        agent_tasks:
+          type: integer
+        total_executions:
+          type: integer
+        tasks_executing_today:
+          type: integer
+    ScheduledTaskBatchDeleteRequest:
+      type: object
+      required:
+      - task_ids
+      properties:
+        task_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+    ScheduledTaskExecutionStats:
+      type: object
+      properties:
+        daily_executions:
+          type: array
+          items:
+            type: object
+            properties:
+              day:
+                type: string
+              total:
+                type: integer
+              completed:
+                type: integer
+              failed:
+                type: integer
+        totals:
+          type: object
+          properties:
+            total_executions:
+              type: integer
+            completed_executions:
+              type: integer
+            failed_executions:
+              type: integer
+            running_executions:
+              type: integer
+            total_tasks:
+              type: integer
+            active_tasks:
+              type: integer
+        top_tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              task_id:
+                type: string
+                format: uuid
+              task_name:
+                type: string
+              username:
+                type: string
+              task_type:
+                type: string
+              execution_count:
+                type: integer
+              completed_count:
+                type: integer
+              failed_count:
+                type: integer
+    ScheduledTaskDeleteResponse:
+      type: object
+      properties:
         status:
           type: string
-    ScheduledTaskList:
+    ScheduledTaskExecutionList:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ScheduledTask'
+            $ref: '#/components/schemas/ScheduledTaskExecution'
         total:
           type: integer
   responses:
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     Unauthorized:
       description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
     NotFound:
       description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:

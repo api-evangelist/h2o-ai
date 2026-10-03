@@ -663,7 +663,82 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
+    ResetAndShareWithGroupsRequest:
+      required:
+      - groups
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: string
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    ResetAndShareRequest:
+      required:
+      - usernames
+      type: object
+      properties:
+        usernames:
+          type: array
+          items:
+            type: string
+    PromptTemplateCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - name
+        properties:
+          name:
+            type: string
     Count:
       required:
       - count
@@ -671,6 +746,17 @@ components:
       properties:
         count:
           type: integer
+    GroupSharePermission:
+      required:
+      - group_id
+      type: object
+      properties:
+        group_id:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
     PromptTemplate:
       allOf:
       - $ref: '#/components/schemas/PromptTemplateBase'
@@ -715,17 +801,18 @@ components:
           is_system_default:
             description: A flag identifying if a default prompt template is the system default.
             type: boolean
-    SharePermission:
+    EndpointError:
       required:
-      - username
-      type: object
+      - code
+      - message
       properties:
-        username:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
           type: string
-        permissions:
-          type: array
-          items:
-            type: string
+          description: Error message
     PromptTemplateBase:
       type: object
       properties:
@@ -785,95 +872,8 @@ components:
         image_batch_final_prompt:
           type: string
           description: A prompt for each image batch for vision models.
-    PromptTemplateCreateRequest:
-      allOf:
-      - $ref: '#/components/schemas/PromptTemplateBase'
-      - type: object
-        required:
-        - name
-        properties:
-          name:
-            type: string
     PromptTemplateUpdateRequest:
       $ref: '#/components/schemas/PromptTemplateBase'
-    ResetAndShareRequest:
-      required:
-      - usernames
-      type: object
-      properties:
-        usernames:
-          type: array
-          items:
-            type: string
-    ResetAndShareWithGroupsRequest:
-      required:
-      - groups
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    GroupSharePermission:
-      required:
-      - group_id
-      type: object
-      properties:
-        group_id:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-  responses:
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

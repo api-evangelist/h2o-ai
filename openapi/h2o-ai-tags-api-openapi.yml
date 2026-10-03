@@ -192,6 +192,31 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
     Document:
       required:
@@ -276,23 +301,6 @@ components:
         name:
           type: string
           example: marvel
-    Tag:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: marvel
-        description:
-          type: string
-          example: Stories based on Marvel's comics.
-        format:
-          type: string
     TagUpdateRequest:
       type: object
       properties:
@@ -315,31 +323,23 @@ components:
         message:
           type: string
           description: Error message
-  responses:
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
+    Tag:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: marvel
+        description:
+          type: string
+          example: Stories based on Marvel's comics.
+        format:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

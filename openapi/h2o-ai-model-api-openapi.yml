@@ -325,33 +325,39 @@ paths:
       - Model
 components:
   schemas:
-    PredictionInterval:
-      title: PredictionInterval
+    ContributionsResponse:
+      title: ContributionsResponse
       required:
-      - fields
-      - rows
+      - features
+      - contributionGroups
       type: object
       properties:
-        fields:
+        features:
           type: array
           items:
             type: string
-          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
-        rows:
+          description: An array holding the names of fields in the order of appearance in the rows of the  `contributions` property.
+        contributionGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionGroup'
+          description: An array of rows consisting of the shapley contributions output corresponding to an output group.
+    ContributionGroup:
+      title: ContributionGroup
+      required:
+      - contributions
+      type: object
+      properties:
+        output_group:
+          type: string
+          description: Name of the output group. It will be populated only for multinomial models. Shapley values are not supported for third party models yet, hence this field will not be populated.
+        contributions:
           type: array
           items:
             type: array
             items:
               type: string
-          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
-    ShapleyType:
-      title: ShapleyType
-      enum:
-      - ORIGINAL
-      - TRANSFORMED
-      - NONE
-      type: string
-      description: An enumeration.
+          description: n array of rows consisting of the shapley contributions output corresponding to columns in the fields
     ValidationError:
       title: ValidationError
       required:
@@ -372,23 +378,65 @@ components:
           type: string
         type:
           type: string
-    ContributionsResponse:
-      title: ContributionsResponse
-      required:
-      - features
-      - contributionGroups
+    ModelProperties:
+      title: ModelProperties
       type: object
       properties:
-        features:
+        scoringType:
+          allOf:
+          - $ref: '#/components/schemas/ScoringType'
+          - description: Enumeration of the supported scoring types.
+        scoringResponseLabels:
           type: array
           items:
             type: string
-          description: An array holding the names of fields in the order of appearance in the rows of the  `contributions` property.
-        contributionGroups:
+          description: ''
+    DataType:
+      title: DataType
+      enum:
+      - Bool
+      - Bytes
+      - Int32
+      - Int64
+      - Float32
+      - Float64
+      - Str
+      - Time64
+      type: string
+      description: Enumeration of the supported input and output data types.
+    ModelSchema:
+      title: ModelSchema
+      type: object
+      properties:
+        inputFields:
           type: array
           items:
-            $ref: '#/components/schemas/ContributionGroup'
-          description: An array of rows consisting of the shapley contributions output corresponding to an output group.
+            $ref: '#/components/schemas/DataField'
+          description: ''
+        outputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataField'
+          description: ''
+    PredictionInterval:
+      title: PredictionInterval
+      required:
+      - fields
+      - rows
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed.
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: An array of rows consisting the actual input data for scoring, one scoring request per row.
     Model:
       title: Model
       required:
@@ -405,62 +453,6 @@ components:
           $ref: '#/components/schemas/ModelProperties'
         schema:
           $ref: '#/components/schemas/ModelSchema'
-    ModelSchema:
-      title: ModelSchema
-      type: object
-      properties:
-        inputFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/DataField'
-          description: ''
-        outputFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/DataField'
-          description: ''
-    DataType:
-      title: DataType
-      enum:
-      - Bool
-      - Bytes
-      - Int32
-      - Int64
-      - Float32
-      - Float64
-      - Str
-      - Time64
-      type: string
-      description: Enumeration of the supported input and output data types.
-    ScoreResponse:
-      title: ScoreResponse
-      required:
-      - score
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique id of the model used for scoring.
-        fields:
-          type: array
-          items:
-            type: string
-          description: An array holding the names of fields in the order of appearance, in the rows of the  `score` property. This field is not populated if requested by setting the `noFieldNamesInOutput` request field to `true`.
-        score:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-          description: An array of rows consisting the actual scoring output. The order of rows corresponds to the order of the input request rows. Each row contains any copied input fields first (in the order of appearance in the input row). If the `idField` was specified and also listed in the `includeFieldsInOutput` but not provided in `fields`, a unique id will be generated and positioned right after all the other fields copied from the input. The scoring output follows.
-        featureShapleyContributions:
-          allOf:
-          - $ref: '#/components/schemas/ContributionsResponse'
-          - description: An object with features and shapley values that was requested by the client. It is currently available for transformed features of binomial, regression, and multinomial models of mojo2. This field will not be populated if the Shapley values are not available for a model.
-        predictionIntervals:
-          allOf:
-          - $ref: '#/components/schemas/PredictionInterval'
-          - description: Prediction interval consist of an array of interval bound names and rows of array of bounds per bound name. Setting `requestPredictionIntervals` to true will enable populating the field. The field will be empty or an error response returned if prediction intervals arenot returned or supported by the model.
     ContributionsRequest:
       title: ContributionsRequest
       required:
@@ -485,6 +477,36 @@ components:
             items:
               type: string
           description: An array of rows consisting the actual input data for scoring, one scoring request per row.
+    DataField:
+      title: DataField
+      required:
+      - name
+      - dataType
+      type: object
+      properties:
+        name:
+          type: string
+        dataType:
+          allOf:
+          - $ref: '#/components/schemas/DataType'
+          - description: Enumeration of the supported input and output data types.
+    ScoringType:
+      title: ScoringType
+      enum:
+      - REGRESSION
+      - CLASSIFICATION
+      - BINOMIAL
+      type: string
+      description: Enumeration of the supported scoring types.
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          description: ''
     ScoreRequest:
       title: ScoreRequest
       required:
@@ -525,62 +547,40 @@ components:
           allOf:
           - $ref: '#/components/schemas/ShapleyType'
           - description: The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested.
-    HTTPValidationError:
-      title: HTTPValidationError
+    ShapleyType:
+      title: ShapleyType
+      enum:
+      - ORIGINAL
+      - TRANSFORMED
+      - NONE
+      type: string
+      description: An enumeration.
+    ScoreResponse:
+      title: ScoreResponse
+      required:
+      - score
       type: object
       properties:
-        detail:
+        id:
+          type: string
+          description: A unique id of the model used for scoring.
+        fields:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationError'
-          description: ''
-    ContributionGroup:
-      title: ContributionGroup
-      required:
-      - contributions
-      type: object
-      properties:
-        output_group:
-          type: string
-          description: Name of the output group. It will be populated only for multinomial models. Shapley values are not supported for third party models yet, hence this field will not be populated.
-        contributions:
+            type: string
+          description: An array holding the names of fields in the order of appearance, in the rows of the  `score` property. This field is not populated if requested by setting the `noFieldNamesInOutput` request field to `true`.
+        score:
           type: array
           items:
             type: array
             items:
               type: string
-          description: n array of rows consisting of the shapley contributions output corresponding to columns in the fields
-    DataField:
-      title: DataField
-      required:
-      - name
-      - dataType
-      type: object
-      properties:
-        name:
-          type: string
-        dataType:
+          description: An array of rows consisting the actual scoring output. The order of rows corresponds to the order of the input request rows. Each row contains any copied input fields first (in the order of appearance in the input row). If the `idField` was specified and also listed in the `includeFieldsInOutput` but not provided in `fields`, a unique id will be generated and positioned right after all the other fields copied from the input. The scoring output follows.
+        featureShapleyContributions:
           allOf:
-          - $ref: '#/components/schemas/DataType'
-          - description: Enumeration of the supported input and output data types.
-    ModelProperties:
-      title: ModelProperties
-      type: object
-      properties:
-        scoringType:
+          - $ref: '#/components/schemas/ContributionsResponse'
+          - description: An object with features and shapley values that was requested by the client. It is currently available for transformed features of binomial, regression, and multinomial models of mojo2. This field will not be populated if the Shapley values are not available for a model.
+        predictionIntervals:
           allOf:
-          - $ref: '#/components/schemas/ScoringType'
-          - description: Enumeration of the supported scoring types.
-        scoringResponseLabels:
-          type: array
-          items:
-            type: string
-          description: ''
-    ScoringType:
-      title: ScoringType
-      enum:
-      - REGRESSION
-      - CLASSIFICATION
-      - BINOMIAL
-      type: string
-      description: Enumeration of the supported scoring types.
+          - $ref: '#/components/schemas/PredictionInterval'
+          - description: Prediction interval consist of an array of interval bound names and rows of array of bounds per bound name. Setting `requestPredictionIntervals` to true will enable populating the field. The field will be empty or an error response returned if prediction intervals arenot returned or supported by the model.

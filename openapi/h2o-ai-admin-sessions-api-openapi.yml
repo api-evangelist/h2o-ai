@@ -136,6 +136,18 @@ components:
         session_default_ttl:
           description: Configured default TTL for session keys (Go duration string, e.g. `168h0m0s`).
           type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     AdminSessionsListResponse:
       required:
       - items
@@ -149,18 +161,6 @@ components:
         next_cursor:
           description: Opaque cursor for the next page. Absent when iteration is complete.
           type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
     AdminSessionItem:
       required:
       - session_id

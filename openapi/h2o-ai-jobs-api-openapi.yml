@@ -181,14 +181,26 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
-    Count:
-      required:
-      - count
-      type: object
-      properties:
-        count:
-          type: integer
     CountWithQueueDetails:
       allOf:
       - $ref: '#/components/schemas/Count'
@@ -285,6 +297,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/JobDetails'
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    Count:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
     EndpointError:
       required:
       - code
@@ -297,16 +326,6 @@ components:
         message:
           type: string
           description: Error message
-    JobDetailsStatus:
-      required:
-      - id
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
     QueueDetails:
       required:
       - name
@@ -316,25 +335,6 @@ components:
           type: string
         length:
           type: integer
-  responses:
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

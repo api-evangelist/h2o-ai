@@ -175,26 +175,26 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
-    H2OGPTGPUInfo:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        temperature:
-          type: number
-        utilization:
-          type: number
-        memory_total:
-          type: integer
-        memory_used:
-          type: integer
-        power_usage:
-          type: number
-        fan_speed:
-          type: integer
     H2OGPTSystemInfo:
       required:
       - timestamp
@@ -321,6 +321,25 @@ components:
           type: array
           items:
             type: object
+    H2OGPTGPUInfo:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        temperature:
+          type: number
+        utilization:
+          type: number
+        memory_total:
+          type: integer
+        memory_used:
+          type: integer
+        power_usage:
+          type: number
+        fan_speed:
+          type: integer
     EndpointError:
       required:
       - code
@@ -333,25 +352,6 @@ components:
         message:
           type: string
           description: Error message
-  responses:
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

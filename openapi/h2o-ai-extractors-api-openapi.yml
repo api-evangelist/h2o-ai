@@ -679,6 +679,111 @@ components:
           type: string
           format: date-time
           description: When the extractor definition was created
+    DocumentExtractionResult:
+      type: object
+      required:
+      - id
+      - document_name
+      - content
+      - error
+      properties:
+        id:
+          type: string
+          description: ID of the document extraction result
+        document_id:
+          type:
+          - string
+          - 'null'
+          description: ID of the document that was processed. Null when the extraction was run on uploaded files without a collection.
+        document_name:
+          type: string
+          description: Name of the document that was processed
+        content:
+          description: The extracted content as JSON object
+          type: object
+        error:
+          type: string
+          description: Contains error in case extraction failed for this document. Otherwise empty.
+    ExtractorCreateRequest:
+      type: object
+      required:
+      - name
+      - description
+      - llm
+      - schema
+      properties:
+        name:
+          type: string
+          description: Human-readable name
+        description:
+          type: string
+          description: What this extractor does
+        llm:
+          type: string
+          description: Identifier or version of the language model the extractor uses
+        schema:
+          type: string
+          description: JSONSchema (or other spec) that the extractor outputs. When schema is valid and not empty, the output will be always returned as JSON object.
+        prompt:
+          type: string
+          description: Custom prompt text for the extractor. If empty, default prompt will be used. If combined with schema, prompt can customize the output, but cannot change its format as it will always be JSON object.
+        pre_prompt_summary:
+          type: string
+          description: (Optional) Pre-prompt summary text for the extractor
+        keep_intermediate_results:
+          type: boolean
+          description: (Optional) Flag indicating whether to keep intermediate results during extraction
+        system_prompt:
+          type: string
+          description: (Optional) System prompt text for the extractor
+        max_num_chunks:
+          type: integer
+          description: (Optional) Maximum number of chunks to process
+        vision:
+          type: string
+          description: (Optional) Vision mode setting
+        vision_llm:
+          type: string
+          description: (Optional) Vision LLM model identifier
+        image_batch_image_prompt:
+          type: string
+          description: (Optional) Image batch processing prompt
+        image_batch_final_prompt:
+          type: string
+          description: (Optional) Final prompt for image batch processing
+        guardrails_settings:
+          $ref: '#/components/schemas/GuardrailsSettings'
+    ResetAndShareRequest:
+      required:
+      - usernames
+      type: object
+      properties:
+        usernames:
+          type: array
+          items:
+            type: string
+    GroupSharePermission:
+      required:
+      - group_id
+      type: object
+      properties:
+        group_id:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
     EndpointError:
       required:
       - code
@@ -691,6 +796,95 @@ components:
         message:
           type: string
           description: Error message
+    ResetAndShareWithGroupsRequest:
+      required:
+      - groups
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: string
+    JobDetails:
+      required:
+      - id
+      - name
+      - overall_status
+      - passed_percentage
+      - failed_percentage
+      - progress
+      - created_at
+      - updated_at
+      - kind
+      - statuses
+      - errors
+      - duration
+      - duration_seconds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        overall_status:
+          type: string
+          enum:
+          - in progress
+          - completed
+          - failed
+          - canceled
+        status:
+          type: string
+        passed_percentage:
+          type: number
+          format: double
+        failed_percentage:
+          type: number
+          format: double
+        progress:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        kind:
+          type: string
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetailsStatus'
+        errors:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        duration_seconds:
+          type: number
+          format: double
+        canceled_by:
+          type: string
+        cancel_reason:
+          type: string
+        timeout:
+          type: number
+          format: double
+        start_time:
+          type: number
+          format: double
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
     GuardrailsSettings:
       type: object
       properties:
@@ -833,227 +1027,44 @@ components:
             type: string
           example:
             Mother's Maiden Name: Mother's maiden name
-    DocumentExtractionResult:
-      type: object
-      required:
-      - id
-      - document_name
-      - content
-      - error
-      properties:
-        id:
-          type: string
-          description: ID of the document extraction result
-        document_id:
-          type:
-          - string
-          - 'null'
-          description: ID of the document that was processed. Null when the extraction was run on uploaded files without a collection.
-        document_name:
-          type: string
-          description: Name of the document that was processed
-        content:
-          description: The extracted content as JSON object
-          type: object
-        error:
-          type: string
-          description: Contains error in case extraction failed for this document. Otherwise empty.
-    GroupSharePermission:
-      required:
-      - group_id
-      type: object
-      properties:
-        group_id:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    SharePermission:
-      required:
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    JobDetails:
-      required:
-      - id
-      - name
-      - overall_status
-      - passed_percentage
-      - failed_percentage
-      - progress
-      - created_at
-      - updated_at
-      - kind
-      - statuses
-      - errors
-      - duration
-      - duration_seconds
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        overall_status:
-          type: string
-          enum:
-          - in progress
-          - completed
-          - failed
-          - canceled
-        status:
-          type: string
-        passed_percentage:
-          type: number
-          format: double
-        failed_percentage:
-          type: number
-          format: double
-        progress:
-          type: number
-          format: double
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        kind:
-          type: string
-        statuses:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobDetailsStatus'
-        errors:
-          type: array
-          items:
-            type: string
-        duration:
-          type: string
-        duration_seconds:
-          type: number
-          format: double
-        canceled_by:
-          type: string
-        cancel_reason:
-          type: string
-        timeout:
-          type: number
-          format: double
-        start_time:
-          type: number
-          format: double
-    ExtractorCreateRequest:
-      type: object
-      required:
-      - name
-      - description
-      - llm
-      - schema
-      properties:
-        name:
-          type: string
-          description: Human-readable name
-        description:
-          type: string
-          description: What this extractor does
-        llm:
-          type: string
-          description: Identifier or version of the language model the extractor uses
-        schema:
-          type: string
-          description: JSONSchema (or other spec) that the extractor outputs. When schema is valid and not empty, the output will be always returned as JSON object.
-        prompt:
-          type: string
-          description: Custom prompt text for the extractor. If empty, default prompt will be used. If combined with schema, prompt can customize the output, but cannot change its format as it will always be JSON object.
-        pre_prompt_summary:
-          type: string
-          description: (Optional) Pre-prompt summary text for the extractor
-        keep_intermediate_results:
-          type: boolean
-          description: (Optional) Flag indicating whether to keep intermediate results during extraction
-        system_prompt:
-          type: string
-          description: (Optional) System prompt text for the extractor
-        max_num_chunks:
-          type: integer
-          description: (Optional) Maximum number of chunks to process
-        vision:
-          type: string
-          description: (Optional) Vision mode setting
-        vision_llm:
-          type: string
-          description: (Optional) Vision LLM model identifier
-        image_batch_image_prompt:
-          type: string
-          description: (Optional) Image batch processing prompt
-        image_batch_final_prompt:
-          type: string
-          description: (Optional) Final prompt for image batch processing
-        guardrails_settings:
-          $ref: '#/components/schemas/GuardrailsSettings'
-    JobDetailsStatus:
-      required:
-      - id
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-    ResetAndShareRequest:
-      required:
-      - usernames
-      type: object
-      properties:
-        usernames:
-          type: array
-          items:
-            type: string
-    ResetAndShareWithGroupsRequest:
-      required:
-      - groups
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            type: string
+  parameters:
+    ExtractorCollectionId:
+      name: collection_id
+      in: query
+      description: ID of the collection to run the extractor on. Exactly one of collection_id or document_id must be provided.
+      required: false
+      schema:
+        type: string
+    ExtractorDocumentId:
+      name: document_id
+      in: query
+      description: ID of the single document to run the extractor on. Exactly one of collection_id or document_id must be provided.
+      required: false
+      schema:
+        type: string
+    Timeout:
+      name: timeout
+      in: query
+      description: Timeout in seconds
+      schema:
+        type: number
+        format: double
+    ExtractorId:
+      name: extractor_id
+      in: path
+      description: ID of the extractor to run
+      required: true
+      schema:
+        type: string
   responses:
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     Unauthorized:
       description: Unauthorized - Invalid or missing API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
+    Forbidden:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -1064,35 +1075,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-  parameters:
-    ExtractorDocumentId:
-      name: document_id
-      in: query
-      description: ID of the single document to run the extractor on. Exactly one of collection_id or document_id must be provided.
-      required: false
-      schema:
-        type: string
-    ExtractorCollectionId:
-      name: collection_id
-      in: query
-      description: ID of the collection to run the extractor on. Exactly one of collection_id or document_id must be provided.
-      required: false
-      schema:
-        type: string
-    ExtractorId:
-      name: extractor_id
-      in: path
-      description: ID of the extractor to run
-      required: true
-      schema:
-        type: string
-    Timeout:
-      name: timeout
-      in: query
-      description: Timeout in seconds
-      schema:
-        type: number
-        format: double
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

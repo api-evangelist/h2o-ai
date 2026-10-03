@@ -323,7 +323,51 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
+    AddShowcaseChatResponse:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
     UploadShowcaseThumbnailResponse:
       type: object
       required:
@@ -331,37 +375,6 @@ components:
       properties:
         thumbnail_path:
           type: string
-    ReorderShowcaseChatsRequest:
-      type: object
-      required:
-      - orders
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReorderShowcaseChatEntry'
-    ListShowcaseCategoriesResponse:
-      type: object
-      required:
-      - categories
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
-    UpdateShowcaseChatRequest:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
-        description:
-          type: string
-          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
-        category:
-          type: string
-          description: Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized).
     AddShowcaseChatRequest:
       type: object
       required:
@@ -380,13 +393,27 @@ components:
         category:
           type: string
           description: Optional free-text category used to group tiles in the listing.
-    AddShowcaseChatResponse:
+    UpdateShowcaseChatRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
+        description:
+          type: string
+          description: Omit to keep the existing value. Empty / whitespace-only is rejected with 400.
+        category:
+          type: string
+          description: Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized).
+    ReorderShowcaseChatsRequest:
       type: object
       required:
-      - id
+      - orders
       properties:
-        id:
-          type: string
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReorderShowcaseChatEntry'
     ShowcaseChat:
       type: object
       required:
@@ -441,6 +468,16 @@ components:
           type: string
         featured_by_username:
           type: string
+    ListShowcaseCategoriesResponse:
+      type: object
+      required:
+      - categories
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
     ReorderShowcaseChatEntry:
       type: object
       required:
@@ -463,43 +500,6 @@ components:
         message:
           type: string
           description: Error message
-  responses:
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http
