@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-scheduled-task-admin-summary-schema.json",
+  "title": "ScheduledTaskAdminSummary",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-scheduled-tasks-api-openapi.yml#/components/schemas/ScheduledTaskAdminSummary",
+  "type": "object",
+  "properties": {
+    "total_tasks": {
+      "type": "integer"
+    },
+    "active_tasks": {
+      "type": "integer"
+    },
+    "currently_running_tasks": {
+      "type": "integer"
+    },
+    "paused_tasks": {
+      "type": "integer"
+    },
+    "completed_tasks": {
+      "type": "integer"
+    },
+    "expired_tasks": {
+      "type": "integer"
+    },
+    "recurring_tasks": {
+      "type": "integer"
+    },
+    "one_time_tasks": {
+      "type": "integer"
+    },
+    "chat_completion_tasks": {
+      "type": "integer"
+    },
+    "agent_tasks": {
+      "type": "integer"
+    },
+    "total_executions": {
+      "type": "integer"
+    },
+    "tasks_executing_today": {
+      "type": "integer"
+    },
+    "unique_users": {
+      "type": "integer"
+    },
+    "failed_executions_today": {
+      "type": "integer"
+    },
+    "running_executions": {
+      "type": "integer"
+    }
+  }
+}

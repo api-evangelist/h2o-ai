@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ai-assistant-update-request-schema.json",
+  "title": "AiAssistantUpdateRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantUpdateRequest",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "system_prompt": {
+      "type": "string"
+    },
+    "llm": {
+      "type": "string"
+    },
+    "llm_args": {
+      "type": "object"
+    },
+    "custom_tool_definition": {
+      "type": "string"
+    },
+    "mcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "credential_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "memory_block_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "notification_email": {
+      "type": "string"
+    },
+    "history_management": {
+      "type": "string",
+      "enum": [
+        "compactification",
+        "truncation",
+        "semantic_retrieval"
+      ]
+    },
+    "history_max_chars": {
+      "type": "integer"
+    },
+    "history_recent_chars": {
+      "type": "integer",
+      "description": "Maximum characters of recent chat history kept uncompacted (default 10000)"
+    },
+    "history_retrieval_chars": {
+      "type": "integer",
+      "description": "Maximum characters retrieved from vector DB for semantic retrieval (default 100000)"
+    },
+    "allowed_tool_actions": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "List of allowed tool action names. NULL means all actions allowed. Use ['__CLEAR__'] sentinel to reset to NULL (all allowed).\n"
+    },
+    "allowed_trigger_types": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "List of allowed trigger types. NULL means all triggers allowed. Use ['__CLEAR__'] sentinel to reset to NULL (all allowed). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.\n"
+    }
+  }
+}

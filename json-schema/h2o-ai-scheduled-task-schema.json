@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-scheduled-task-schema.json",
+  "title": "ScheduledTask",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-scheduled-tasks-api-openapi.yml#/components/schemas/ScheduledTask",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "username": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "schedule_type": {
+      "type": "string",
+      "enum": [
+        "once",
+        "recurring",
+        "interval"
+      ]
+    },
+    "schedule_expression": {
+      "type": "string"
+    },
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "chat_completion",
+        "agent_task"
+      ]
+    },
+    "task_config": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "completed",
+        "expired"
+      ]
+    },
+    "execution_status": {
+      "type": "string",
+      "description": "Runtime execution state: idle or running."
+    },
+    "last_execution_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "next_execution_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "execution_count": {
+      "type": "integer"
+    },
+    "max_executions": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_owner": {
+      "type": "boolean"
+    },
+    "notification_email": {
+      "type": "string"
+    }
+  }
+}

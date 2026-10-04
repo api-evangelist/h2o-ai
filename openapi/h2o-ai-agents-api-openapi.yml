@@ -1699,7 +1699,177 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    UnsupportedMediaType:
+      description: Unsupported media type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
+    CreateAgentKeyRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - private
+          - shared
+        value:
+          type: string
+        description:
+          type: string
+    AgentServerDirectoryStatsPerAgentChatSession:
+      required:
+      - agent_chat_session_id
+      - chat_preview
+      - stats
+      type: object
+      properties:
+        agent_chat_session_id:
+          type: string
+        chat_preview:
+          type: string
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentServerDirectoryStats'
+    AgentToolSpec:
+      required:
+      - name
+      - description
+      - enabled
+      - default
+      - extendable
+      - api_keys
+      type: object
+      properties:
+        name:
+          description: The identifier representing the specific tool.
+          type: string
+        description:
+          description: Description of the tool.
+          type: string
+        enabled:
+          description: Specifies whether the tool is currently enabled in H2OGPT.
+          type: boolean
+        default:
+          description: Specifies if the tool is pre-selected by default when available.
+          type: boolean
+        extendable:
+          description: Specifies whether the tool supports custom API keys
+          type: boolean
+        api_keys:
+          $ref: '#/components/schemas/AgentToolSpecApiKeys'
+    CustomAgentSuggestionMcpServer:
+      required:
+      - tool_name
+      - tool_args
+      type: object
+      properties:
+        tool_name:
+          type: string
+          description: MCP server name from agent metadata
+        tool_args:
+          type: string
+          description: JSON string containing tool configuration (empty if unresolved)
+    CustomAgentDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the custom agent
+        agent_name:
+          type: string
+          description: The name of the agent
+        agent_type:
+          type: string
+          description: The type of the agent
+        agent_args:
+          type: object
+          description: The agent arguments
+        owner_email:
+          type: string
+          description: The owner's email
+        mcp_servers:
+          type:
+          - array
+          - 'null'
+          description: Array of MCP server associations with tool details
+          items:
+            type: object
+            properties:
+              tool_name:
+                type: string
+                description: MCP server name from agent metadata
+              tool_args:
+                type: string
+                description: Tool arguments as JSON string
+              associated_tool:
+                type:
+                - object
+                - 'null'
+                description: Associated tool details if tool is resolved
+                properties:
+                  id:
+                    type: string
+                    description: Tool ID
+                  name:
+                    type: string
+                    description: Tool name
+                  owner_email:
+                    type: string
+                    description: Tool owner email
+                  description:
+                    type: string
+                    description: Tool description
+        api_keys:
+          type: array
+          description: Key associations (env var → agent key) for this agent
+          items:
+            $ref: '#/components/schemas/CustomAgentKeyAssociation'
     AgentKeyAssociation:
       type: object
       properties:
@@ -1725,64 +1895,125 @@ components:
             description:
               type: string
               description: Agent key description
-    UpdateAgentKeyRequest:
+    CreateCustomAgentToolAssociationRequest:
+      required:
+      - agent_id
+      - mcp_server_name
+      type: object
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+          description: Custom agent UUID
+        mcp_server_name:
+          type: string
+          description: MCP server name
+        tool_name:
+          type:
+          - string
+          - 'null'
+          description: Tool name to associate (null for unresolved)
+    KeyAssociation:
+      required:
+      - name
+      - key_id
       type: object
       properties:
         name:
           type: string
-        type:
+        key_id:
           type: string
-          enum:
-          - private
-          - shared
-        value:
+        associate_id:
           type: string
-        description:
+        user_id:
           type: string
-    CustomAgentSuggestionMcpServer:
+        email:
+          type: string
+    CreateAgentToolKeyAssociationsRequest:
       required:
-      - tool_name
-      - tool_args
+      - tool
+      - keys
       type: object
       properties:
-        tool_name:
+        tool:
           type: string
-          description: MCP server name from agent metadata
-        tool_args:
-          type: string
-          description: JSON string containing tool configuration (empty if unresolved)
-    DeleteCustomAgentKeyAssociationsResponse:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewKeyAssociation'
+    EndpointError:
       required:
-      - deleted_count
-      type: object
+      - code
+      - message
       properties:
-        deleted_count:
+        code:
           type: integer
-          description: Number of associations deleted
-    AgentKey:
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    AgentToolSpecApiKeys:
       required:
-      - name
-      - type
+      - required
+      - optional
+      - internal
+      description: The specific keys associated with an agent tool.
+      type: object
+      properties:
+        required:
+          description: List of required keys set for the tool to function.
+          type: array
+          items:
+            type: string
+        optional:
+          description: The tool can still operate even if these keys are not set.
+          type: array
+          items:
+            type: string
+        internal:
+          description: Keys that are managed internally by the system.
+          type: array
+          items:
+            type: string
+    CustomAgentToolAssociation:
+      required:
+      - id
+      - agent_id
+      - agent_name
+      - mcp_server_name
+      - user_id
       type: object
       properties:
         id:
           type: string
-        name:
+          format: uuid
+          description: Association UUID
+        agent_id:
           type: string
-        type:
+          format: uuid
+          description: Custom agent UUID
+        agent_name:
           type: string
-          enum:
-          - private
-          - shared
-          - built_in
-        description:
+          description: Custom agent name
+        tool_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Associated tool UUID (null if unresolved)
+        tool_name:
+          type:
+          - string
+          - 'null'
+          description: Associated tool name (null if unresolved)
+        mcp_server_name:
           type: string
-        created_at:
+          description: MCP server name
+        user_id:
           type: string
-        updated_at:
-          type: string
-        owner_email:
-          type: string
+          format: uuid
+          description: User UUID who owns the association
     AgentServerDirectoryStats:
       required:
       - id
@@ -1837,41 +2068,77 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgentServerDirectoryFileStats'
-    AgentToolSpec:
+    CreateCustomAgentKeyAssociationRequest:
+      required:
+      - agent_id
+      - env_key_name
+      - key_id
+      type: object
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+          description: Custom agent UUID
+        env_key_name:
+          type: string
+          description: Env var name (from envs.json or user-added)
+        key_id:
+          type: string
+          format: uuid
+          description: Agent key UUID to associate
+    UpdateCustomAgentRequest:
+      required:
+      - agent_args
+      type: object
+      properties:
+        agent_args:
+          type: object
+          description: The new arguments for the custom agent
+        mcp_servers_mapping:
+          type:
+          - object
+          - 'null'
+          description: Optional dict mapping MCP server names to tool names (or null)
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+    AgentToolKeyAssociations:
+      required:
+      - tool
+      - keys
+      type: object
+      properties:
+        tool:
+          type: string
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyAssociation'
+    AgentKey:
       required:
       - name
-      - description
-      - enabled
-      - default
-      - extendable
-      - api_keys
+      - type
       type: object
       properties:
+        id:
+          type: string
         name:
-          description: The identifier representing the specific tool.
           type: string
+        type:
+          type: string
+          enum:
+          - private
+          - shared
+          - built_in
         description:
-          description: Description of the tool.
           type: string
-        enabled:
-          description: Specifies whether the tool is currently enabled in H2OGPT.
-          type: boolean
-        default:
-          description: Specifies if the tool is pre-selected by default when available.
-          type: boolean
-        extendable:
-          description: Specifies whether the tool supports custom API keys
-          type: boolean
-        api_keys:
-          $ref: '#/components/schemas/AgentToolSpecApiKeys'
-    DeleteCustomAgentToolAssociationsResponse:
-      required:
-      - deleted_count
-      type: object
-      properties:
-        deleted_count:
-          type: integer
-          description: Number of associations deleted
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        owner_email:
+          type: string
     Agent:
       type: object
       properties:
@@ -1953,79 +2220,14 @@ components:
                   description:
                     type: string
                     description: Tool description
-    CreateCustomAgentKeyAssociationRequest:
+    DeleteCustomAgentKeyAssociationsResponse:
       required:
-      - agent_id
-      - env_key_name
-      - key_id
+      - deleted_count
       type: object
       properties:
-        agent_id:
-          type: string
-          format: uuid
-          description: Custom agent UUID
-        env_key_name:
-          type: string
-          description: Env var name (from envs.json or user-added)
-        key_id:
-          type: string
-          format: uuid
-          description: Agent key UUID to associate
-    CustomAgentDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the custom agent
-        agent_name:
-          type: string
-          description: The name of the agent
-        agent_type:
-          type: string
-          description: The type of the agent
-        agent_args:
-          type: object
-          description: The agent arguments
-        owner_email:
-          type: string
-          description: The owner's email
-        mcp_servers:
-          type:
-          - array
-          - 'null'
-          description: Array of MCP server associations with tool details
-          items:
-            type: object
-            properties:
-              tool_name:
-                type: string
-                description: MCP server name from agent metadata
-              tool_args:
-                type: string
-                description: Tool arguments as JSON string
-              associated_tool:
-                type:
-                - object
-                - 'null'
-                description: Associated tool details if tool is resolved
-                properties:
-                  id:
-                    type: string
-                    description: Tool ID
-                  name:
-                    type: string
-                    description: Tool name
-                  owner_email:
-                    type: string
-                    description: Tool owner email
-                  description:
-                    type: string
-                    description: Tool description
-        api_keys:
-          type: array
-          description: Key associations (env var → agent key) for this agent
-          items:
-            $ref: '#/components/schemas/CustomAgentKeyAssociation'
+        deleted_count:
+          type: integer
+          description: Number of associations deleted
     Count:
       required:
       - count
@@ -2033,233 +2235,6 @@ components:
       properties:
         count:
           type: integer
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    AgentToolKeyAssociations:
-      required:
-      - tool
-      - keys
-      type: object
-      properties:
-        tool:
-          type: string
-        keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/KeyAssociation'
-    CreateAgentToolKeyAssociationsRequest:
-      required:
-      - tool
-      - keys
-      type: object
-      properties:
-        tool:
-          type: string
-        keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/NewKeyAssociation'
-    CustomAgentToolAssociation:
-      required:
-      - id
-      - agent_id
-      - agent_name
-      - mcp_server_name
-      - user_id
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Association UUID
-        agent_id:
-          type: string
-          format: uuid
-          description: Custom agent UUID
-        agent_name:
-          type: string
-          description: Custom agent name
-        tool_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Associated tool UUID (null if unresolved)
-        tool_name:
-          type:
-          - string
-          - 'null'
-          description: Associated tool name (null if unresolved)
-        mcp_server_name:
-          type: string
-          description: MCP server name
-        user_id:
-          type: string
-          format: uuid
-          description: User UUID who owns the association
-    KeyAssociation:
-      required:
-      - name
-      - key_id
-      type: object
-      properties:
-        name:
-          type: string
-        key_id:
-          type: string
-        associate_id:
-          type: string
-        user_id:
-          type: string
-        email:
-          type: string
-    UpdateCustomAgentRequest:
-      required:
-      - agent_args
-      type: object
-      properties:
-        agent_args:
-          type: object
-          description: The new arguments for the custom agent
-        mcp_servers_mapping:
-          type:
-          - object
-          - 'null'
-          description: Optional dict mapping MCP server names to tool names (or null)
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-    AgentServerDirectoryFileStats:
-      required:
-      - name
-      - path
-      - size_bytes
-      - size_human_readable
-      - created_timestamp
-      - modified_timestamp
-      - created_date
-      - modified_date
-      - is_directory
-      - owner
-      - permissions
-      type: object
-      additionalProperties: true
-      properties:
-        name:
-          type: string
-        path:
-          type: string
-        size_bytes:
-          type: integer
-        size_human_readable:
-          type: string
-        created_timestamp:
-          type: number
-        modified_timestamp:
-          type: number
-        created_date:
-          type: string
-        modified_date:
-          type: string
-        is_directory:
-          type: boolean
-        owner:
-          description: Unix systems only
-          type: string
-        permissions:
-          description: Unix systems only
-          type: string
-        sha256:
-          description: Only for files, not directories
-          type: string
-    CustomAgentSuggestion:
-      type: object
-      properties:
-        mcp_servers:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomAgentSuggestionMcpServer'
-          description: List of MCP server suggestions with tool configurations
-    CreateAgentKeyRequest:
-      required:
-      - name
-      - type
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - private
-          - shared
-        value:
-          type: string
-        description:
-          type: string
-    UpdateCustomAgentToolRequest:
-      required:
-      - tool_args
-      type: object
-      properties:
-        tool_args:
-          type: object
-          description: The new arguments for the custom agent tool
-    CreateCustomAgentToolAssociationRequest:
-      required:
-      - agent_id
-      - mcp_server_name
-      type: object
-      properties:
-        agent_id:
-          type: string
-          format: uuid
-          description: Custom agent UUID
-        mcp_server_name:
-          type: string
-          description: MCP server name
-        tool_name:
-          type:
-          - string
-          - 'null'
-          description: Tool name to associate (null for unresolved)
-    AgentServerDirectoryStatsPerAgentChatSession:
-      required:
-      - agent_chat_session_id
-      - chat_preview
-      - stats
-      type: object
-      properties:
-        agent_chat_session_id:
-          type: string
-        chat_preview:
-          type: string
-        stats:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentServerDirectoryStats'
-    NewKeyAssociation:
-      required:
-      - name
-      - key_id
-      type: object
-      properties:
-        name:
-          type: string
-        key_id:
-          type: string
     CustomAgentKeyAssociation:
       required:
       - id
@@ -2308,72 +2283,97 @@ components:
           - string
           - 'null'
           description: Agent key owner email
-    AgentToolSpecApiKeys:
-      required:
-      - required
-      - optional
-      - internal
-      description: The specific keys associated with an agent tool.
+    CustomAgentSuggestion:
       type: object
       properties:
-        required:
-          description: List of required keys set for the tool to function.
+        mcp_servers:
           type: array
           items:
-            type: string
-        optional:
-          description: The tool can still operate even if these keys are not set.
-          type: array
-          items:
-            type: string
-        internal:
-          description: Keys that are managed internally by the system.
-          type: array
-          items:
-            type: string
-  responses:
-    UnsupportedMediaType:
-      description: Unsupported media type
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
+            $ref: '#/components/schemas/CustomAgentSuggestionMcpServer'
+          description: List of MCP server suggestions with tool configurations
+    NewKeyAssociation:
+      required:
+      - name
+      - key_id
+      type: object
+      properties:
+        name:
+          type: string
+        key_id:
+          type: string
+    AgentServerDirectoryFileStats:
+      required:
+      - name
+      - path
+      - size_bytes
+      - size_human_readable
+      - created_timestamp
+      - modified_timestamp
+      - created_date
+      - modified_date
+      - is_directory
+      - owner
+      - permissions
+      type: object
+      additionalProperties: true
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        size_bytes:
+          type: integer
+        size_human_readable:
+          type: string
+        created_timestamp:
+          type: number
+        modified_timestamp:
+          type: number
+        created_date:
+          type: string
+        modified_date:
+          type: string
+        is_directory:
+          type: boolean
+        owner:
+          description: Unix systems only
+          type: string
+        permissions:
+          description: Unix systems only
+          type: string
+        sha256:
+          description: Only for files, not directories
+          type: string
+    UpdateAgentKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - private
+          - shared
+        value:
+          type: string
+        description:
+          type: string
+    DeleteCustomAgentToolAssociationsResponse:
+      required:
+      - deleted_count
+      type: object
+      properties:
+        deleted_count:
+          type: integer
+          description: Number of associations deleted
+    UpdateCustomAgentToolRequest:
+      required:
+      - tool_args
+      type: object
+      properties:
+        tool_args:
+          type: object
+          description: The new arguments for the custom agent tool
   securitySchemes:
     bearerAuth:
       type: http

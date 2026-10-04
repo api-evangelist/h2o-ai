@@ -464,20 +464,14 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
-    BadRequest:
-      description: Bad request
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
     Unauthorized:
       description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
       content:
         application/json:
           schema:
@@ -494,13 +488,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
   schemas:
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     GlobalConfigurationItem:
       required:
       - key_name
@@ -560,18 +572,6 @@ components:
           type: string
           format: date-time
           description: When this override was last saved.
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
   securitySchemes:
     bearerAuth:
       type: http

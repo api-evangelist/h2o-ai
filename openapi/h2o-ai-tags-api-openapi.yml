@@ -193,12 +193,6 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     Unexpected:
       description: Unexpected error
       content:
@@ -217,7 +211,57 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
+    TagUpdateRequest:
+      type: object
+      properties:
+        description:
+          type: string
+        format:
+          type: string
+    Tag:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: marvel
+        description:
+          type: string
+          example: Stories based on Marvel's comics.
+        format:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    TagCreateRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: marvel
     Document:
       required:
       - id
@@ -293,53 +337,9 @@ components:
           description: Whether the document files are encrypted at rest
           type: boolean
           default: false
-    TagCreateRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          example: marvel
-    TagUpdateRequest:
-      type: object
-      properties:
-        description:
-          type: string
-        format:
-          type: string
     Metadata:
       type: object
       additionalProperties: true
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    Tag:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: marvel
-        description:
-          type: string
-          example: Stories based on Marvel's comics.
-        format:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,0 +1,65 @@
+generated: '2026-10-03'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: fastly
+  name: Fastly
+  area: cdn
+  host: h2o.ai
+  evidence: header:x-served-by:cache-
+  signal: header
+  confidence: high
+  kin_score: []
+- vendor: statuspage
+  name: Atlassian Statuspage
+  area: status-page
+  host: h2oai.statuspage.io
+  evidence: https://h2oai.statuspage.io/
+  signal: url:statuspage.io
+  confidence: high
+  kin_score:
+  - status_page
+- vendor: freshdesk
+  name: Freshdesk
+  area: support
+  host: support.h2o.ai
+  evidence: cname:freshdesk.com
+  signal: cname
+  confidence: high
+  kin_score:
+  - support_channel
+reliance:
+  areas_vendor_served:
+  - cdn
+  - status-page
+  - support
+  vendor_count: 3
+  areas_observed: 12
+  share_of_observable_areas: 0.25
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: custom'
+- h2o.ai (Website)
+- docs.h2o.ai (Documentation)
+- h2ogpte.genai.h2o.ai (APIReference)
+- docs.h2o.ai (GettingStarted)
+- support.h2o.ai (Support)
+- genai.h2o.ai (SignUp)
+- h2oai.statuspage.io (StatusPage)
+- h2ogpte.genai.h2o.ai (baseURL)
+- h2ogpte.genai.h2o.ai (mcp)

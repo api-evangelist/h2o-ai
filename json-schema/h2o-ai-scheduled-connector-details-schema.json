@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-scheduled-connector-details-schema.json",
+  "title": "ScheduledConnectorDetails",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-collections-api-openapi.yml#/components/schemas/ScheduledConnectorDetails",
+  "required": [
+    "id",
+    "user_id",
+    "collection_id",
+    "type",
+    "schedule",
+    "created_at"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier of the connector"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "ID of the user who owns the connector"
+    },
+    "user_name": {
+      "type": "string",
+      "description": "Name of the user who owns the connector"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user who owns the connector"
+    },
+    "collection_id": {
+      "type": "string",
+      "description": "ID of the collection this connector is associated with"
+    },
+    "collection_name": {
+      "type": "string",
+      "description": "Name of the collection this connector is associated with"
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of connector (e.g., s3, confluence)"
+    },
+    "config": {
+      "type": "object",
+      "description": "Configuration details for the connector"
+    },
+    "schedule": {
+      "type": "integer",
+      "description": "Schedule interval in seconds (0 means no schedule)"
+    },
+    "last_sync_status": {
+      "type": "string",
+      "description": "Status of the last sync"
+    },
+    "last_sync_job_id": {
+      "type": "string",
+      "description": "ID of the last sync job"
+    },
+    "last_sync_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of the last sync"
+    },
+    "last_sync_error": {
+      "type": "string",
+      "description": "Error message from the last sync (if any)"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the connector was created"
+    }
+  }
+}

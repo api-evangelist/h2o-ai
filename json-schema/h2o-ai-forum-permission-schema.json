@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-forum-permission-schema.json",
+  "title": "ForumPermission",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-forums-api-openapi.yml#/components/schemas/ForumPermission",
+  "properties": {
+    "username": {
+      "type": "string"
+    },
+    "can_read": {
+      "type": "boolean"
+    },
+    "can_edit": {
+      "type": "boolean"
+    }
+  }
+}

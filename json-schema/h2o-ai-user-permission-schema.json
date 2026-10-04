@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-user-permission-schema.json",
+  "title": "UserPermission",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-permissions-api-openapi.yml#/components/schemas/UserPermission",
+  "required": [
+    "id",
+    "name"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "dependencies": {
+      "description": "List of permissions that this permission depends on.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

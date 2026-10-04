@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-scheduled-task-update-request-schema.json",
+  "title": "ScheduledTaskUpdateRequest",
+  "description": "Partial update. Omit a field to leave it unchanged. To CLEAR a nullable field, use the sentinel: max_executions = -1 clears it; expires_at = 1970-01-01T00:00:00Z clears it. To pause/resume, set status to \"paused\"/\"active\".\n",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-scheduled-tasks-api-openapi.yml#/components/schemas/ScheduledTaskUpdateRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "schedule_type": {
+      "type": "string",
+      "enum": [
+        "once",
+        "recurring",
+        "interval"
+      ]
+    },
+    "schedule_expression": {
+      "type": "string"
+    },
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "chat_completion",
+        "agent_task"
+      ]
+    },
+    "task_config": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "task_config_patch": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Partial task_config update. Top-level keys are merged into the stored task_config; a key whose value is JSON null is REMOVED (e.g. {\"collection_id\": null} unbinds the collection). Nested objects are replaced whole, not deep-merged. Mutually exclusive with task_config. The merged result must keep a non-empty 'message'.\n"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "completed",
+        "expired"
+      ]
+    },
+    "max_executions": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "notification_email": {
+      "type": "string"
+    }
+  }
+}

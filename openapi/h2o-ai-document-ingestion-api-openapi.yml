@@ -780,17 +780,93 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   parameters:
+    IngestionParameterEncryptDocument:
+      name: encrypt_document
+      in: query
+      description: Whether to encrypt the document files at rest in object storage.
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterCollectionId:
+      name: collection_id
+      in: query
+      description: String id of the collection to add the ingested documents into.
+      required: true
+      schema:
+        type: string
+    IngestionParameterUploadIds:
+      name: upload_ids
+      in: path
+      description: Id of uploaded document
+      required: true
+      schema:
+        type: array
+        items:
+          type: string
     IngestionParameterMetadata:
       name: metadata
       in: query
       description: String with json-encoded metadata for the document.
       schema:
         type: string
-    IngestionParameterHandwritingCheck:
-      name: handwriting_check
+    IngestionParameterFileName:
+      name: file_name
       in: query
-      description: Check pages for handwriting. Will use specialized models if handwriting is found.
+      description: String of the file name to use for the document.
+      required: true
+      schema:
+        type: string
+    IngestionParameterTesseractLang:
+      name: tesseract_lang
+      in: query
+      description: Which language to use when using ocr_model="tesseract".
+      schema:
+        type: string
+    IngestionParameterRestricted:
+      name: restricted
+      in: query
+      description: Whether the document should be restricted only to certain users.
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterGenDocSummaries:
+      name: gen_doc_summaries
+      in: query
+      description: Whether to auto-generate document summaries (uses LLM).
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterMaxDepth:
+      name: max_depth
+      in: query
+      description: Max depth of recursion when following links, only when follow_links is `true`. Max_depth of 0 means don't follow any links, max_depth of 1 means follow only top-level links, etc. Use -1 for automatic (system settings).
+      schema:
+        type: integer
+        default: -1
+    IngestionParameterKeepTablesAsOneChunk:
+      name: keep_tables_as_one_chunk
+      in: query
+      description: When tables are identified by the table parser the table tokens will be kept in a single chunk.
       schema:
         type: boolean
     IngestionParameterDocumentId:
@@ -800,52 +876,6 @@ components:
       required: true
       schema:
         type: string
-    IngestionParameterGenDocSummaries:
-      name: gen_doc_summaries
-      in: query
-      description: Whether to auto-generate document summaries (uses LLM).
-      schema:
-        type: boolean
-        default: false
-    IngestionParameterKeepTablesAsOneChunk:
-      name: keep_tables_as_one_chunk
-      in: query
-      description: When tables are identified by the table parser the table tokens will be kept in a single chunk.
-      schema:
-        type: boolean
-    IngestionParameterTesseractLang:
-      name: tesseract_lang
-      in: query
-      description: Which language to use when using ocr_model="tesseract".
-      schema:
-        type: string
-    IngestionParameterChunkByPage:
-      name: chunk_by_page
-      in: query
-      description: Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`.
-      schema:
-        type: boolean
-    IngestionParameterAudioInputLanguage:
-      name: audio_input_language
-      in: query
-      description: Language of audio files.
-      schema:
-        type: string
-        default: auto
-    IngestionParameterCollectionId:
-      name: collection_id
-      in: query
-      description: String id of the collection to add the ingested documents into.
-      required: true
-      schema:
-        type: string
-    IngestionParameterFollowLinks:
-      name: follow_links
-      in: query
-      description: Whether to import all web pages linked from this URL will be imported. External links will be ignored. Links to other pages on the same domain will be followed as long as they are at the same level or below the URL you specify. Each page will be transformed into a PDF document.
-      schema:
-        type: boolean
-        default: false
     IngestionParameterPermissions:
       name: permissions
       in: query
@@ -860,13 +890,6 @@ components:
       description: Max number of documents when following links, only when follow_links is `true`. Use None for automatic (system defaults). Use -1 for max (system limit).
       schema:
         type: integer
-    IngestionParameterMaxDepth:
-      name: max_depth
-      in: query
-      description: Max depth of recursion when following links, only when follow_links is `true`. Max_depth of 0 means don't follow any links, max_depth of 1 means follow only top-level links, etc. Use -1 for automatic (system settings).
-      schema:
-        type: integer
-        default: -1
     IngestionParameterOcrModel:
       name: ocr_model
       in: query
@@ -874,6 +897,33 @@ components:
       schema:
         type: string
         default: auto
+    IngestionParameterGenDocQuestions:
+      name: gen_doc_questions
+      in: query
+      description: Whether to auto-generate sample questions for each document (uses LLM).
+      schema:
+        type: boolean
+        default: false
+    IngestionParameterFollowLinks:
+      name: follow_links
+      in: query
+      description: Whether to import all web pages linked from this URL will be imported. External links will be ignored. Links to other pages on the same domain will be followed as long as they are at the same level or below the URL you specify. Each page will be transformed into a PDF document.
+      schema:
+        type: boolean
+        default: false
+    Timeout:
+      name: timeout
+      in: query
+      description: Timeout in seconds
+      schema:
+        type: number
+        format: double
+    IngestionParameterHandwritingCheck:
+      name: handwriting_check
+      in: query
+      description: Check pages for handwriting. Will use specialized models if handwriting is found.
+      schema:
+        type: boolean
     IngestionParameterIngestMode:
       name: ingest_mode
       in: query
@@ -883,129 +933,20 @@ components:
         enum:
         - standard
         - agent_only
-    IngestionParameterEncryptDocument:
-      name: encrypt_document
+    IngestionParameterAudioInputLanguage:
+      name: audio_input_language
       in: query
-      description: Whether to encrypt the document files at rest in object storage.
-      schema:
-        type: boolean
-        default: false
-    IngestionParameterRestricted:
-      name: restricted
-      in: query
-      description: Whether the document should be restricted only to certain users.
-      schema:
-        type: boolean
-        default: false
-    IngestionParameterGenDocQuestions:
-      name: gen_doc_questions
-      in: query
-      description: Whether to auto-generate sample questions for each document (uses LLM).
-      schema:
-        type: boolean
-        default: false
-    IngestionParameterFileName:
-      name: file_name
-      in: query
-      description: String of the file name to use for the document.
-      required: true
+      description: Language of audio files.
       schema:
         type: string
-    Timeout:
-      name: timeout
+        default: auto
+    IngestionParameterChunkByPage:
+      name: chunk_by_page
       in: query
-      description: Timeout in seconds
+      description: Each page will be a chunk. `keep_tables_as_one_chunk` will be ignored if this is `true`.
       schema:
-        type: number
-        format: double
-    IngestionParameterUploadIds:
-      name: upload_ids
-      in: path
-      description: Id of uploaded document
-      required: true
-      schema:
-        type: array
-        items:
-          type: string
+        type: boolean
   schemas:
-    IngestFromConfluenceBody:
-      type: object
-      required:
-      - base_url
-      - page_ids
-      - credentials
-      properties:
-        base_url:
-          description: Base url of the confluence instance.
-          type: string
-          example: https://h2oai.atlassian.net/wiki
-        page_ids:
-          description: Ids of pages to be ingested.
-          type: array
-          items:
-            type: string
-        include_attachments:
-          description: A flag indicating whether to also ingest attachments with the page.
-          type: boolean
-          default: false
-        credentials:
-          $ref: '#/components/schemas/ConfluenceCredentials'
-        metadata:
-          description: Metadata for the documents.
-          type: object
-    AzureCredentials:
-      description: The object with Azure credentials. If container is private, set either `account_key` or `sas_token`.
-      type: object
-      properties:
-        account_key:
-          type: string
-        sas_token:
-          type: string
-    IngestFromWebsiteBody:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          description: String of the url to crawl.
-          type: string
-    ConfluenceCredentials:
-      description: The object with Confluence credentials.
-      required:
-      - username
-      - password
-      type: object
-      properties:
-        username:
-          description: Name or email of the user.
-          type: string
-        password:
-          description: Password or API token.
-          type: string
-    IngestFromGcsBody:
-      type: object
-      required:
-      - urls
-      properties:
-        urls:
-          description: The path or list of paths of GCS files or directories.
-          type: array
-          items:
-            type: string
-          example: gs://bucket/file, gs://bucket/../dir/
-        credentials:
-          $ref: '#/components/schemas/GCSCredentials'
-        metadata:
-          description: Metadata for the document.
-          type: object
-    GCSCredentials:
-      description: The object holding  JSON key of Google Cloud service account. If the object is not provided, only public buckets will be accessible.
-      required:
-      - service_account_json_key
-      type: object
-      properties:
-        service_account_json_key:
-          type: string
     SharepointIngestionEntry:
       description: 'A single SharePoint entry to ingest. entry_type determines which other
 
@@ -1046,6 +987,101 @@ components:
         object_id:
           description: SharePoint site/folder/file identifier.
           type: string
+    S3Credentials:
+      description: The object with S3 credentials. If the object is not provided, only public buckets will be accessible. When use_irsa is true, access_key_id and secret_access_key are optional and the pod's service account will be used for authentication.
+      type: object
+      properties:
+        use_irsa:
+          type: boolean
+          description: Enable IAM Roles for Service Accounts (IRSA) to authenticate using the pod's service account. When enabled, explicit credentials are not required.
+          default: false
+        access_key_id:
+          type: string
+          description: AWS access key ID. Not required when using IRSA.
+        secret_access_key:
+          type: string
+          description: AWS secret access key. Not required when using IRSA.
+        session_token:
+          type: string
+          description: AWS session token for temporary credentials.
+        role_arn:
+          type: string
+          description: The Amazon Resource Name (ARN) of IAM Role that will be utilized for accessing the S3 storage. When IRSA is enabled, this role will be assumed from the service account identity (role chaining). When IRSA is disabled, it requires specification of other credentials to identify an identity the role will be associated with.
+        external_id:
+          type: string
+          description: Optional security token for assuming cross-account roles. This is used to prevent the 'confused deputy' problem when a third party assumes a role in your account. Only required if the role's trust policy requires an external ID.
+        endpoint_url:
+          type: string
+          description: 'Custom S3-compatible endpoint URL. Leave empty for standard AWS S3. Example: https://qumulo.example.com'
+    ConfluenceCredentials:
+      description: The object with Confluence credentials.
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        username:
+          description: Name or email of the user.
+          type: string
+        password:
+          description: Password or API token.
+          type: string
+    IngestFromS3Body:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          description: The path or list of paths of S3 files or directories.
+          type: array
+          items:
+            type: string
+          example: s3://bucket/file, s3://bucket/../dir/
+        region:
+          description: The name of the region used for interaction with AWS services.
+          type: string
+          default: us-east-1
+        credentials:
+          $ref: '#/components/schemas/S3Credentials'
+        metadata:
+          description: Metadata for the documents.
+          type: object
+    IngestFromGcsBody:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          description: The path or list of paths of GCS files or directories.
+          type: array
+          items:
+            type: string
+          example: gs://bucket/file, gs://bucket/../dir/
+        credentials:
+          $ref: '#/components/schemas/GCSCredentials'
+        metadata:
+          description: Metadata for the document.
+          type: object
+    AzureCredentials:
+      description: The object with Azure credentials. If container is private, set either `account_key` or `sas_token`.
+      type: object
+      properties:
+        account_key:
+          type: string
+        sas_token:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     IngestFromSharepointOnlineBody:
       type: object
       required:
@@ -1068,18 +1104,128 @@ components:
         metadata:
           description: Metadata for the documents.
           type: object
-    EndpointError:
-      required:
-      - code
-      - message
+    SharepointOnlineCredentials:
+      description: 'Credentials for SharePoint Online. Provide either the app-auth triple
+
+        (tenant_name + client_id + client_secret) or the OAuth-user pair
+
+        (user_id + optional connector_id). The auth_type field must match.
+
+        '
+      type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
+        auth_type:
+          description: '"app" for application credentials, "user" for delegated OAuth.'
           type: string
-          description: Error message
+          enum:
+          - app
+          - user
+          default: app
+        tenant_name:
+          description: SharePoint tenant name (app auth only).
+          type: string
+        client_id:
+          description: Azure AD application client ID (app auth only).
+          type: string
+        client_secret:
+          description: Azure AD application client secret (app auth only).
+          type: string
+        user_id:
+          description: User ID owning the OAuth token (user auth only).
+          type: string
+        connector_id:
+          description: Optional connector ID when the user has more than one linked SharePoint connector.
+          type: string
+        admin_enumerate_drives:
+          description: 'App auth only. When true, discovery additionally enumerates every
+
+            drive in the tenant via /drives. Requires Files.Read.All /
+
+            Sites.Read.All on the application.
+
+            '
+          type: boolean
+          default: false
+    UploadedFile:
+      required:
+      - id
+      - filename
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        filename:
+          type: string
+          example: my_favourite_book.pdf
+    GCSCredentials:
+      description: The object holding  JSON key of Google Cloud service account. If the object is not provided, only public buckets will be accessible.
+      required:
+      - service_account_json_key
+      type: object
+      properties:
+        service_account_json_key:
+          type: string
+    JobDetailsStatus:
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    IngestFromAzureBlobStorageBody:
+      type: object
+      required:
+      - container
+      - paths
+      - account_name
+      properties:
+        container:
+          description: Name of the Azure Blob Storage container.
+          type: string
+        paths:
+          description: Path or list of paths to files or directories within an Azure Blob Storage container.
+          type: array
+          items:
+            type: string
+          example: file1, dir1/file2, dir3/dir4/
+        account_name:
+          description: Name of a storage account
+          type: string
+        credentials:
+          $ref: '#/components/schemas/AzureCredentials'
+        metadata:
+          description: Metadata for the document.
+          type: object
+    IngestFromWebsiteBody:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          description: String of the url to crawl.
+          type: string
+    IngestUploadBody:
+      type: object
+      properties:
+        metadata:
+          description: Metadata for the document.
+          type: object
+    IngestFromFileSystemBody:
+      type: object
+      required:
+      - root_dir
+      - glob
+      properties:
+        root_dir:
+          description: String path of where to look for files.
+          type: string
+        glob:
+          description: String of the glob pattern used to match files in the root directory.
+          type: string
     JobDetails:
       required:
       - id
@@ -1150,177 +1296,31 @@ components:
         start_time:
           type: number
           format: double
-    JobDetailsStatus:
-      required:
-      - id
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-    S3Credentials:
-      description: The object with S3 credentials. If the object is not provided, only public buckets will be accessible. When use_irsa is true, access_key_id and secret_access_key are optional and the pod's service account will be used for authentication.
-      type: object
-      properties:
-        use_irsa:
-          type: boolean
-          description: Enable IAM Roles for Service Accounts (IRSA) to authenticate using the pod's service account. When enabled, explicit credentials are not required.
-          default: false
-        access_key_id:
-          type: string
-          description: AWS access key ID. Not required when using IRSA.
-        secret_access_key:
-          type: string
-          description: AWS secret access key. Not required when using IRSA.
-        session_token:
-          type: string
-          description: AWS session token for temporary credentials.
-        role_arn:
-          type: string
-          description: The Amazon Resource Name (ARN) of IAM Role that will be utilized for accessing the S3 storage. When IRSA is enabled, this role will be assumed from the service account identity (role chaining). When IRSA is disabled, it requires specification of other credentials to identify an identity the role will be associated with.
-        external_id:
-          type: string
-          description: Optional security token for assuming cross-account roles. This is used to prevent the 'confused deputy' problem when a third party assumes a role in your account. Only required if the role's trust policy requires an external ID.
-        endpoint_url:
-          type: string
-          description: 'Custom S3-compatible endpoint URL. Leave empty for standard AWS S3. Example: https://qumulo.example.com'
-    IngestFromFileSystemBody:
+    IngestFromConfluenceBody:
       type: object
       required:
-      - root_dir
-      - glob
+      - base_url
+      - page_ids
+      - credentials
       properties:
-        root_dir:
-          description: String path of where to look for files.
+        base_url:
+          description: Base url of the confluence instance.
           type: string
-        glob:
-          description: String of the glob pattern used to match files in the root directory.
-          type: string
-    SharepointOnlineCredentials:
-      description: 'Credentials for SharePoint Online. Provide either the app-auth triple
-
-        (tenant_name + client_id + client_secret) or the OAuth-user pair
-
-        (user_id + optional connector_id). The auth_type field must match.
-
-        '
-      type: object
-      properties:
-        auth_type:
-          description: '"app" for application credentials, "user" for delegated OAuth.'
-          type: string
-          enum:
-          - app
-          - user
-          default: app
-        tenant_name:
-          description: SharePoint tenant name (app auth only).
-          type: string
-        client_id:
-          description: Azure AD application client ID (app auth only).
-          type: string
-        client_secret:
-          description: Azure AD application client secret (app auth only).
-          type: string
-        user_id:
-          description: User ID owning the OAuth token (user auth only).
-          type: string
-        connector_id:
-          description: Optional connector ID when the user has more than one linked SharePoint connector.
-          type: string
-        admin_enumerate_drives:
-          description: 'App auth only. When true, discovery additionally enumerates every
-
-            drive in the tenant via /drives. Requires Files.Read.All /
-
-            Sites.Read.All on the application.
-
-            '
-          type: boolean
-          default: false
-    IngestFromAzureBlobStorageBody:
-      type: object
-      required:
-      - container
-      - paths
-      - account_name
-      properties:
-        container:
-          description: Name of the Azure Blob Storage container.
-          type: string
-        paths:
-          description: Path or list of paths to files or directories within an Azure Blob Storage container.
+          example: https://h2oai.atlassian.net/wiki
+        page_ids:
+          description: Ids of pages to be ingested.
           type: array
           items:
             type: string
-          example: file1, dir1/file2, dir3/dir4/
-        account_name:
-          description: Name of a storage account
-          type: string
+        include_attachments:
+          description: A flag indicating whether to also ingest attachments with the page.
+          type: boolean
+          default: false
         credentials:
-          $ref: '#/components/schemas/AzureCredentials'
-        metadata:
-          description: Metadata for the document.
-          type: object
-    IngestUploadBody:
-      type: object
-      properties:
-        metadata:
-          description: Metadata for the document.
-          type: object
-    IngestFromS3Body:
-      type: object
-      required:
-      - urls
-      properties:
-        urls:
-          description: The path or list of paths of S3 files or directories.
-          type: array
-          items:
-            type: string
-          example: s3://bucket/file, s3://bucket/../dir/
-        region:
-          description: The name of the region used for interaction with AWS services.
-          type: string
-          default: us-east-1
-        credentials:
-          $ref: '#/components/schemas/S3Credentials'
+          $ref: '#/components/schemas/ConfluenceCredentials'
         metadata:
           description: Metadata for the documents.
           type: object
-    UploadedFile:
-      required:
-      - id
-      - filename
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        filename:
-          type: string
-          example: my_favourite_book.pdf
-  responses:
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

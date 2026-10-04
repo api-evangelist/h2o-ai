@@ -664,14 +664,8 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:
@@ -694,30 +688,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
   schemas:
+    PromptTemplateCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - name
+        properties:
+          name:
+            type: string
     ResetAndShareWithGroupsRequest:
       required:
       - groups
       type: object
       properties:
         groups:
-          type: array
-          items:
-            type: string
-    SharePermission:
-      required:
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-        permissions:
           type: array
           items:
             type: string
@@ -730,22 +728,8 @@ components:
           type: array
           items:
             type: string
-    PromptTemplateCreateRequest:
-      allOf:
-      - $ref: '#/components/schemas/PromptTemplateBase'
-      - type: object
-        required:
-        - name
-        properties:
-          name:
-            type: string
-    Count:
-      required:
-      - count
-      type: object
-      properties:
-        count:
-          type: integer
+    PromptTemplateUpdateRequest:
+      $ref: '#/components/schemas/PromptTemplateBase'
     GroupSharePermission:
       required:
       - group_id
@@ -757,50 +741,6 @@ components:
           type: array
           items:
             type: string
-    PromptTemplate:
-      allOf:
-      - $ref: '#/components/schemas/PromptTemplateBase'
-      - type: object
-        required:
-        - id
-        - is_default
-        - is_public
-        properties:
-          id:
-            description: A unique identifier of the prompt template.
-            type: string
-          is_default:
-            description: A flag identifying if the prompt template is default or not.
-            type: boolean
-          user_count:
-            description: The number of users who have access to the prompt template.
-            type: integer
-          group_count:
-            description: The number of groups who have access to the prompt template.
-            type: integer
-          username:
-            description: Name of the user owning the prompt template.
-            type: string
-          user_id:
-            description: The unique identifier of the user owning the prompt template.
-            type: string
-          created_at:
-            description: The moment when the prompt template was created.
-            type: string
-            format: date-time
-          updated_at:
-            description: The Last time when the prompt template was modified.
-            type: string
-            format: date-time
-          is_public:
-            description: Whether the prompt template is public or private (only applies to custom templates).
-            type: boolean
-          visible:
-            description: A flag identifying if a default prompt template is visible to system users.
-            type: boolean
-          is_system_default:
-            description: A flag identifying if a default prompt template is the system default.
-            type: boolean
     EndpointError:
       required:
       - code
@@ -872,8 +812,68 @@ components:
         image_batch_final_prompt:
           type: string
           description: A prompt for each image batch for vision models.
-    PromptTemplateUpdateRequest:
-      $ref: '#/components/schemas/PromptTemplateBase'
+    PromptTemplate:
+      allOf:
+      - $ref: '#/components/schemas/PromptTemplateBase'
+      - type: object
+        required:
+        - id
+        - is_default
+        - is_public
+        properties:
+          id:
+            description: A unique identifier of the prompt template.
+            type: string
+          is_default:
+            description: A flag identifying if the prompt template is default or not.
+            type: boolean
+          user_count:
+            description: The number of users who have access to the prompt template.
+            type: integer
+          group_count:
+            description: The number of groups who have access to the prompt template.
+            type: integer
+          username:
+            description: Name of the user owning the prompt template.
+            type: string
+          user_id:
+            description: The unique identifier of the user owning the prompt template.
+            type: string
+          created_at:
+            description: The moment when the prompt template was created.
+            type: string
+            format: date-time
+          updated_at:
+            description: The Last time when the prompt template was modified.
+            type: string
+            format: date-time
+          is_public:
+            description: Whether the prompt template is public or private (only applies to custom templates).
+            type: boolean
+          visible:
+            description: A flag identifying if a default prompt template is visible to system users.
+            type: boolean
+          is_system_default:
+            description: A flag identifying if a default prompt template is the system default.
+            type: boolean
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    Count:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-score-response-schema.json",
+  "title": "ScoreResponse",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-model-api-openapi.yml#/components/schemas/ScoreResponse",
+  "required": [
+    "score"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "A unique id of the model used for scoring."
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array holding the names of fields in the order of appearance, in the rows of the  `score` property. This field is not populated if requested by setting the `noFieldNamesInOutput` request field to `true`."
+    },
+    "score": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": "An array of rows consisting the actual scoring output. The order of rows corresponds to the order of the input request rows. Each row contains any copied input fields first (in the order of appearance in the input row). If the `idField` was specified and also listed in the `includeFieldsInOutput` but not provided in `fields`, a unique id will be generated and positioned right after all the other fields copied from the input. The scoring output follows."
+    },
+    "featureShapleyContributions": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/ContributionsResponse"
+        },
+        {
+          "description": "An object with features and shapley values that was requested by the client. It is currently available for transformed features of binomial, regression, and multinomial models of mojo2. This field will not be populated if the Shapley values are not available for a model."
+        }
+      ]
+    },
+    "predictionIntervals": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/PredictionInterval"
+        },
+        {
+          "description": "Prediction interval consist of an array of interval bound names and rows of array of bounds per bound name. Setting `requestPredictionIntervals` to true will enable populating the field. The field will be empty or an error response returned if prediction intervals arenot returned or supported by the model."
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "ContributionGroup": {
+      "title": "ContributionGroup",
+      "required": [
+        "contributions"
+      ],
+      "type": "object",
+      "properties": {
+        "output_group": {
+          "type": "string",
+          "description": "Name of the output group. It will be populated only for multinomial models. Shapley values are not supported for third party models yet, hence this field will not be populated."
+        },
+        "contributions": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": "n array of rows consisting of the shapley contributions output corresponding to columns in the fields"
+        }
+      }
+    },
+    "ContributionsResponse": {
+      "title": "ContributionsResponse",
+      "required": [
+        "features",
+        "contributionGroups"
+      ],
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "An array holding the names of fields in the order of appearance in the rows of the  `contributions` property."
+        },
+        "contributionGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ContributionGroup"
+          },
+          "description": "An array of rows consisting of the shapley contributions output corresponding to an output group."
+        }
+      }
+    },
+    "PredictionInterval": {
+      "title": "PredictionInterval",
+      "required": [
+        "fields",
+        "rows"
+      ],
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed."
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": "An array of rows consisting the actual input data for scoring, one scoring request per row."
+        }
+      }
+    }
+  }
+}

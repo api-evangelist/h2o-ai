@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-shared-chat-detail-schema.json",
+  "title": "SharedChatDetail",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-shared-chats-api-openapi.yml#/components/schemas/SharedChatDetail",
+  "type": "object",
+  "required": [
+    "is_frozen",
+    "is_private",
+    "includes_artifacts",
+    "messages"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the shared chat."
+    },
+    "shared_at": {
+      "type": "string",
+      "description": "When the chat was shared."
+    },
+    "shared_by": {
+      "type": "string",
+      "description": "Username of the person who shared the chat."
+    },
+    "is_frozen": {
+      "type": "boolean",
+      "description": "Whether the shared chat is a frozen snapshot."
+    },
+    "is_private": {
+      "type": "boolean",
+      "description": "Whether the shared chat requires authentication."
+    },
+    "includes_artifacts": {
+      "type": "boolean",
+      "description": "Whether file artifacts are included."
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Chat messages in the shared chat."
+    }
+  }
+}

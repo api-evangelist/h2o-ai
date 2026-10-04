@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-document-extraction-result-schema.json",
+  "title": "DocumentExtractionResult",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-extractors-api-openapi.yml#/components/schemas/DocumentExtractionResult",
+  "type": "object",
+  "required": [
+    "id",
+    "document_name",
+    "content",
+    "error"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the document extraction result"
+    },
+    "document_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "ID of the document that was processed. Null when the extraction was run on uploaded files without a collection."
+    },
+    "document_name": {
+      "type": "string",
+      "description": "Name of the document that was processed"
+    },
+    "content": {
+      "description": "The extracted content as JSON object",
+      "type": "object"
+    },
+    "error": {
+      "type": "string",
+      "description": "Contains error in case extraction failed for this document. Otherwise empty."
+    }
+  }
+}

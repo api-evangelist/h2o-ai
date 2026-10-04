@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-guardrail-violations-list-schema.json",
+  "title": "GuardrailViolationsList",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-guardrails-api-openapi.yml#/components/schemas/GuardrailViolationsList",
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "integer"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/GuardrailViolation"
+      }
+    }
+  },
+  "$defs": {
+    "GuardrailViolation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "collection_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "collection_name": {
+          "type": "string"
+        },
+        "violation_type": {
+          "type": "string"
+        },
+        "violation_message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

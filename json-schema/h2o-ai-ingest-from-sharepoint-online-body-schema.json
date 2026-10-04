@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ingest-from-sharepoint-online-body-schema.json",
+  "title": "IngestFromSharepointOnlineBody",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-document-ingestion-api-openapi.yml#/components/schemas/IngestFromSharepointOnlineBody",
+  "type": "object",
+  "required": [
+    "entries",
+    "credentials"
+  ],
+  "properties": {
+    "entries": {
+      "description": "Entries to ingest. Each entry is one of: a site (full subtree), a\ndrive (full drive contents), a drive_by_id (a drive identified\nonly by its drive_id), a directory, or a single file.\n",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SharepointIngestionEntry"
+      }
+    },
+    "credentials": {
+      "$ref": "#/$defs/SharepointOnlineCredentials"
+    },
+    "metadata": {
+      "description": "Metadata for the documents.",
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "SharepointIngestionEntry": {
+      "description": "A single SharePoint entry to ingest. entry_type determines which other\nfields are required:\n- \"site\": object_id is required.\n- \"drive\": drive_id is required.\n- \"drive_by_id\": drive_id is required. Use this for drives only reachable by direct drive_id (OneDrive personal, M365 group drives, drives in non-discoverable sites).\n- \"directory\": drive_id and object_id are required.\n- \"file\": drive_id and object_id are required.\n",
+      "type": "object",
+      "required": [
+        "entry_type"
+      ],
+      "properties": {
+        "name": {
+          "description": "Display name of the entry. Optional — used in logs.",
+          "type": "string"
+        },
+        "entry_type": {
+          "type": "string",
+          "enum": [
+            "site",
+            "drive",
+            "drive_by_id",
+            "directory",
+            "file"
+          ]
+        },
+        "web_url": {
+          "description": "Web URL of the entry. Optional — derived from drive_id/object_id when omitted.",
+          "type": "string"
+        },
+        "drive_id": {
+          "description": "SharePoint drive identifier.",
+          "type": "string"
+        },
+        "object_id": {
+          "description": "SharePoint site/folder/file identifier.",
+          "type": "string"
+        }
+      }
+    },
+    "SharepointOnlineCredentials": {
+      "description": "Credentials for SharePoint Online. Provide either the app-auth triple\n(tenant_name + client_id + client_secret) or the OAuth-user pair\n(user_id + optional connector_id). The auth_type field must match.\n",
+      "type": "object",
+      "properties": {
+        "auth_type": {
+          "description": "\"app\" for application credentials, \"user\" for delegated OAuth.",
+          "type": "string",
+          "enum": [
+            "app",
+            "user"
+          ],
+          "default": "app"
+        },
+        "tenant_name": {
+          "description": "SharePoint tenant name (app auth only).",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "Azure AD application client ID (app auth only).",
+          "type": "string"
+        },
+        "client_secret": {
+          "description": "Azure AD application client secret (app auth only).",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "User ID owning the OAuth token (user auth only).",
+          "type": "string"
+        },
+        "connector_id": {
+          "description": "Optional connector ID when the user has more than one linked SharePoint connector.",
+          "type": "string"
+        },
+        "admin_enumerate_drives": {
+          "description": "App auth only. When true, discovery additionally enumerates every\ndrive in the tenant via /drives. Requires Files.Read.All /\nSites.Read.All on the application.\n",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}

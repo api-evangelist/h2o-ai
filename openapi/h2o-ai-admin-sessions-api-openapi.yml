@@ -97,7 +97,51 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
+    AdminSessionsListResponse:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          description: Page of session metadata.
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminSessionItem'
+        next_cursor:
+          description: Opaque cursor for the next page. Absent when iteration is complete.
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
     AdminSessionsStatsResponse:
       required:
       - total
@@ -135,31 +179,6 @@ components:
           format: int64
         session_default_ttl:
           description: Configured default TTL for session keys (Go duration string, e.g. `168h0m0s`).
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    AdminSessionsListResponse:
-      required:
-      - items
-      type: object
-      properties:
-        items:
-          description: Page of session metadata.
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminSessionItem'
-        next_cursor:
-          description: Opaque cursor for the next page. Absent when iteration is complete.
           type: string
     AdminSessionItem:
       required:
@@ -202,25 +221,6 @@ components:
           description: Access-token expiry from the underlying OAuth2 token. Zero for anonymous or spoofed sessions.
           type: string
           format: date-time
-  responses:
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

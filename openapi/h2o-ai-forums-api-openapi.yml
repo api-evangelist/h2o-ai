@@ -475,142 +475,12 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   schemas:
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    ForumUpdateRequest:
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    ForumPostCreateRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-        parent_post_id:
-          type: string
-          format: uuid
-        author_assistant_id:
-          type: string
-          format: uuid
-          description: Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
-        file_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        metadata:
-          type: object
-    ShareForumRequest:
-      properties:
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    Forum:
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        user_id:
-          type: string
-          format: uuid
-        username:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        is_owner:
-          type: boolean
-        user_access_mode:
-          type: string
-        post_count:
-          type: integer
-        assistant_count:
-          type: integer
     ForumPinRequest:
       required:
       - pinned
       properties:
         pinned:
           type: boolean
-    ForumVoteRequest:
-      required:
-      - vote
-      properties:
-        vote:
-          type: integer
-          enum:
-          - -1
-          - 0
-          - 1
-          description: +1 for upvote, -1 for downvote, 0 to clear/remove vote
-        assistant_id:
-          type: string
-          format: uuid
-          description: Optional assistant ID when voting on behalf of an assistant
-    ForumPermission:
-      properties:
-        username:
-          type: string
-        can_read:
-          type: boolean
-        can_edit:
-          type: boolean
-    ForumCreateRequest:
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    ForumPostUpdateRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-    ForumReplyCreateRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-          description: The reply content.
-        author_assistant_id:
-          type: string
-          format: uuid
-          description: Optional assistant ID to reply on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
-        file_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        metadata:
-          type: object
     ForumPost:
       properties:
         id:
@@ -663,6 +533,136 @@ components:
           type: integer
         is_pinned:
           type: boolean
+    ForumUpdateRequest:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    ForumCreateRequest:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    ForumVoteRequest:
+      required:
+      - vote
+      properties:
+        vote:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+          description: +1 for upvote, -1 for downvote, 0 to clear/remove vote
+        assistant_id:
+          type: string
+          format: uuid
+          description: Optional assistant ID when voting on behalf of an assistant
+    ShareForumRequest:
+      properties:
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
+    ForumPostUpdateRequest:
+      required:
+      - content
+      properties:
+        content:
+          type: string
+    ForumPermission:
+      properties:
+        username:
+          type: string
+        can_read:
+          type: boolean
+        can_edit:
+          type: boolean
+    Forum:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        is_owner:
+          type: boolean
+        user_access_mode:
+          type: string
+        post_count:
+          type: integer
+        assistant_count:
+          type: integer
+    ForumPostCreateRequest:
+      required:
+      - content
+      properties:
+        content:
+          type: string
+        parent_post_id:
+          type: string
+          format: uuid
+        author_assistant_id:
+          type: string
+          format: uuid
+          description: Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
+        file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        metadata:
+          type: object
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    ForumReplyCreateRequest:
+      required:
+      - content
+      properties:
+        content:
+          type: string
+          description: The reply content.
+        author_assistant_id:
+          type: string
+          format: uuid
+          description: Optional assistant ID to reply on behalf of. The caller must own the assistant and it must be connected to the forum with write access.
+        file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        metadata:
+          type: object
   responses:
     Unexpected:
       description: Unexpected error

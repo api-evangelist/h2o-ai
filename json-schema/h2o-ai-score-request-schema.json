@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-score-request-schema.json",
+  "title": "ScoreRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-model-api-openapi.yml#/components/schemas/ScoreRequest",
+  "required": [
+    "fields",
+    "rows"
+  ],
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed."
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": "An array of rows consisting the actual input data for scoring, one scoring request per row."
+    },
+    "noFieldNamesInOutput": {
+      "type": "boolean",
+      "description": "If set to `true`. The scorer will not fill response column names in the `fields` field. This is can be useful to maintain compatibility with older scorer versions or to save bandwidth.",
+      "default": false
+    },
+    "requestPredictionIntervals": {
+      "type": "boolean",
+      "description": "If set to `true`, the scorer will try to fill field `predictionIntervals` in response if it is supported.",
+      "default": false
+    },
+    "includeFieldsInOutput": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array holding the list of field names to be copied from the input request row to the corresponding scoring output. It is an error to specify a field name not present in the `fields` property, except when it is equal to the `idField` property. In the latter case, the row id would be generated and returned in the response. Note that the order of items in `includeFieldsInOutput` is ignored and the specified fields are returned in the order of appearance in the input request row.",
+      "default": []
+    },
+    "idField": {
+      "type": "string",
+      "description": "Name of the field that holds a row id, e.g., a value that uniquely identifies each row of the request. The caller may specify a name of the field that is not present in fields. In which case, the scorer is allowed to generate a UUID to identify each row (e.g., for logging and monitoring purposes). To retrieve such a generated id as a part of the response, simply name it in the `includeFieldsInOutput`."
+    },
+    "requestShapleyValueType": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/ShapleyType"
+        },
+        {
+          "description": "The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested."
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "ShapleyType": {
+      "title": "ShapleyType",
+      "enum": [
+        "ORIGINAL",
+        "TRANSFORMED",
+        "NONE"
+      ],
+      "type": "string",
+      "description": "An enumeration."
+    }
+  }
+}

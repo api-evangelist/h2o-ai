@@ -1,14 +1,12 @@
 aid: h2o-ai
 name: H2O.ai
-description: H2O.ai is an open-source artificial-intelligence and machine-learning company whose platform
-  spans H2O-3 (a distributed, in-memory ML engine), H2O Driverless AI (automatic machine learning), H2O
-  MLOps (model deployment, scoring and monitoring), H2O Wave (a Python/R framework for realtime AI apps),
-  H2O LLM Studio, and Enterprise h2oGPTe (a private generative-AI, RAG and agent platform). Enterprise
-  h2oGPTe publishes a 422-operation OpenAPI 3.0.1 contract covering collections, document ingestion, chat,
-  agents, extractors, GraphRAG, guardrails, models, permissions and scheduled tasks, and H2O MLOps publishes
-  an OpenAPI contract for its model-scoring endpoints. H2O.ai also ships a first-party MCP server that
-  proxies the h2oGPTe REST API to agent clients, together with official Python, R, Java and JavaScript
-  client libraries distributed via PyPI, CRAN, Maven Central and npm.
+description: H2O.ai is an open-source artificial-intelligence and machine-learning company whose platform spans H2O-3 (a distributed, in-memory
+  ML engine), H2O Driverless AI (automatic machine learning), H2O MLOps (model deployment, scoring and monitoring), H2O Wave (a Python/R framework
+  for realtime AI apps), H2O LLM Studio, and Enterprise h2oGPTe (a private generative-AI, RAG and agent platform). Enterprise h2oGPTe publishes
+  a 422-operation OpenAPI 3.0.1 contract covering collections, document ingestion, chat, agents, extractors, GraphRAG, guardrails, models, permissions
+  and scheduled tasks, and H2O MLOps publishes an OpenAPI contract for its model-scoring endpoints. H2O.ai also ships a first-party MCP server
+  that proxies the h2oGPTe REST API to agent clients, together with official Python, R, Java and JavaScript client libraries distributed via PyPI,
+  CRAN, Maven Central and npm.
 deliveryModel:
   model: saas
   license_evidence:
@@ -76,11 +74,10 @@ tags_raw:
 apis:
 - aid: h2o-ai:h2o-ai-h2ogpte-mcp
   name: h2oGPTe MCP Server
-  description: H2OGPTe MCP Server is H2O.ai's first-party Model Context Protocol server for Enterprise
-    h2oGPTe. It runs locally over stdio and proxies traffic to the h2oGPTe REST API, generating one MCP
-    tool per REST operationId (GET operations can instead be exposed as MCP resources). Endpoint sets
-    are selectable — all, all_without_async_ingest (the default), basic, or a custom operationId list
-    — so the tool surface is a configurable projection of the same OpenAPI contract.
+  description: H2OGPTe MCP Server is H2O.ai's first-party Model Context Protocol server for Enterprise h2oGPTe. It runs locally over stdio and
+    proxies traffic to the h2oGPTe REST API, generating one MCP tool per REST operationId (GET operations can instead be exposed as MCP resources).
+    Endpoint sets are selectable — all, all_without_async_ingest (the default), basic, or a custom operationId list — so the tool surface is a
+    configurable projection of the same OpenAPI contract.
   humanURL: https://github.com/h2oai/h2ogpte-mcp-server
   baseURL: https://h2ogpte.genai.h2o.ai/api/v1
   tags:
@@ -146,6 +143,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-agent-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-custom-agent-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-custom-agent-key-association-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-custom-agent-tool-association-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-agent-tool-spec-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-create-custom-agent-key-association-request-schema.json
 - aid: h2o-ai:h2o-ai-ai-assistants-api
   name: H2O.ai AI Assistants API
   description: The AI Assistants API from H2O.ai — 30 operation(s) for ai assistants.
@@ -172,6 +181,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ai-assistant-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ai-assistant-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ai-assistant-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ai-assistant-spec-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ai-assistant-schedule-link-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ai-assistant-collection-link-schema.json
 - aid: h2o-ai:h2o-ai-api-keys-api
   name: H2O.ai API Keys API
   description: The API Keys API from H2O.ai — 5 operation(s) for api keys.
@@ -198,6 +219,16 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-apikey-info-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-apikey-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-apikey-update-inactivity-interval-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-apikey-result-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-apikey-update-expiry-request-schema.json
 - aid: h2o-ai:h2o-ai-chat-api
   name: H2O.ai Chat API
   description: The Chat API from H2O.ai — 29 operation(s) for chat.
@@ -222,6 +253,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrails-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-chat-completion-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-job-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-qafeedback-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-agent-server-directory-stats-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-chat-message-schema.json
 - aid: h2o-ai:h2o-ai-collections-api
   name: H2O.ai Collections API
   description: The Collections API from H2O.ai — 40 operation(s) for collections.
@@ -248,6 +291,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-collection-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-collection-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-document-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-connector-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-collection-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-collection-create-request-schema.json
 - aid: h2o-ai:h2o-ai-configurations-api
   name: H2O.ai Configurations API
   description: The Configurations API from H2O.ai — 12 operation(s) for configurations.
@@ -272,6 +327,10 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-global-configuration-item-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-user-configuration-item-schema.json
 - aid: h2o-ai:h2o-ai-document-ingestion-api
   name: H2O.ai Document Ingestion API
   description: The Document Ingestion API from H2O.ai — 21 operation(s) for document ingestion.
@@ -296,6 +355,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-job-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ingest-from-confluence-body-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ingest-from-azure-blob-storage-body-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ingest-from-sharepoint-online-body-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ingest-from-s3-body-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-ingest-from-gcs-body-schema.json
 - aid: h2o-ai:h2o-ai-documents-api
   name: H2O.ai Documents API
   description: The Documents API from H2O.ai — 20 operation(s) for documents.
@@ -320,6 +391,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrails-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-collection-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-process-document-job-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-document-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-job-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-chat-session-schema.json
 - aid: h2o-ai:h2o-ai-extractors-api
   name: H2O.ai Extractors API
   description: The Extractors API from H2O.ai — 10 operation(s) for extractors.
@@ -344,6 +427,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-extractor-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-extractor-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-job-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-document-extraction-result-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-group-share-permission-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-share-permission-schema.json
 - aid: h2o-ai:h2o-ai-forums-api
   name: H2O.ai Forums API
   description: The Forums API from H2O.ai — 9 operation(s) for forums.
@@ -368,6 +463,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-forum-post-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-forum-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-forum-post-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-forum-reply-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-forum-vote-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-forum-permission-schema.json
 - aid: h2o-ai:h2o-ai-graphrag-api
   name: H2O.ai Graph RAG API
   description: The GraphRAG API from H2O.ai — 4 operation(s) for graphrag.
@@ -394,6 +501,8 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-job-details-schema.json
 - aid: h2o-ai:h2o-ai-guardrails-api
   name: H2O.ai Guardrails API
   description: The Guardrails API from H2O.ai — 4 operation(s) for guardrails.
@@ -418,6 +527,14 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrails-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrail-violations-dashboard-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrail-violations-summary-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrail-violations-list-schema.json
 - aid: h2o-ai:h2o-ai-jobs-api
   name: H2O.ai Jobs API
   description: The Jobs API from H2O.ai — 6 operation(s) for jobs.
@@ -444,6 +561,12 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-job-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-user-job-details-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-count-with-queue-details-schema.json
 - aid: h2o-ai:h2o-ai-memory-blocks-api
   name: H2O.ai Memory Blocks API
   description: The Memory Blocks API from H2O.ai — 9 operation(s) for memory blocks.
@@ -468,6 +591,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-memory-block-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-memory-block-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-memory-block-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-memory-block-privacy-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-set-default-memory-block-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-share-memory-block-request-schema.json
 - aid: h2o-ai:h2o-ai-model-api
   name: H2O.ai Model API
   description: The Model API from H2O.ai — 7 operation(s) for model.
@@ -492,6 +627,16 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-score-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-score-response-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-contributions-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-contributions-response-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-model-schema.json
 - aid: h2o-ai:h2o-ai-models-api
   name: H2O.ai Models API
   description: The Models API from H2O.ai — 19 operation(s) for models.
@@ -516,6 +661,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrails-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-question-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-summarize-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-guardrails-settings-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-extraction-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-self-test-result-schema.json
 - aid: h2o-ai:h2o-ai-permissions-api
   name: H2O.ai Permissions API
   description: The Permissions API from H2O.ai — 24 operation(s) for permissions.
@@ -540,6 +697,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-user-permission-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-user-deletion-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-role-info-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-confirm-user-deletion-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-user-info-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-group-info-schema.json
 - aid: h2o-ai:h2o-ai-prompt-templates-api
   name: H2O.ai Prompt Templates API
   description: The Prompt Templates API from H2O.ai — 11 operation(s) for prompt templates.
@@ -564,6 +733,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-prompt-template-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-group-share-permission-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-share-permission-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-prompt-template-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-reset-and-share-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-reset-and-share-with-groups-request-schema.json
 - aid: h2o-ai:h2o-ai-scheduled-tasks-api
   name: H2O.ai Scheduled Tasks API
   description: The Scheduled Tasks API from H2O.ai — 13 operation(s) for scheduled tasks.
@@ -588,6 +769,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-task-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-task-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-task-execution-stats-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-task-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-task-admin-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-scheduled-task-admin-summary-schema.json
 - aid: h2o-ai:h2o-ai-secrets-api
   name: H2O.ai Secrets API
   description: The Secrets API from H2O.ai — 4 operation(s) for secrets.
@@ -636,6 +829,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-shared-chat-info-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-shared-chat-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-share-chat-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-share-chat-response-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-update-shared-chat-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-delete-shared-chats-request-schema.json
 - aid: h2o-ai:h2o-ai-showcase-api
   name: H2O.ai Showcase API
   description: The Showcase API from H2O.ai — 5 operation(s) for showcase.
@@ -660,6 +865,18 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-showcase-chat-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-update-showcase-chat-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-add-showcase-chat-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-list-showcase-categories-response-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-reorder-showcase-chats-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-upload-showcase-thumbnail-response-schema.json
 - aid: h2o-ai:h2o-ai-system-api
   name: H2O.ai System API
   description: The System API from H2O.ai — 3 operation(s) for system.
@@ -684,6 +901,8 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-h2-ogptsystem-info-schema.json
 - aid: h2o-ai:h2o-ai-tags-api
   name: H2O.ai Tags API
   description: The Tags API from H2O.ai — 3 operation(s) for tags.
@@ -708,6 +927,14 @@ apis:
     url: https://docs.h2o.ai/mlops/
   - type: APIReference
     url: https://docs.h2o.ai/mlops/model-scoring/mlops-scoring-rest-api
+  - type: JSONSchema
+    url: json-schema/h2o-ai-document-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-tag-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-tag-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/h2o-ai-tag-update-request-schema.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -782,8 +1009,17 @@ common:
   url: agentic-access/h2o-ai-agentic-access.yml
 - type: AgentSkill
   url: skills/_index.yml
+x-coverage:
+  state: unreadable
+  reason: no-machine-readable-spec
+  detail: The public documentation pages are HTML without any published OpenAPI, AsyncAPI, GraphQL, gRPC, or WSDL contracts.
+  evidence:
+  - url: https://docs.h2o.ai/enterprise-h2ogpte/guide/apis
+    status: 200
+  checked: '2026-10-03'
 x-enrichment:
-  date: '2026-08-04'
+  date: '2026-10-03'
   status: enriched
-  artifacts_added: 30
-  pass: local-v1
+  artifacts_added: 66
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local,regulatory=local

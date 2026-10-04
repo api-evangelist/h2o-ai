@@ -808,7 +808,224 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
+    Metadata:
+      type: object
+      additionalProperties: true
+    ChunkSearchResult:
+      allOf:
+      - $ref: '#/components/schemas/Chunk'
+      - type: object
+        required:
+        - topic
+        - score
+        properties:
+          topic:
+            type: string
+          score:
+            type: number
+            format: double
+    ChatCompletionRequestLLMArgs:
+      type: object
+      description: "A map of arguments sent to LLM with query.\n  * `temperature` **(type=double, default=0.0)** - A value used to modulate the next token probabilities.\n    0 is the most deterministic and 1 is most creative.\n  * `top_k` **(type=integer, default=1)** - A number of highest probability vocabulary tokens to keep for top-k-filtering.\n  * `top_p` **(type=double, default=0.0)** - If set to a value < 1, only the smallest set of most probable\n    tokens with probabilities that add up to top_p or higher are kept for generation.\n  * `seed` **(type=integer, default=0)** - A seed for the random number generator when sampling during\n     generation (if temp>0 or top_k>1 or top_p<1), seed=0 picks a random seed.\n  * `repetition_penalty` **(type=double, default=1.07)** - A parameter for repetition penalty. 1.0 means no penalty.\n  * `max_new_tokens` **(type=double, default=1024)** - A maximum number of new tokens to generate.\n    This limit applies to each (map+reduce) step during summarization and each (map) step during extraction.\n  * `min_max_new_tokens` **(type=integer, default=512)** - A minimum value for max_new_tokens when auto-adjusting for content of prompt, docs, etc.\n  * `response_format` **(type=enum[text, json_object, json_code], default=text)** - An output type of LLM\n  * `guided_json` **(type=map)** - If specified, the output will follow the JSON schema.\n  * `guided_regex` **(type=string)** - If specified, the output will follow the regex pattern.\n    Only for models that support guided generation.\n  * `guided_choice` **(type=array[string])** - If specified, the output will be exactly one of the choices.\n    Only for models that support guided generation.\n  * `guided_grammar` **(type=string)** - If specified, the output will follow the context free grammar.\n    Only for models that support guided generation.\n  * `guided_whitespace_pattern` **(type=string)** - If specified, will override the default whitespace pattern for guided json decoding.\n    Only for models that support guided generation.\n  * `enable_vision` **(type=enum[on, off, auto], default=auto)** - Controls vision mode,\n    send images to the LLM in addition to text chunks.\n  * `visible_vision_models` **(type=array[string], default=[auto])** - Controls which vision model to use when processing images.\n    Must provide exactly one model. [auto] for automatic.\n  * `images_num_max` **(type=integer, default=None)** - Maximum number of images to process.\n  * `json_preserve_system_prompt` **(type=boolean, default=None)** - Whether to preserve system prompt in JSON response.\n  * `client_metadata` **(type=string, default=None)** - Additional metadata to send with the request.\n  * `min_chars_per_yield` **(type=integer, default=1)** - Minimum characters to yield in streaming response.\n  * `reasoning_effort` **(type=integer, default=0)** - Level of reasoning effort for the model (higher values = deeper reasoning, e.g., 10000-65000).\n    Use for models that support chain-of-thought reasoning. 0 means no additional reasoning effort.\n  * `cost_controls` **(type=map)** A map with cost controls settings:\n    * `max_cost` **(type=double)** - Sets the maximum allowed cost in USD per LLM call when doing Automatic model routing.\n      If the estimated cost based on input and output token counts is higher than this limit,\n      the request will fail as early as possible.\n    * `max_cost_per_million_tokens` **(type=double)** - Only consider models that cost less than this value in USD per million tokens\n      when doing automatic routing. Using the max of input and output cost.\n    * `model` **(type=array[string])** - Optional subset of models to consider when doing automatic routing.\n      If not specified, all models are considered.\n    * `willingness_to_pay` **(type=double)** - Controls the willingness to pay extra for a more accurate model for every LLM call\n      when doing automatic routing, in units of USD per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated cost divided by the increase in estimated accuracy\n      is no more than this value divided by 10%, up to the upper limit specified above.\n      Lower values will try to keep the cost as low as possible,\n      higher values will approach the cost limit to increase accuracy. 0 means unlimited.\n    * `willingness_to_wait` **(type=double)** - Controls the willingness to wait longer for a more accurate model for every LLM call\n      when doing automatic routing, in units of seconds per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated time divided by the increase in estimated accuracy\n      is no more than this value divided by 10%. Lower values will try to keep the time\n      as low as possible, higher values will take longer to increase accuracy. 0 means unlimited.\n  * `use_agent` **(type=boolean, default=False)** - If True, use the AI agent (with access to tools) to generate the response.\n  * `agent_accuracy` **(type=string, default=\"standard\")** - Effort level by the agent. Only if use_agent=True. One of [\"quick\", \"basic\", \"standard\", \"maximum\"].\n  * `agent_max_turns` **(type=union[string, integer], default=\"auto\")** - Optional max. number of back-and-forth turns with the agent. Only if use_agent=True. Either \"auto\" or an integer.\n  * `agent_tools` **(type=union[string, array[string]], default=\"auto\")** - Either \"auto\", \"all\", \"any\" to enable all available tools, or a specific list of tools to use. Only if use_agent=True.\n  * `agent_type` **(type=string, default=\"auto\")** - Type of agent to use for task processing.\n  * `agent_original_files` **(type=array[string], default=None)** - List of file paths for agent to process.\n  * `agent_timeout` **(type=integer, default=None)** - Timeout in seconds for each agent turn.\n  * `agent_total_timeout` **(type=integer, default=3600)** - Total timeout in seconds for all agent processing.\n  * `agent_code_writer_system_message` **(type=string, default=None)** - System message for agent code writer.\n  * `agent_num_executable_code_blocks_limit` **(type=integer, default=1)** - Maximum number of executable code blocks.\n  * `agent_system_site_packages` **(type=boolean, default=True)** - Whether agent has access to system site packages.\n  * `agent_main_model` **(type=string, default=None)** - Main model to use for agent.\n  * `agent_max_stream_length` **(type=integer, default=None)** - Maximum stream length for agent response.\n  * `agent_max_memory_usage` **(type=integer, default=16*1024**3)** - Maximum memory usage for agent in bytes (16GB default).\n  * `agent_main_reasoning_effort` **(type=integer, default=None)** - Effort level for main reasoning.\n  * `agent_advanced_reasoning_effort` **(type=integer, default=None)** - Effort level for advanced reasoning.\n  * `agent_max_confidence_level` **(type=integer, default=None)** - Maximum confidence level for agent responses.\n  * `agent_planning_forced_mode` **(type=boolean, default=None)** - Whether to force planning mode for agent.\n  * `agent_too_soon_forced_mode` **(type=boolean, default=None)** - Whether to force \"too soon\" mode for agent.\n  * `agent_critique_forced_mode` **(type=integer, default=None)** - Whether to force critique mode for agent.\n  * `agent_query_understanding_parallel_calls` **(type=integer, default=None)** - Number of parallel calls for query understanding.\n  * `task_tracking` **(type=boolean, default=None)** - Enable task tracking for agent.\n  * `task_update_steps` **(type=integer, default=None)** - Number of steps for task update tracking (0-5, None for auto).\n  * `tool_building_mode` **(type=string, default=None)** - Mode for tool building configuration.\n  * `agent_stream_files` **(type=boolean, default=True)** - Whether to stream files from agent.\n  * `final_answer_guidelines_mode` **(type=string, default=\"auto\")** - Mode for formatting agent final answers. Only applies when use_agent=True. Options: \"auto\" (chooses detailed, may later adapt), \"detailed\" (full final answer guidelines), \"detailed_no_file_links\", \"detailed_no_image_links\", \"detailed_no_links\", \"file_template\" (use custom template), \"raw_LLM\" (bypass final answer guidelines). Available modes may vary by deployment.\n"
+      additionalProperties: true
+    Tag:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: marvel
+        description:
+          type: string
+          example: Stories based on Marvel's comics.
+        format:
+          type: string
+    ChatSession:
+      required:
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          type: string
+          example: Discussion about sci-fi heroes.
+        collection_id:
+          type: string
+          example: c91e7c84-65df-4b43-ba15-fbd3afb2e86f
+        collection_name:
+          type: string
+        prompt_template_id:
+          type: string
+          example: 4e400991-c459-455f-995c-dc6f55ffdb90
+        latest_message_content:
+          type: string
+          example: The strongest hero is superman!
+        updated_at:
+          type: string
+          format: date-time
+        workspace:
+          type: string
+        username:
+          type: string
+          description: Username of the session owner.
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    Document:
+      required:
+      - id
+      - name
+      - username
+      - type
+      - size
+      - page_count
+      - created_at
+      - updated_at
+      - status
+      type: object
+      properties:
+        id:
+          description: A unique identifier of the document
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+        name:
+          description: Name of the document
+          type: string
+          example: The Hitchhiker's Guide to the Galaxy
+        username:
+          description: A username owning the document
+          type: string
+        type:
+          description: Type of the document
+          type: string
+        size:
+          description: Size of the document in bytes
+          type: integer
+        page_count:
+          description: A number of pages contained in the document
+          type: integer
+        status:
+          description: Status of the document
+          type: string
+          enum:
+          - unknown
+          - scheduled
+          - queued
+          - running
+          - completed
+          - failed
+          - canceled
+          - agent_only
+        usage_stats:
+          description: Usage stats
+          type: string
+        connector:
+          type: string
+        original_type:
+          type: string
+        original_mtime:
+          type: string
+          format: datetime
+        created_at:
+          description: Time when document was created
+          type: string
+          format: date-time
+        updated_at:
+          description: Last time when document was modified
+          type: string
+          format: date-time
+        uri:
+          type: string
+        summary:
+          type: string
+        summary_parameters:
+          type: string
+        metadata_dict:
+          $ref: '#/components/schemas/Metadata'
+        is_encrypted:
+          description: Whether the document files are encrypted at rest
+          type: boolean
+          default: false
+    Dictionary:
+      type: object
+      additionalProperties: true
+    DocumentUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        uri:
+          type: string
+    DocumentSummary:
+      type: object
+      required:
+      - id
+      - document_id
+      - content
+      - error
+      - kwargs
+      - created_at
+      properties:
+        id:
+          description: A unique identifier of the document summary
+          type: string
+        document_id:
+          description: A unique identifier of the document
+          type: string
+        content:
+          type: string
+        error:
+          type: string
+        kwargs:
+          type: string
+        created_at:
+          type: string
+          format: datetime
+        usage_stats:
+          type: string
     Collection:
       required:
       - id
@@ -916,52 +1133,15 @@ components:
           enum:
           - enabled
           - disabled
-    Chunk:
-      type: object
+    JobDetailsStatus:
       required:
       - id
-      - text
-      - name
-      - size
-      - pages
-      properties:
-        text:
-          description: The text represented by the chunk
-          type: string
-        id:
-          description: The identifier of the chunk
-          type: integer
-        name:
-          type: string
-        size:
-          description: The size in bytes.
-          type: integer
-        pages:
-          type: string
-    TagCreateRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          example: marvel
-    Tag:
-      required:
-      - id
-      - name
+      - status
       type: object
       properties:
         id:
           type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: marvel
-        description:
-          type: string
-          example: Stories based on Marvel's comics.
-        format:
+        status:
           type: string
     DeleteDocumentsJobRequest:
       type: object
@@ -973,84 +1153,6 @@ components:
           type: array
           items:
             type: string
-    Document:
-      required:
-      - id
-      - name
-      - username
-      - type
-      - size
-      - page_count
-      - created_at
-      - updated_at
-      - status
-      type: object
-      properties:
-        id:
-          description: A unique identifier of the document
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          description: Name of the document
-          type: string
-          example: The Hitchhiker's Guide to the Galaxy
-        username:
-          description: A username owning the document
-          type: string
-        type:
-          description: Type of the document
-          type: string
-        size:
-          description: Size of the document in bytes
-          type: integer
-        page_count:
-          description: A number of pages contained in the document
-          type: integer
-        status:
-          description: Status of the document
-          type: string
-          enum:
-          - unknown
-          - scheduled
-          - queued
-          - running
-          - completed
-          - failed
-          - canceled
-          - agent_only
-        usage_stats:
-          description: Usage stats
-          type: string
-        connector:
-          type: string
-        original_type:
-          type: string
-        original_mtime:
-          type: string
-          format: datetime
-        created_at:
-          description: Time when document was created
-          type: string
-          format: date-time
-        updated_at:
-          description: Last time when document was modified
-          type: string
-          format: date-time
-        uri:
-          type: string
-        summary:
-          type: string
-        summary_parameters:
-          type: string
-        metadata_dict:
-          $ref: '#/components/schemas/Metadata'
-        is_encrypted:
-          description: Whether the document files are encrypted at rest
-          type: boolean
-          default: false
-    Dictionary:
-      type: object
-      additionalProperties: true
     Count:
       required:
       - count
@@ -1058,159 +1160,6 @@ components:
       properties:
         count:
           type: integer
-    DocumentSummary:
-      type: object
-      required:
-      - id
-      - document_id
-      - content
-      - error
-      - kwargs
-      - created_at
-      properties:
-        id:
-          description: A unique identifier of the document summary
-          type: string
-        document_id:
-          description: A unique identifier of the document
-          type: string
-        content:
-          type: string
-        error:
-          type: string
-        kwargs:
-          type: string
-        created_at:
-          type: string
-          format: datetime
-        usage_stats:
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    ChatSession:
-      required:
-      - id
-      - updated_at
-      type: object
-      properties:
-        id:
-          type: string
-          example: 123e4567-e89b-12d3-a456-426655440000
-        name:
-          type: string
-          example: Discussion about sci-fi heroes.
-        collection_id:
-          type: string
-          example: c91e7c84-65df-4b43-ba15-fbd3afb2e86f
-        collection_name:
-          type: string
-        prompt_template_id:
-          type: string
-          example: 4e400991-c459-455f-995c-dc6f55ffdb90
-        latest_message_content:
-          type: string
-          example: The strongest hero is superman!
-        updated_at:
-          type: string
-          format: date-time
-        workspace:
-          type: string
-        username:
-          type: string
-          description: Username of the session owner.
-    JobDetails:
-      required:
-      - id
-      - name
-      - overall_status
-      - passed_percentage
-      - failed_percentage
-      - progress
-      - created_at
-      - updated_at
-      - kind
-      - statuses
-      - errors
-      - duration
-      - duration_seconds
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        overall_status:
-          type: string
-          enum:
-          - in progress
-          - completed
-          - failed
-          - canceled
-        status:
-          type: string
-        passed_percentage:
-          type: number
-          format: double
-        failed_percentage:
-          type: number
-          format: double
-        progress:
-          type: number
-          format: double
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        kind:
-          type: string
-        statuses:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobDetailsStatus'
-        errors:
-          type: array
-          items:
-            type: string
-        duration:
-          type: string
-        duration_seconds:
-          type: number
-          format: double
-        canceled_by:
-          type: string
-        cancel_reason:
-          type: string
-        timeout:
-          type: number
-          format: double
-        start_time:
-          type: number
-          format: double
-    Metadata:
-      type: object
-      additionalProperties: true
-    JobDetailsStatus:
-      required:
-      - id
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
     ProcessDocumentJobRequest:
       type: object
       required:
@@ -1277,6 +1226,28 @@ components:
           type: object
           additionalProperties:
             type: boolean
+    Chunk:
+      type: object
+      required:
+      - id
+      - text
+      - name
+      - size
+      - pages
+      properties:
+        text:
+          description: The text represented by the chunk
+          type: string
+        id:
+          description: The identifier of the chunk
+          type: integer
+        name:
+          type: string
+        size:
+          description: The size in bytes.
+          type: integer
+        pages:
+          type: string
     GuardrailsSettings:
       type: object
       properties:
@@ -1419,55 +1390,84 @@ components:
             type: string
           example:
             Mother's Maiden Name: Mother's maiden name
-    ChunkSearchResult:
-      allOf:
-      - $ref: '#/components/schemas/Chunk'
-      - type: object
-        required:
-        - topic
-        - score
-        properties:
-          topic:
-            type: string
-          score:
-            type: number
-            format: double
-    DocumentUpdateRequest:
+    TagCreateRequest:
+      required:
+      - name
       type: object
       properties:
         name:
           type: string
-        uri:
-          type: string
-    ChatCompletionRequestLLMArgs:
+          example: marvel
+    JobDetails:
+      required:
+      - id
+      - name
+      - overall_status
+      - passed_percentage
+      - failed_percentage
+      - progress
+      - created_at
+      - updated_at
+      - kind
+      - statuses
+      - errors
+      - duration
+      - duration_seconds
       type: object
-      description: "A map of arguments sent to LLM with query.\n  * `temperature` **(type=double, default=0.0)** - A value used to modulate the next token probabilities.\n    0 is the most deterministic and 1 is most creative.\n  * `top_k` **(type=integer, default=1)** - A number of highest probability vocabulary tokens to keep for top-k-filtering.\n  * `top_p` **(type=double, default=0.0)** - If set to a value < 1, only the smallest set of most probable\n    tokens with probabilities that add up to top_p or higher are kept for generation.\n  * `seed` **(type=integer, default=0)** - A seed for the random number generator when sampling during\n     generation (if temp>0 or top_k>1 or top_p<1), seed=0 picks a random seed.\n  * `repetition_penalty` **(type=double, default=1.07)** - A parameter for repetition penalty. 1.0 means no penalty.\n  * `max_new_tokens` **(type=double, default=1024)** - A maximum number of new tokens to generate.\n    This limit applies to each (map+reduce) step during summarization and each (map) step during extraction.\n  * `min_max_new_tokens` **(type=integer, default=512)** - A minimum value for max_new_tokens when auto-adjusting for content of prompt, docs, etc.\n  * `response_format` **(type=enum[text, json_object, json_code], default=text)** - An output type of LLM\n  * `guided_json` **(type=map)** - If specified, the output will follow the JSON schema.\n  * `guided_regex` **(type=string)** - If specified, the output will follow the regex pattern.\n    Only for models that support guided generation.\n  * `guided_choice` **(type=array[string])** - If specified, the output will be exactly one of the choices.\n    Only for models that support guided generation.\n  * `guided_grammar` **(type=string)** - If specified, the output will follow the context free grammar.\n    Only for models that support guided generation.\n  * `guided_whitespace_pattern` **(type=string)** - If specified, will override the default whitespace pattern for guided json decoding.\n    Only for models that support guided generation.\n  * `enable_vision` **(type=enum[on, off, auto], default=auto)** - Controls vision mode,\n    send images to the LLM in addition to text chunks.\n  * `visible_vision_models` **(type=array[string], default=[auto])** - Controls which vision model to use when processing images.\n    Must provide exactly one model. [auto] for automatic.\n  * `images_num_max` **(type=integer, default=None)** - Maximum number of images to process.\n  * `json_preserve_system_prompt` **(type=boolean, default=None)** - Whether to preserve system prompt in JSON response.\n  * `client_metadata` **(type=string, default=None)** - Additional metadata to send with the request.\n  * `min_chars_per_yield` **(type=integer, default=1)** - Minimum characters to yield in streaming response.\n  * `reasoning_effort` **(type=integer, default=0)** - Level of reasoning effort for the model (higher values = deeper reasoning, e.g., 10000-65000).\n    Use for models that support chain-of-thought reasoning. 0 means no additional reasoning effort.\n  * `cost_controls` **(type=map)** A map with cost controls settings:\n    * `max_cost` **(type=double)** - Sets the maximum allowed cost in USD per LLM call when doing Automatic model routing.\n      If the estimated cost based on input and output token counts is higher than this limit,\n      the request will fail as early as possible.\n    * `max_cost_per_million_tokens` **(type=double)** - Only consider models that cost less than this value in USD per million tokens\n      when doing automatic routing. Using the max of input and output cost.\n    * `model` **(type=array[string])** - Optional subset of models to consider when doing automatic routing.\n      If not specified, all models are considered.\n    * `willingness_to_pay` **(type=double)** - Controls the willingness to pay extra for a more accurate model for every LLM call\n      when doing automatic routing, in units of USD per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated cost divided by the increase in estimated accuracy\n      is no more than this value divided by 10%, up to the upper limit specified above.\n      Lower values will try to keep the cost as low as possible,\n      higher values will approach the cost limit to increase accuracy. 0 means unlimited.\n    * `willingness_to_wait` **(type=double)** - Controls the willingness to wait longer for a more accurate model for every LLM call\n      when doing automatic routing, in units of seconds per +10% increase in accuracy.\n      We start with the least accurate model. For each more accurate model,\n      we accept it if the increase in estimated time divided by the increase in estimated accuracy\n      is no more than this value divided by 10%. Lower values will try to keep the time\n      as low as possible, higher values will take longer to increase accuracy. 0 means unlimited.\n  * `use_agent` **(type=boolean, default=False)** - If True, use the AI agent (with access to tools) to generate the response.\n  * `agent_accuracy` **(type=string, default=\"standard\")** - Effort level by the agent. Only if use_agent=True. One of [\"quick\", \"basic\", \"standard\", \"maximum\"].\n  * `agent_max_turns` **(type=union[string, integer], default=\"auto\")** - Optional max. number of back-and-forth turns with the agent. Only if use_agent=True. Either \"auto\" or an integer.\n  * `agent_tools` **(type=union[string, array[string]], default=\"auto\")** - Either \"auto\", \"all\", \"any\" to enable all available tools, or a specific list of tools to use. Only if use_agent=True.\n  * `agent_type` **(type=string, default=\"auto\")** - Type of agent to use for task processing.\n  * `agent_original_files` **(type=array[string], default=None)** - List of file paths for agent to process.\n  * `agent_timeout` **(type=integer, default=None)** - Timeout in seconds for each agent turn.\n  * `agent_total_timeout` **(type=integer, default=3600)** - Total timeout in seconds for all agent processing.\n  * `agent_code_writer_system_message` **(type=string, default=None)** - System message for agent code writer.\n  * `agent_num_executable_code_blocks_limit` **(type=integer, default=1)** - Maximum number of executable code blocks.\n  * `agent_system_site_packages` **(type=boolean, default=True)** - Whether agent has access to system site packages.\n  * `agent_main_model` **(type=string, default=None)** - Main model to use for agent.\n  * `agent_max_stream_length` **(type=integer, default=None)** - Maximum stream length for agent response.\n  * `agent_max_memory_usage` **(type=integer, default=16*1024**3)** - Maximum memory usage for agent in bytes (16GB default).\n  * `agent_main_reasoning_effort` **(type=integer, default=None)** - Effort level for main reasoning.\n  * `agent_advanced_reasoning_effort` **(type=integer, default=None)** - Effort level for advanced reasoning.\n  * `agent_max_confidence_level` **(type=integer, default=None)** - Maximum confidence level for agent responses.\n  * `agent_planning_forced_mode` **(type=boolean, default=None)** - Whether to force planning mode for agent.\n  * `agent_too_soon_forced_mode` **(type=boolean, default=None)** - Whether to force \"too soon\" mode for agent.\n  * `agent_critique_forced_mode` **(type=integer, default=None)** - Whether to force critique mode for agent.\n  * `agent_query_understanding_parallel_calls` **(type=integer, default=None)** - Number of parallel calls for query understanding.\n  * `task_tracking` **(type=boolean, default=None)** - Enable task tracking for agent.\n  * `task_update_steps` **(type=integer, default=None)** - Number of steps for task update tracking (0-5, None for auto).\n  * `tool_building_mode` **(type=string, default=None)** - Mode for tool building configuration.\n  * `agent_stream_files` **(type=boolean, default=True)** - Whether to stream files from agent.\n  * `final_answer_guidelines_mode` **(type=string, default=\"auto\")** - Mode for formatting agent final answers. Only applies when use_agent=True. Options: \"auto\" (chooses detailed, may later adapt), \"detailed\" (full final answer guidelines), \"detailed_no_file_links\", \"detailed_no_image_links\", \"detailed_no_links\", \"file_template\" (use custom template), \"raw_LLM\" (bypass final answer guidelines). Available modes may vary by deployment.\n"
-      additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        overall_status:
+          type: string
+          enum:
+          - in progress
+          - completed
+          - failed
+          - canceled
+        status:
+          type: string
+        passed_percentage:
+          type: number
+          format: double
+        failed_percentage:
+          type: number
+          format: double
+        progress:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        kind:
+          type: string
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetailsStatus'
+        errors:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        duration_seconds:
+          type: number
+          format: double
+        canceled_by:
+          type: string
+        cancel_reason:
+          type: string
+        timeout:
+          type: number
+          format: double
+        start_time:
+          type: number
+          format: double
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,0 +1,442 @@
+generated: '2026-10-03'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/h2o-ai-agents-api-openapi.yml
+- openapi/h2o-ai-ai-assistants-api-openapi.yml
+- openapi/h2o-ai-api-keys-api-openapi.yml
+- openapi/h2o-ai-chat-api-openapi.yml
+- openapi/h2o-ai-collections-api-openapi.yml
+vocabulary:
+  name: H2O.ai Domain Vocabulary
+  description: 'Terms declared by H2O.ai''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-03'
+  terms:
+  - term: AgentKeyAssociation
+    definition: 'Object declared by the contract with fields: name, associated_key.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentKeyAssociation
+  - term: UpdateAgentKeyRequest
+    definition: 'Object declared by the contract with fields: name, type, value, description.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/UpdateAgentKeyRequest
+  - term: CustomAgentSuggestionMcpServer
+    definition: 'Object declared by the contract with fields: tool_name, tool_args.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentSuggestionMcpServer
+  - term: DeleteCustomAgentKeyAssociationsResponse
+    definition: 'Object declared by the contract with fields: deleted_count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/DeleteCustomAgentKeyAssociationsResponse
+  - term: AgentKey
+    definition: 'Object declared by the contract with fields: id, name, type, description, created_at, updated_at, owner_email.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentKey
+  - term: AgentServerDirectoryStats
+    definition: 'Object declared by the contract with fields: id, object, size_bytes, size_human_readable, file_count, directory_count, created_timestamp,
+      modified_timestamp, created_date, modified_date, is_empty, top_level_contents. (3 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentServerDirectoryStats
+  - term: AgentToolSpec
+    definition: 'Object declared by the contract with fields: name, description, enabled, default, extendable, api_keys.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentToolSpec
+  - term: DeleteCustomAgentToolAssociationsResponse
+    definition: 'Object declared by the contract with fields: deleted_count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/DeleteCustomAgentToolAssociationsResponse
+  - term: Agent
+    definition: 'Object declared by the contract with fields: id, value, label, enabled, type, owner, description, api_keys, mcp_servers.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/Agent
+  - term: CreateCustomAgentKeyAssociationRequest
+    definition: 'Object declared by the contract with fields: agent_id, env_key_name, key_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CreateCustomAgentKeyAssociationRequest
+  - term: CustomAgentDetail
+    definition: 'Object declared by the contract with fields: id, agent_name, agent_type, agent_args, owner_email, mcp_servers, api_keys.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentDetail
+  - term: Count
+    definition: 'Object declared by the contract with fields: count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/Count
+  - term: EndpointError
+    definition: 'Object declared by the contract with fields: code, message.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/EndpointError
+  - term: AgentToolKeyAssociations
+    definition: 'Object declared by the contract with fields: tool, keys.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentToolKeyAssociations
+  - term: CreateAgentToolKeyAssociationsRequest
+    definition: 'Object declared by the contract with fields: tool, keys.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CreateAgentToolKeyAssociationsRequest
+  - term: CustomAgentToolAssociation
+    definition: 'Object declared by the contract with fields: id, agent_id, agent_name, tool_id, tool_name, mcp_server_name, user_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentToolAssociation
+  - term: KeyAssociation
+    definition: 'Object declared by the contract with fields: name, key_id, associate_id, user_id, email.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/KeyAssociation
+  - term: UpdateCustomAgentRequest
+    definition: 'Object declared by the contract with fields: agent_args, mcp_servers_mapping.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/UpdateCustomAgentRequest
+  - term: AgentServerDirectoryFileStats
+    definition: 'Object declared by the contract with fields: name, path, size_bytes, size_human_readable, created_timestamp, modified_timestamp,
+      created_date, modified_date, is_directory, owner, permissions, sha256.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentServerDirectoryFileStats
+  - term: CustomAgentSuggestion
+    definition: 'Object declared by the contract with fields: mcp_servers.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentSuggestion
+  - term: CreateAgentKeyRequest
+    definition: 'Object declared by the contract with fields: name, type, value, description.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CreateAgentKeyRequest
+  - term: UpdateCustomAgentToolRequest
+    definition: 'Object declared by the contract with fields: tool_args.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/UpdateCustomAgentToolRequest
+  - term: CreateCustomAgentToolAssociationRequest
+    definition: 'Object declared by the contract with fields: agent_id, mcp_server_name, tool_name.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CreateCustomAgentToolAssociationRequest
+  - term: AgentServerDirectoryStatsPerAgentChatSession
+    definition: 'Object declared by the contract with fields: agent_chat_session_id, chat_preview, stats.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentServerDirectoryStatsPerAgentChatSession
+  - term: NewKeyAssociation
+    definition: 'Object declared by the contract with fields: name, key_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/NewKeyAssociation
+  - term: CustomAgentKeyAssociation
+    definition: 'Object declared by the contract with fields: id, agent_id, env_key_name, key_id, user_id, requirement_type, key_name, owner_email.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentKeyAssociation
+  - term: AgentToolSpecApiKeys
+    definition: The specific keys associated with an agent tool.
+    tags:
+    - Object
+    source: openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentToolSpecApiKeys
+  - term: AiAssistantCollectionConnectRequest
+    definition: 'Object declared by the contract with fields: collection_id, access_mode.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantCollectionConnectRequest
+  - term: AiAssistantForumLink
+    definition: 'Object declared by the contract with fields: junction_id, forum_id, access_mode, connected_at, forum_name, description, user_id,
+      username, forum_created_at, forum_updated_at, post_count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantForumLink
+  - term: AiAssistantMessage
+    definition: 'Object declared by the contract with fields: id, assistant_id, sender_type, sender_user_id, sender_username, assistant_name,
+      content, file_ids, metadata, wake_cycle, created_at.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantMessage
+  - term: InterAssistantMessageRequest
+    definition: 'Object declared by the contract with fields: recipient_assistant_id, content, metadata.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/InterAssistantMessageRequest
+  - term: AiAssistantToolRequest
+    definition: 'Object declared by the contract with fields: custom_tool_definition.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantToolRequest
+  - term: ShareAiAssistantRequest
+    definition: 'Object declared by the contract with fields: access_mode.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/ShareAiAssistantRequest
+  - term: AiAssistantMessageRequest
+    definition: 'Object declared by the contract with fields: content.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantMessageRequest
+  - term: EventSubscription
+    definition: 'Object declared by the contract with fields: id, assistant_id, event_type_id, event_type_name, created_at.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/EventSubscription
+  - term: AiAssistantSpec
+    definition: LLM-generated assistant configuration spec.
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantSpec
+  - term: EventSubscriptionRequest
+    definition: 'Object declared by the contract with fields: event_type_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/EventSubscriptionRequest
+  - term: AiAssistantForumConnectRequest
+    definition: 'Object declared by the contract with fields: forum_id, access_mode.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantForumConnectRequest
+  - term: EmitEventResponse
+    definition: 'Object declared by the contract with fields: status, woken_count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/EmitEventResponse
+  - term: AiAssistantFile
+    definition: 'Object declared by the contract with fields: file_id, created_at, source.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantFile
+  - term: AiAssistantCollectionLink
+    definition: 'Object declared by the contract with fields: junction_id, collection_id, access_mode, created_at, collection_name, collection_description,
+      user_id, username, document_count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantCollectionLink
+  - term: AiAssistantPermission
+    definition: 'Object declared by the contract with fields: username, can_read, can_edit.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantPermission
+  - term: AiAssistantUpdateRequest
+    definition: 'Object declared by the contract with fields: name, description, system_prompt, llm, llm_args, custom_tool_definition, mcp_servers,
+      credential_ids, memory_block_id, notification_email, history_management, history_max_chars. (4 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantUpdateRequest
+  - term: AiAssistantCreateRequest
+    definition: 'Object declared by the contract with fields: name, description, system_prompt, llm, llm_args, custom_tool_definition, mcp_servers,
+      credential_ids, memory_block_id, notification_email, history_management, history_max_chars. (5 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantCreateRequest
+  - term: AiAssistantEvent
+    definition: 'Object declared by the contract with fields: id, assistant_id, event_type, trigger_type, trigger_detail, chat_session_id, wake_cycle,
+      created_at.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantEvent
+  - term: AiAssistantScheduleLink
+    definition: 'Object declared by the contract with fields: junction_id, connected_at, scheduled_task_id, name, description, schedule_type,
+      schedule_expression, task_type, status, last_execution_at, next_execution_at, execution_count.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantScheduleLink
+  - term: AiAssistant
+    definition: 'Object declared by the contract with fields: id, name, description, system_prompt, llm, llm_args, status, custom_tool_definition,
+      mcp_servers, credential_ids, memory_block_id, notification_email. (18 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistant
+  - term: EventType
+    definition: 'Object declared by the contract with fields: id, name, description, payload_schema, user_id, subscriber_count, created_at, updated_at.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/EventType
+  - term: InterAssistantMessage
+    definition: 'Object declared by the contract with fields: id, sender_assistant_id, recipient_assistant_id, content, metadata, wake_cycle,
+      created_at.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/InterAssistantMessage
+  - term: EventTypeCreateRequest
+    definition: 'Object declared by the contract with fields: name, description, payload_schema.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/EventTypeCreateRequest
+  - term: AiAssistantScheduleConnectRequest
+    definition: 'Object declared by the contract with fields: scheduled_task_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistantScheduleConnectRequest
+  - term: EmitEventRequest
+    definition: 'Object declared by the contract with fields: event_type_name, payload, target_assistant_ids.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/EmitEventRequest
+  - term: APIKeyUpdateExpiryRequest
+    definition: 'Object declared by the contract with fields: expires_in.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyUpdateExpiryRequest
+  - term: APIKeyResult
+    definition: 'Object declared by the contract with fields: secret_key, api_key.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyResult
+  - term: APIKeyCreateRequest
+    definition: 'Object declared by the contract with fields: user_id, name, collection_id, expires_in, inactivity_interval.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyCreateRequest
+  - term: APIKeyUpdateInactivityIntervalRequest
+    definition: 'Object declared by the contract with fields: inactivity_interval.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyUpdateInactivityIntervalRequest
+  - term: APIKeyInfo
+    definition: 'Object declared by the contract with fields: id, username, name, hint, created_at, expires_at, last_used_at, inactivity_interval,
+      total_calls, is_active, collection_name, collection_id. (1 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyInfo
+  - term: ChatCompletionRequest
+    definition: 'Object declared by the contract with fields: message, system_prompt, pre_prompt_query, prompt_query, image_batch_final_prompt,
+      image_batch_image_prompt, llm, llm_args, self_reflection_config, rag_config, include_chat_history, tags. (1 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatCompletionRequest
+  - term: MessageVoteUpdateRequest
+    definition: 'Object declared by the contract with fields: votes.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/MessageVoteUpdateRequest
+  - term: UpdateQAFeedbackRequest
+    definition: 'Object declared by the contract with fields: expected_answer, user_comment.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/UpdateQAFeedbackRequest
+  - term: ChatError
+    definition: 'Object declared by the contract with fields: error.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatError
+  - term: SuggestedQuestion
+    definition: 'Object declared by the contract with fields: question.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/SuggestedQuestion
+  - term: ChatCompletionRAGConfig
+    definition: 'A map with arguments to control RAG (retrieval-augmented-generation) types.: * `rag_type` **(type=enum[auto, llm_only, rag, hyde1,
+      hyde2, rag+, all_data])** RAG type options: * `auto` - Automatically select the best rag_type. * `llm_only` LLM Only - Answer the query
+      without any supporting document contexts. Requires 1 LLM call. * `rag` RAG (Retrieval Augmented Generation) - Use supporting document'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatCompletionRAGConfig
+  - term: TagFilter
+    definition: 'Filter for document tags supporting inclusion and exclusion. Note: The exclude list takes priority over the include list. If
+      a document has a tag that appears in both lists, the document will be excluded. Examples: - Include only documents with ''red'' OR ''blue''
+      tags: {"include": ["red", "blue"]} - Exclude documents with ''red'' OR ''blue'' tags: {"exclude": ["red", "blue"]} - Include documents with
+      ''co'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/TagFilter
+  - term: ChatSessionUpdateRequest
+    definition: 'Object declared by the contract with fields: name.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatSessionUpdateRequest
+  - term: ChatCompletionDelta
+    definition: 'Object declared by the contract with fields: message_id, body, finished.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatCompletionDelta
+  - term: ChatSession
+    definition: 'Object declared by the contract with fields: id, name, collection_id, collection_name, prompt_template_id, latest_message_content,
+      updated_at, workspace, username.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatSession
+  - term: AgentServerFile
+    definition: 'Object declared by the contract with fields: id, object, bytes, created_at, filename, purpose.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/AgentServerFile
+  - term: CollectionChangeRequest
+    definition: 'Object declared by the contract with fields: collection_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/CollectionChangeRequest
+  - term: ChatCompletion
+    definition: 'Object declared by the contract with fields: message_id, body.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatCompletion
+  - term: ChatMessage
+    definition: 'Object declared by the contract with fields: id, content, votes, created_at, has_references, total_references, username, reply_to,
+      error, llm_args, type_list.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatMessage
+  - term: JobDetails
+    definition: 'Object declared by the contract with fields: id, name, overall_status, status, passed_percentage, failed_percentage, progress,
+      created_at, updated_at, kind, statuses, errors. (6 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/JobDetails
+  - term: ChatMessageReference
+    definition: 'Object declared by the contract with fields: collection_id, document_id, document_name, chunk_id, score, pages, content, were_references_deleted,
+      uri.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatMessageReference
+  - term: JobDetailsStatus
+    definition: 'Object declared by the contract with fields: id, status.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/JobDetailsStatus
+  - term: GuardrailsSettings
+    definition: 'Object declared by the contract with fields: exception_message, show_violated_responses, guardrails_on_transcriptions, vision_guardrails_enabled,
+      guardrails_vision_llm, column_redaction_config, disallowed_regex_patterns, presidio_labels_to_flag, pii_labels_to_flag, pii_detection_parse_action,
+      pii_detection_llm_input_action, pii_detection_llm_output_action. (9 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/GuardrailsSettings
+  - term: PromptTemplateChangeRequest
+    definition: 'Object declared by the contract with fields: prompt_template_id.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/PromptTemplateChangeRequest
+  - term: DeleteChatSessionsJobRequest
+    definition: 'Object declared by the contract with fields: session_ids.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/DeleteChatSessionsJobRequest
+  - term: ChatCompletionSelfReflectionConfig
+    definition: 'A map with self reflection settings: * `llm_reflection` **(type=string, example=gpt-4-0613)** * `prompt_reflection` **(type=string,
+      example=\"\"\"Prompt:\\\\n%s\\\\n\"\"\"\\\\n\\\\n\"\"\")** * `system_prompt_reflection` **(type=string)** * `llm_args_reflection` **(type=string,
+      example={})**'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatCompletionSelfReflectionConfig
+  - term: ChatMessageMeta
+    definition: 'Object declared by the contract with fields: message_type, content.'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatMessageMeta
+  - term: QAFeedback
+    definition: 'Object declared by the contract with fields: question_content, reply_content, question_id, reply_id, llm, system_prompt, pre_prompt_query,
+      prompt_query, pre_prompt_summary, prompt_summary, rag_config, collection_documents. (11 more)'
+    tags:
+    - Object
+    source: openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/QAFeedback

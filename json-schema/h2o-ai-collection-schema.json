@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-collection-schema.json",
+  "title": "Collection",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-collections-api-openapi.yml#/components/schemas/Collection",
+  "required": [
+    "id",
+    "name",
+    "description",
+    "embedding_model",
+    "document_count",
+    "document_size",
+    "created_at",
+    "updated_at",
+    "user_count",
+    "is_public",
+    "username",
+    "sessions_count",
+    "status"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier of the collection",
+      "type": "string"
+    },
+    "name": {
+      "description": "Name of the collection",
+      "type": "string"
+    },
+    "description": {
+      "description": "Description of the collection",
+      "type": "string"
+    },
+    "embedding_model": {
+      "type": "string"
+    },
+    "document_count": {
+      "description": "A number of documents in the collection",
+      "type": "integer"
+    },
+    "document_size": {
+      "description": "Total size in bytes of all documents in the collection",
+      "type": "integer"
+    },
+    "created_at": {
+      "description": "Time when the collection was created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "description": "Last time when the collection was modified",
+      "type": "string",
+      "format": "date-time"
+    },
+    "user_count": {
+      "description": "A number of users having access to the collection",
+      "type": "integer"
+    },
+    "is_public": {
+      "description": "Is publicly accessible",
+      "type": "boolean"
+    },
+    "username": {
+      "description": "Name of the user owning the collection",
+      "type": "string"
+    },
+    "sessions_count": {
+      "description": "A number of chat sessions with the collection",
+      "type": "integer"
+    },
+    "status": {
+      "description": "Status of the collection",
+      "type": "string"
+    },
+    "prompt_template_id": {
+      "description": "A unique identifier of a prompt template associated with the collection.",
+      "type": "string"
+    },
+    "thumbnail": {
+      "description": "A file name of a thumbnail image.",
+      "type": "string"
+    },
+    "size_limit": {
+      "description": "Maximum size of data that could be contained in the collection.",
+      "type": "integer"
+    },
+    "expiry_date": {
+      "description": "An expiry date",
+      "type": "string",
+      "format": "date-time"
+    },
+    "inactivity_interval": {
+      "description": "The inactivity interval as an integer number of days.",
+      "type": "integer"
+    },
+    "rag_type": {
+      "description": "RAG type options:\n  * `auto` - Automatically select the best rag_type.\n  * `llm_only` LLM Only - Answer the query without any supporting document contexts.\n  Requires 1 LLM call.\n  * `rag` RAG (Retrieval Augmented Generation) - Use supporting document contexts\n  to answer the query. Requires 1 LLM call.\n  * `hyde1` LLM Only + RAG composite - HyDE RAG (Hypothetical Document Embedding).\n  Use 'LLM Only' response to find relevant contexts from a collection for generating\n  a response. Requires 2 LLM calls.\n  * `hyde2` HyDE + RAG composite - Use the 'HyDE RAG' response to find relevant\n  contexts from a collection for generating a response. Requires 3 LLM calls.\n  * `rag+` Summary RAG - Like RAG, but uses more context and recursive\n  summarization to overcome LLM context limits. Keeps all retrieved chunks, puts\n  them in order, adds neighboring chunks, then uses the summary API to get the\n  answer. Can require several LLM calls.\n  * `all_data` All Data RAG - Like Summary RAG, but includes all document\n  chunks. Uses recursive summarization to overcome LLM context limits.\n  Can require several LLM calls.\n",
+      "type": "string",
+      "enum": [
+        "auto",
+        "llm_only",
+        "rag",
+        "hyde1",
+        "hyde2",
+        "rag+",
+        "all_data"
+      ]
+    },
+    "metadata_dict": {
+      "$ref": "#/$defs/Metadata"
+    },
+    "workspace": {
+      "description": "The workspace associated with the collection.",
+      "type": "string"
+    },
+    "has_default_guardrails": {
+      "description": "Whether this collection was created with default guardrails enabled.",
+      "type": "boolean"
+    },
+    "vex_encryption": {
+      "description": "The per-collection vector encryption choice that was set at creation: `enabled`, `disabled`, or null when the collection follows the server default. Read-only — cannot be changed after creation.\n",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "enabled",
+        "disabled"
+      ]
+    }
+  },
+  "$defs": {
+    "Metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

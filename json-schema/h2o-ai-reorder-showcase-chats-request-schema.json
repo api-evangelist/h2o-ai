@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-reorder-showcase-chats-request-schema.json",
+  "title": "ReorderShowcaseChatsRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-showcase-api-openapi.yml#/components/schemas/ReorderShowcaseChatsRequest",
+  "type": "object",
+  "required": [
+    "orders"
+  ],
+  "properties": {
+    "orders": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ReorderShowcaseChatEntry"
+      }
+    }
+  },
+  "$defs": {
+    "ReorderShowcaseChatEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "sort_order"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sort_order": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

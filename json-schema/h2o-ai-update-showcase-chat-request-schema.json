@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-update-showcase-chat-request-schema.json",
+  "title": "UpdateShowcaseChatRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-showcase-api-openapi.yml#/components/schemas/UpdateShowcaseChatRequest",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Omit to keep the existing value. Empty / whitespace-only is rejected with 400."
+    },
+    "description": {
+      "type": "string",
+      "description": "Omit to keep the existing value. Empty / whitespace-only is rejected with 400."
+    },
+    "category": {
+      "type": "string",
+      "description": "Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized)."
+    }
+  }
+}

@@ -1357,327 +1357,26 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
-    AiAssistantCollectionConnectRequest:
-      required:
-      - collection_id
-      properties:
-        collection_id:
-          type: string
-          format: uuid
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    AiAssistantForumLink:
-      properties:
-        junction_id:
-          type: string
-          format: uuid
-        forum_id:
-          type: string
-          format: uuid
-        access_mode:
-          type: string
-        connected_at:
-          type: string
-          format: date-time
-        forum_name:
-          type: string
-        description:
-          type: string
-        user_id:
-          type: string
-          format: uuid
-        username:
-          type: string
-        forum_created_at:
-          type: string
-          format: date-time
-        forum_updated_at:
-          type: string
-          format: date-time
-        post_count:
-          type: integer
-    AiAssistantMessage:
-      properties:
-        id:
-          type: string
-          format: uuid
-        assistant_id:
-          type: string
-          format: uuid
-        sender_type:
-          type: string
-        sender_user_id:
-          type: string
-          format: uuid
-        sender_username:
-          type: string
-        assistant_name:
-          type: string
-        content:
-          type: string
-        file_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        metadata:
-          type: object
-        wake_cycle:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-    InterAssistantMessageRequest:
-      required:
-      - recipient_assistant_id
-      - content
-      properties:
-        recipient_assistant_id:
-          type: string
-          format: uuid
-        content:
-          type: string
-          description: Message content (max 100000 chars).
-        metadata:
-          type: object
-          description: Optional metadata.
-    AiAssistantToolRequest:
-      required:
-      - custom_tool_definition
-      properties:
-        custom_tool_definition:
-          type: string
-    ShareAiAssistantRequest:
-      properties:
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    AiAssistantMessageRequest:
-      required:
-      - content
-      properties:
-        content:
-          type: string
-    EventSubscription:
-      properties:
-        id:
-          type: string
-          format: uuid
-        assistant_id:
-          type: string
-          format: uuid
-        event_type_id:
-          type: string
-          format: uuid
-        event_type_name:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-    AiAssistantSpec:
-      description: LLM-generated assistant configuration spec.
-      required:
-      - name
-      - description
-      - system_prompt
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        system_prompt:
-          type: string
-        llm:
-          type: string
-        history_management:
-          type: string
-          enum:
-          - compactification
-          - truncation
-          - semantic_retrieval
-        history_max_chars:
-          type: integer
-        history_recent_chars:
-          type: integer
-        history_retrieval_chars:
-          type: integer
-        notification_email:
-          type: string
-        allowed_tool_actions:
-          type: array
-          items:
-            type: string
-        allowed_trigger_types:
-          type: array
-          items:
-            type: string
-        default_wake_period:
-          type: integer
-        auto_memory_block:
-          type: boolean
-        auto_start:
-          type: boolean
-          description: Whether to auto-start the assistant after creation. Only true when user explicitly asks for it to be started/run/launched.
-    EventSubscriptionRequest:
-      required:
-      - event_type_id
-      properties:
-        event_type_id:
-          type: string
-          format: uuid
-    AiAssistantForumConnectRequest:
-      required:
-      - forum_id
-      properties:
-        forum_id:
-          type: string
-          format: uuid
-        access_mode:
-          type: string
-          enum:
-          - read
-          - write
-          - read_write
-          default: read
-    EmitEventResponse:
-      properties:
-        status:
-          type: string
-        woken_count:
-          type: integer
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    AiAssistantFile:
-      properties:
-        file_id:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        source:
-          type: string
-          description: 'Source of the file reference: ''message'' or ''forum_post'''
-    AiAssistantCollectionLink:
-      required:
-      - junction_id
-      - collection_id
-      - access_mode
-      - collection_name
-      - document_count
-      properties:
-        junction_id:
-          type: string
-          format: uuid
-        collection_id:
-          type: string
-          format: uuid
-        access_mode:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        collection_name:
-          type: string
-        collection_description:
-          type:
-          - string
-          - 'null'
-        user_id:
-          type: string
-          format: uuid
-        username:
-          type: string
-        document_count:
-          type: integer
-    AiAssistantPermission:
-      properties:
-        username:
-          type: string
-        can_read:
-          type: boolean
-        can_edit:
-          type: boolean
-    AiAssistantUpdateRequest:
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        system_prompt:
-          type: string
-        llm:
-          type: string
-        llm_args:
-          type: object
-        custom_tool_definition:
-          type: string
-        mcp_servers:
-          type: array
-          items:
-            type: object
-        credential_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-        memory_block_id:
-          type: string
-          format: uuid
-        notification_email:
-          type: string
-        history_management:
-          type: string
-          enum:
-          - compactification
-          - truncation
-          - semantic_retrieval
-        history_max_chars:
-          type: integer
-        history_recent_chars:
-          type: integer
-          description: Maximum characters of recent chat history kept uncompacted (default 10000)
-        history_retrieval_chars:
-          type: integer
-          description: Maximum characters retrieved from vector DB for semantic retrieval (default 100000)
-        allowed_tool_actions:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'List of allowed tool action names. NULL means all actions allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed).
-
-            '
-        allowed_trigger_types:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'List of allowed trigger types. NULL means all triggers allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.
-
-            '
     AiAssistantCreateRequest:
       required:
       - name
@@ -1749,6 +1448,295 @@ components:
           description: 'Default periodic wake interval in seconds. When set, the system automatically wakes the assistant at this interval with its name and description as context. Min 60 (1 min), max 86400 (24 hours). Default NULL (no periodic wake).
 
             '
+    AiAssistantFile:
+      properties:
+        file_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        source:
+          type: string
+          description: 'Source of the file reference: ''message'' or ''forum_post'''
+    EmitEventRequest:
+      required:
+      - event_type_name
+      properties:
+        event_type_name:
+          type: string
+          description: Name of the event type to emit.
+        payload:
+          type: object
+          description: Optional event payload data.
+        target_assistant_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Optional list of specific assistant IDs to target.
+    ShareAiAssistantRequest:
+      properties:
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
+    AiAssistantPermission:
+      properties:
+        username:
+          type: string
+        can_read:
+          type: boolean
+        can_edit:
+          type: boolean
+    EventTypeCreateRequest:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the custom event type (max 200 chars).
+        description:
+          type: string
+          description: Optional description (max 5000 chars).
+        payload_schema:
+          type: object
+          description: Optional JSON schema for event payloads.
+    AiAssistantMessage:
+      properties:
+        id:
+          type: string
+          format: uuid
+        assistant_id:
+          type: string
+          format: uuid
+        sender_type:
+          type: string
+        sender_user_id:
+          type: string
+          format: uuid
+        sender_username:
+          type: string
+        assistant_name:
+          type: string
+        content:
+          type: string
+        file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        metadata:
+          type: object
+        wake_cycle:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+    EventSubscriptionRequest:
+      required:
+      - event_type_id
+      properties:
+        event_type_id:
+          type: string
+          format: uuid
+    AiAssistantSpec:
+      description: LLM-generated assistant configuration spec.
+      required:
+      - name
+      - description
+      - system_prompt
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        system_prompt:
+          type: string
+        llm:
+          type: string
+        history_management:
+          type: string
+          enum:
+          - compactification
+          - truncation
+          - semantic_retrieval
+        history_max_chars:
+          type: integer
+        history_recent_chars:
+          type: integer
+        history_retrieval_chars:
+          type: integer
+        notification_email:
+          type: string
+        allowed_tool_actions:
+          type: array
+          items:
+            type: string
+        allowed_trigger_types:
+          type: array
+          items:
+            type: string
+        default_wake_period:
+          type: integer
+        auto_memory_block:
+          type: boolean
+        auto_start:
+          type: boolean
+          description: Whether to auto-start the assistant after creation. Only true when user explicitly asks for it to be started/run/launched.
+    AiAssistantToolRequest:
+      required:
+      - custom_tool_definition
+      properties:
+        custom_tool_definition:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    InterAssistantMessage:
+      properties:
+        id:
+          type: string
+          format: uuid
+        sender_assistant_id:
+          type: string
+          format: uuid
+        recipient_assistant_id:
+          type: string
+          format: uuid
+        content:
+          type: string
+        metadata:
+          type: object
+        wake_cycle:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+    EventType:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        payload_schema:
+          type: object
+        user_id:
+          type: string
+          format: uuid
+        subscriber_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AiAssistantUpdateRequest:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        system_prompt:
+          type: string
+        llm:
+          type: string
+        llm_args:
+          type: object
+        custom_tool_definition:
+          type: string
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        credential_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        memory_block_id:
+          type: string
+          format: uuid
+        notification_email:
+          type: string
+        history_management:
+          type: string
+          enum:
+          - compactification
+          - truncation
+          - semantic_retrieval
+        history_max_chars:
+          type: integer
+        history_recent_chars:
+          type: integer
+          description: Maximum characters of recent chat history kept uncompacted (default 10000)
+        history_retrieval_chars:
+          type: integer
+          description: Maximum characters retrieved from vector DB for semantic retrieval (default 100000)
+        allowed_tool_actions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'List of allowed tool action names. NULL means all actions allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed).
+
+            '
+        allowed_trigger_types:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'List of allowed trigger types. NULL means all triggers allowed. Use [''__CLEAR__''] sentinel to reset to NULL (all allowed). Valid values: user_message, forum_post, forum_mention, scheduled_task, manual, custom_event, assistant_message.
+
+            '
+    AiAssistantForumLink:
+      properties:
+        junction_id:
+          type: string
+          format: uuid
+        forum_id:
+          type: string
+          format: uuid
+        access_mode:
+          type: string
+        connected_at:
+          type: string
+          format: date-time
+        forum_name:
+          type: string
+        description:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        forum_created_at:
+          type: string
+          format: date-time
+        forum_updated_at:
+          type: string
+          format: date-time
+        post_count:
+          type: integer
     AiAssistantEvent:
       properties:
         id:
@@ -1771,37 +1759,6 @@ components:
         created_at:
           type: string
           format: date-time
-    AiAssistantScheduleLink:
-      properties:
-        junction_id:
-          type: string
-          format: uuid
-        connected_at:
-          type: string
-          format: date-time
-        scheduled_task_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        schedule_type:
-          type: string
-        schedule_expression:
-          type: string
-        task_type:
-          type: string
-        status:
-          type: string
-        last_execution_at:
-          type: string
-          format: date-time
-        next_execution_at:
-          type: string
-          format: date-time
-        execution_count:
-          type: integer
     AiAssistant:
       properties:
         id:
@@ -1896,61 +1853,139 @@ components:
           type: string
         forum_count:
           type: integer
-    EventType:
+    AiAssistantCollectionLink:
+      required:
+      - junction_id
+      - collection_id
+      - access_mode
+      - collection_name
+      - document_count
       properties:
-        id:
+        junction_id:
           type: string
           format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        payload_schema:
-          type: object
-        user_id:
+        collection_id:
           type: string
           format: uuid
-        subscriber_count:
-          type: integer
+        access_mode:
+          type: string
         created_at:
           type: string
           format: date-time
-        updated_at:
+        collection_name:
           type: string
-          format: date-time
-    InterAssistantMessage:
+        collection_description:
+          type:
+          - string
+          - 'null'
+        user_id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        document_count:
+          type: integer
+    AiAssistantMessageRequest:
+      required:
+      - content
+      properties:
+        content:
+          type: string
+    EventSubscription:
       properties:
         id:
           type: string
           format: uuid
-        sender_assistant_id:
+        assistant_id:
           type: string
           format: uuid
+        event_type_id:
+          type: string
+          format: uuid
+        event_type_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    EmitEventResponse:
+      properties:
+        status:
+          type: string
+        woken_count:
+          type: integer
+    InterAssistantMessageRequest:
+      required:
+      - recipient_assistant_id
+      - content
+      properties:
         recipient_assistant_id:
           type: string
           format: uuid
         content:
           type: string
+          description: Message content (max 100000 chars).
         metadata:
           type: object
-        wake_cycle:
-          type: integer
-        created_at:
+          description: Optional metadata.
+    AiAssistantScheduleLink:
+      properties:
+        junction_id:
+          type: string
+          format: uuid
+        connected_at:
           type: string
           format: date-time
-    EventTypeCreateRequest:
-      required:
-      - name
-      properties:
+        scheduled_task_id:
+          type: string
+          format: uuid
         name:
           type: string
-          description: Name of the custom event type (max 200 chars).
         description:
           type: string
-          description: Optional description (max 5000 chars).
-        payload_schema:
-          type: object
-          description: Optional JSON schema for event payloads.
+        schedule_type:
+          type: string
+        schedule_expression:
+          type: string
+        task_type:
+          type: string
+        status:
+          type: string
+        last_execution_at:
+          type: string
+          format: date-time
+        next_execution_at:
+          type: string
+          format: date-time
+        execution_count:
+          type: integer
+    AiAssistantCollectionConnectRequest:
+      required:
+      - collection_id
+      properties:
+        collection_id:
+          type: string
+          format: uuid
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
+    AiAssistantForumConnectRequest:
+      required:
+      - forum_id
+      properties:
+        forum_id:
+          type: string
+          format: uuid
+        access_mode:
+          type: string
+          enum:
+          - read
+          - write
+          - read_write
+          default: read
     AiAssistantScheduleConnectRequest:
       required:
       - scheduled_task_id
@@ -1958,41 +1993,6 @@ components:
         scheduled_task_id:
           type: string
           format: uuid
-    EmitEventRequest:
-      required:
-      - event_type_name
-      properties:
-        event_type_name:
-          type: string
-          description: Name of the event type to emit.
-        payload:
-          type: object
-          description: Optional event payload data.
-        target_assistant_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Optional list of specific assistant IDs to target.
-  responses:
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
   securitySchemes:
     bearerAuth:
       type: http

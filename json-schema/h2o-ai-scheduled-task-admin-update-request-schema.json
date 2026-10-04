@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-scheduled-task-admin-update-request-schema.json",
+  "title": "ScheduledTaskAdminUpdateRequest",
+  "description": "Admin partial update — status and metadata only. max_executions and expires_at are intentionally NOT settable here (the admin SQL does not honor the clear-sentinels), matching the UI's admin update which only changes status.\n",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-scheduled-tasks-api-openapi.yml#/components/schemas/ScheduledTaskAdminUpdateRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "schedule_type": {
+      "type": "string",
+      "enum": [
+        "once",
+        "recurring",
+        "interval"
+      ]
+    },
+    "schedule_expression": {
+      "type": "string"
+    },
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "chat_completion",
+        "agent_task"
+      ]
+    },
+    "task_config": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "completed",
+        "expired"
+      ]
+    },
+    "notification_email": {
+      "type": "string"
+    }
+  }
+}

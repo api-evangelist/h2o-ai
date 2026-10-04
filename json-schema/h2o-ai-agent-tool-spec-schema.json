@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-agent-tool-spec-schema.json",
+  "title": "AgentToolSpec",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/AgentToolSpec",
+  "required": [
+    "name",
+    "description",
+    "enabled",
+    "default",
+    "extendable",
+    "api_keys"
+  ],
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "The identifier representing the specific tool.",
+      "type": "string"
+    },
+    "description": {
+      "description": "Description of the tool.",
+      "type": "string"
+    },
+    "enabled": {
+      "description": "Specifies whether the tool is currently enabled in H2OGPT.",
+      "type": "boolean"
+    },
+    "default": {
+      "description": "Specifies if the tool is pre-selected by default when available.",
+      "type": "boolean"
+    },
+    "extendable": {
+      "description": "Specifies whether the tool supports custom API keys",
+      "type": "boolean"
+    },
+    "api_keys": {
+      "$ref": "#/$defs/AgentToolSpecApiKeys"
+    }
+  },
+  "$defs": {
+    "AgentToolSpecApiKeys": {
+      "required": [
+        "required",
+        "optional",
+        "internal"
+      ],
+      "description": "The specific keys associated with an agent tool.",
+      "type": "object",
+      "properties": {
+        "required": {
+          "description": "List of required keys set for the tool to function.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "description": "The tool can still operate even if these keys are not set.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "internal": {
+          "description": "Keys that are managed internally by the system.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-agent-schema.json",
+  "title": "Agent",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/Agent",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Agent ID (UUID for custom agents, string like \"general-agent\" for built-in)"
+    },
+    "value": {
+      "type": "string",
+      "description": "Agent identifier (agent_type for built-in, agent_name for custom)"
+    },
+    "label": {
+      "type": "string",
+      "description": "Display name for the agent"
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the agent is enabled (true if all required keys are associated)"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "built_in",
+        "langgraph",
+        "crewai",
+        "openai",
+        "claude"
+      ],
+      "description": "Agent type"
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Owner email (null for built-in agents)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Agent description"
+    },
+    "api_keys": {
+      "type": "object",
+      "description": "Key associations grouped by requirement type",
+      "properties": {
+        "optional": {
+          "type": "array",
+          "description": "Optional key associations (with or without defaults)",
+          "items": {
+            "$ref": "#/$defs/AgentKeyAssociation"
+          }
+        },
+        "required": {
+          "type": "array",
+          "description": "Required key associations",
+          "items": {
+            "$ref": "#/$defs/AgentKeyAssociation"
+          }
+        },
+        "custom": {
+          "type": "array",
+          "description": "Custom key associations (added after agent creation)",
+          "items": {
+            "$ref": "#/$defs/AgentKeyAssociation"
+          }
+        }
+      }
+    },
+    "mcp_servers": {
+      "type": "array",
+      "description": "MCP server associations (only for custom agents)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tool_name": {
+            "type": "string",
+            "description": "MCP server name from agent metadata"
+          },
+          "tool_args": {
+            "type": "string",
+            "description": "Tool arguments as JSON string"
+          },
+          "associated_tool": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Associated tool details if tool is resolved",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Tool ID"
+              },
+              "name": {
+                "type": "string",
+                "description": "Tool name"
+              },
+              "owner_email": {
+                "type": "string",
+                "description": "Tool owner email"
+              },
+              "description": {
+                "type": "string",
+                "description": "Tool description"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "AgentKeyAssociation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Environment variable name (env_key_name)"
+        },
+        "associated_key": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Associated agent key details if key is assigned",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Agent key ID"
+            },
+            "name": {
+              "type": "string",
+              "description": "Agent key name"
+            },
+            "owner_email": {
+              "type": "string",
+              "description": "Agent key owner email"
+            },
+            "description": {
+              "type": "string",
+              "description": "Agent key description"
+            }
+          }
+        }
+      }
+    }
+  }
+}

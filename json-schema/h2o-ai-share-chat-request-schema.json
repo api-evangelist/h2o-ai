@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-share-chat-request-schema.json",
+  "title": "ShareChatRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-shared-chats-api-openapi.yml#/components/schemas/ShareChatRequest",
+  "type": "object",
+  "required": [
+    "chat_session_id"
+  ],
+  "properties": {
+    "chat_session_id": {
+      "type": "string",
+      "description": "ID of the chat session to share."
+    },
+    "is_private": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the shared chat requires authentication to view."
+    },
+    "is_frozen": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to capture a snapshot of the chat at share time."
+    },
+    "includes_artifacts": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to include file artifacts in the shared chat."
+    }
+  }
+}

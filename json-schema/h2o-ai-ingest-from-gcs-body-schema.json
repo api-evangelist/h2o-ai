@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ingest-from-gcs-body-schema.json",
+  "title": "IngestFromGcsBody",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-document-ingestion-api-openapi.yml#/components/schemas/IngestFromGcsBody",
+  "type": "object",
+  "required": [
+    "urls"
+  ],
+  "properties": {
+    "urls": {
+      "description": "The path or list of paths of GCS files or directories.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "credentials": {
+      "$ref": "#/$defs/GCSCredentials"
+    },
+    "metadata": {
+      "description": "Metadata for the document.",
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "GCSCredentials": {
+      "description": "The object holding  JSON key of Google Cloud service account. If the object is not provided, only public buckets will be accessible.",
+      "required": [
+        "service_account_json_key"
+      ],
+      "type": "object",
+      "properties": {
+        "service_account_json_key": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -203,14 +203,8 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:
@@ -233,8 +227,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:
@@ -258,6 +258,25 @@ components:
           type: string
         api_key:
           $ref: '#/components/schemas/APIKeyInfo'
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    APIKeyUpdateInactivityIntervalRequest:
+      type: object
+      properties:
+        inactivity_interval:
+          description: The number of days the key can be inactive for (not used) before it becomes invalid. Do not include if you would like to remove the inactivity interval of a key.
+          type: integer
+          example: 60
     APIKeyCreateRequest:
       type: object
       required:
@@ -278,13 +297,6 @@ components:
           example: 30 days
         inactivity_interval:
           description: The number of days a key can be unused for (no activity) before it becomes invalid.
-          type: integer
-          example: 60
-    APIKeyUpdateInactivityIntervalRequest:
-      type: object
-      properties:
-        inactivity_interval:
-          description: The number of days the key can be inactive for (not used) before it becomes invalid. Do not include if you would like to remove the inactivity interval of a key.
           type: integer
           example: 60
     APIKeyInfo:
@@ -341,18 +353,6 @@ components:
         is_global_key:
           description: Status denoting if the API key is global or collection specific
           type: boolean
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
   securitySchemes:
     bearerAuth:
       type: http

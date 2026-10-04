@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-guardrail-violations-summary-schema.json",
+  "title": "GuardrailViolationsSummary",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-guardrails-api-openapi.yml#/components/schemas/GuardrailViolationsSummary",
+  "type": "object",
+  "properties": {
+    "total_violations": {
+      "type": "integer"
+    },
+    "last_24h": {
+      "type": "integer"
+    },
+    "last_7d": {
+      "type": "integer"
+    },
+    "last_30d": {
+      "type": "integer"
+    },
+    "violation_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "by_type": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/GuardrailViolationsByType"
+      }
+    }
+  },
+  "$defs": {
+    "GuardrailViolationsByType": {
+      "type": "object",
+      "properties": {
+        "violation_type": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

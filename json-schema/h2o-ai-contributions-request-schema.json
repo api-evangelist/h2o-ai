@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-contributions-request-schema.json",
+  "title": "ContributionsRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-model-api-openapi.yml#/components/schemas/ContributionsRequest",
+  "required": [
+    "requestShapleyValueType",
+    "fields",
+    "rows"
+  ],
+  "type": "object",
+  "properties": {
+    "requestShapleyValueType": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/ShapleyType"
+        },
+        {
+          "description": "The string to say what type of Shap values are needed. `ORIGINAL` implies Shap values of original features are requested, `TRANSFORMED` implies that Shap values of transformed features are requested."
+        }
+      ]
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array holding the names of fields in the order of appearance in the `rows` property. The length of `fields` has to match length of each row in `rows`. No duplicates are allowed."
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": "An array of rows consisting the actual input data for scoring, one scoring request per row."
+    }
+  },
+  "$defs": {
+    "ShapleyType": {
+      "title": "ShapleyType",
+      "enum": [
+        "ORIGINAL",
+        "TRANSFORMED",
+        "NONE"
+      ],
+      "type": "string",
+      "description": "An enumeration."
+    }
+  }
+}

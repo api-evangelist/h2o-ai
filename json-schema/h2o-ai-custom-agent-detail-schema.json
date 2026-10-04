@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-custom-agent-detail-schema.json",
+  "title": "CustomAgentDetail",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentDetail",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the custom agent"
+    },
+    "agent_name": {
+      "type": "string",
+      "description": "The name of the agent"
+    },
+    "agent_type": {
+      "type": "string",
+      "description": "The type of the agent"
+    },
+    "agent_args": {
+      "type": "object",
+      "description": "The agent arguments"
+    },
+    "owner_email": {
+      "type": "string",
+      "description": "The owner's email"
+    },
+    "mcp_servers": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "Array of MCP server associations with tool details",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tool_name": {
+            "type": "string",
+            "description": "MCP server name from agent metadata"
+          },
+          "tool_args": {
+            "type": "string",
+            "description": "Tool arguments as JSON string"
+          },
+          "associated_tool": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Associated tool details if tool is resolved",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Tool ID"
+              },
+              "name": {
+                "type": "string",
+                "description": "Tool name"
+              },
+              "owner_email": {
+                "type": "string",
+                "description": "Tool owner email"
+              },
+              "description": {
+                "type": "string",
+                "description": "Tool description"
+              }
+            }
+          }
+        }
+      }
+    },
+    "api_keys": {
+      "type": "array",
+      "description": "Key associations (env var → agent key) for this agent",
+      "items": {
+        "$ref": "#/$defs/CustomAgentKeyAssociation"
+      }
+    }
+  },
+  "$defs": {
+    "CustomAgentKeyAssociation": {
+      "required": [
+        "id",
+        "agent_id",
+        "env_key_name",
+        "user_id",
+        "requirement_type"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Association UUID"
+        },
+        "agent_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Custom agent UUID"
+        },
+        "env_key_name": {
+          "type": "string",
+          "description": "Env var name (from envs.json or user-added)"
+        },
+        "key_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uuid",
+          "description": "Agent key UUID (null for placeholder associations)"
+        },
+        "user_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "User UUID who owns the association"
+        },
+        "requirement_type": {
+          "type": "string",
+          "enum": [
+            "required",
+            "optional_with_default",
+            "optional_no_default",
+            "custom"
+          ],
+          "description": "From envs.json value or custom if assigned after the fact"
+        },
+        "key_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Agent key name"
+        },
+        "owner_email": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Agent key owner email"
+        }
+      }
+    }
+  }
+}

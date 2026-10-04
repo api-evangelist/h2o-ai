@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-model-schema.json",
+  "title": "Model",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-model-api-openapi.yml#/components/schemas/Model",
+  "required": [
+    "schema"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "properties": {
+      "$ref": "#/$defs/ModelProperties"
+    },
+    "schema": {
+      "$ref": "#/$defs/ModelSchema"
+    }
+  },
+  "$defs": {
+    "DataField": {
+      "title": "DataField",
+      "required": [
+        "name",
+        "dataType"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dataType": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DataType"
+            },
+            {
+              "description": "Enumeration of the supported input and output data types."
+            }
+          ]
+        }
+      }
+    },
+    "DataType": {
+      "title": "DataType",
+      "enum": [
+        "Bool",
+        "Bytes",
+        "Int32",
+        "Int64",
+        "Float32",
+        "Float64",
+        "Str",
+        "Time64"
+      ],
+      "type": "string",
+      "description": "Enumeration of the supported input and output data types."
+    },
+    "ModelProperties": {
+      "title": "ModelProperties",
+      "type": "object",
+      "properties": {
+        "scoringType": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ScoringType"
+            },
+            {
+              "description": "Enumeration of the supported scoring types."
+            }
+          ]
+        },
+        "scoringResponseLabels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": ""
+        }
+      }
+    },
+    "ModelSchema": {
+      "title": "ModelSchema",
+      "type": "object",
+      "properties": {
+        "inputFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DataField"
+          },
+          "description": ""
+        },
+        "outputFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DataField"
+          },
+          "description": ""
+        }
+      }
+    },
+    "ScoringType": {
+      "title": "ScoringType",
+      "enum": [
+        "REGRESSION",
+        "CLASSIFICATION",
+        "BINOMIAL"
+      ],
+      "type": "string",
+      "description": "Enumeration of the supported scoring types."
+    }
+  }
+}

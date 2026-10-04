@@ -996,82 +996,50 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
-    RolesResetRequest:
-      required:
-      - new_roles
-      type: object
-      properties:
-        new_roles:
-          type: array
-          items:
-            type: string
-    PermissionResetRequest:
-      required:
-      - new_permissions
-      type: object
-      properties:
-        new_permissions:
-          type: array
-          items:
-            type: string
-    ConfirmUserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: The delete ID returned from the initial deletion request.
-    UserDeletionRequest:
-      required:
-      - delete_id
-      type: object
-      properties:
-        delete_id:
-          type: string
-          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
-    PermissionCheckRequest:
-      required:
-      - permission
-      type: object
-      properties:
-        permission:
-          type: string
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
-    GroupInfo:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-    GroupCreateRequest:
-      required:
-      - name
-      - description
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     RoleInfo:
       required:
       - id
@@ -1086,6 +1054,85 @@ components:
           type: string
         priority:
           type: integer
+    PermissionCheckRequest:
+      required:
+      - permission
+      type: object
+      properties:
+        permission:
+          type: string
+    PermissionResetRequest:
+      required:
+      - new_permissions
+      type: object
+      properties:
+        new_permissions:
+          type: array
+          items:
+            type: string
+    SetRolePriorityRequest:
+      required:
+      - priority
+      type: object
+      properties:
+        priority:
+          type: integer
+          description: The priority to be set for the role.
+    GroupCreateRequest:
+      required:
+      - name
+      - description
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    ConfirmUserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
+          type: string
+          description: The delete ID returned from the initial deletion request.
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    UserInfo:
+      required:
+      - id
+      - username
+      - email
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+    GroupInfo:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
     UserPermission:
       required:
       - id
@@ -1105,14 +1152,6 @@ components:
           type: array
           items:
             type: string
-    SetRolePriorityRequest:
-      required:
-      - priority
-      type: object
-      properties:
-        priority:
-          type: integer
-          description: The priority to be set for the role.
     RoleCreateRequest:
       required:
       - name
@@ -1123,62 +1162,23 @@ components:
           type: string
         description:
           type: string
-    UserInfo:
+    RolesResetRequest:
       required:
-      - id
-      - username
-      - email
+      - new_roles
       type: object
       properties:
-        id:
+        new_roles:
+          type: array
+          items:
+            type: string
+    UserDeletionRequest:
+      required:
+      - delete_id
+      type: object
+      properties:
+        delete_id:
           type: string
-        username:
-          type: string
-        email:
-          type: string
-  responses:
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    NotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
+          description: Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion.
   securitySchemes:
     bearerAuth:
       type: http

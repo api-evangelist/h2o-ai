@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-delete-shared-chats-request-schema.json",
+  "title": "DeleteSharedChatsRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-shared-chats-api-openapi.yml#/components/schemas/DeleteSharedChatsRequest",
+  "type": "object",
+  "required": [
+    "shared_chat_ids"
+  ],
+  "properties": {
+    "shared_chat_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of shared chat IDs to delete."
+    }
+  }
+}

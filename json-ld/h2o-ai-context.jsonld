@@ -1,0 +1,1438 @@
+{
+  "@context": {
+    "@vocab": "https://h2o.ai/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "h2o": "https://h2o.ai/schema#",
+    "AgentKeyAssociation": "h2o:AgentKeyAssociation",
+    "name": {
+      "@id": "h2o:name",
+      "@type": "xsd:string"
+    },
+    "associated_key": {
+      "@id": "h2o:associated_key"
+    },
+    "UpdateAgentKeyRequest": "h2o:UpdateAgentKeyRequest",
+    "type": {
+      "@id": "h2o:type",
+      "@type": "xsd:string"
+    },
+    "value": {
+      "@id": "h2o:value",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "h2o:description",
+      "@type": "xsd:string"
+    },
+    "CustomAgentSuggestionMcpServer": "h2o:CustomAgentSuggestionMcpServer",
+    "tool_name": {
+      "@id": "h2o:tool_name",
+      "@type": "xsd:string"
+    },
+    "tool_args": {
+      "@id": "h2o:tool_args",
+      "@type": "xsd:string"
+    },
+    "DeleteCustomAgentKeyAssociationsResponse": "h2o:DeleteCustomAgentKeyAssociationsResponse",
+    "deleted_count": {
+      "@id": "h2o:deleted_count",
+      "@type": "xsd:integer"
+    },
+    "AgentKey": "h2o:AgentKey",
+    "id": {
+      "@id": "h2o:id",
+      "@type": "xsd:string"
+    },
+    "created_at": {
+      "@id": "h2o:created_at",
+      "@type": "xsd:string"
+    },
+    "updated_at": {
+      "@id": "h2o:updated_at",
+      "@type": "xsd:string"
+    },
+    "owner_email": {
+      "@id": "h2o:owner_email",
+      "@type": "xsd:string"
+    },
+    "AgentServerDirectoryStats": "h2o:AgentServerDirectoryStats",
+    "object": {
+      "@id": "h2o:object",
+      "@type": "xsd:string"
+    },
+    "size_bytes": {
+      "@id": "h2o:size_bytes",
+      "@type": "xsd:integer"
+    },
+    "size_human_readable": {
+      "@id": "h2o:size_human_readable",
+      "@type": "xsd:string"
+    },
+    "file_count": {
+      "@id": "h2o:file_count",
+      "@type": "xsd:integer"
+    },
+    "directory_count": {
+      "@id": "h2o:directory_count",
+      "@type": "xsd:integer"
+    },
+    "created_timestamp": {
+      "@id": "h2o:created_timestamp",
+      "@type": "xsd:decimal"
+    },
+    "modified_timestamp": {
+      "@id": "h2o:modified_timestamp",
+      "@type": "xsd:decimal"
+    },
+    "created_date": {
+      "@id": "h2o:created_date",
+      "@type": "xsd:string"
+    },
+    "modified_date": {
+      "@id": "h2o:modified_date",
+      "@type": "xsd:string"
+    },
+    "is_empty": {
+      "@id": "h2o:is_empty",
+      "@type": "xsd:boolean"
+    },
+    "top_level_contents": {
+      "@id": "h2o:top_level_contents",
+      "@container": "@list"
+    },
+    "owner": {
+      "@id": "h2o:owner",
+      "@type": "xsd:string"
+    },
+    "permissions": {
+      "@id": "h2o:permissions",
+      "@type": "xsd:string"
+    },
+    "files": {
+      "@id": "h2o:files",
+      "@container": "@list"
+    },
+    "AgentToolSpec": "h2o:AgentToolSpec",
+    "enabled": {
+      "@id": "h2o:enabled",
+      "@type": "xsd:boolean"
+    },
+    "default": {
+      "@id": "h2o:default",
+      "@type": "xsd:boolean"
+    },
+    "extendable": {
+      "@id": "h2o:extendable",
+      "@type": "xsd:boolean"
+    },
+    "api_keys": {
+      "@id": "h2o:api_keys",
+      "@type": "@id"
+    },
+    "DeleteCustomAgentToolAssociationsResponse": "h2o:DeleteCustomAgentToolAssociationsResponse",
+    "Agent": "h2o:Agent",
+    "label": {
+      "@id": "h2o:label",
+      "@type": "xsd:string"
+    },
+    "mcp_servers": {
+      "@id": "h2o:mcp_servers",
+      "@container": "@list"
+    },
+    "CreateCustomAgentKeyAssociationRequest": "h2o:CreateCustomAgentKeyAssociationRequest",
+    "agent_id": {
+      "@id": "h2o:agent_id",
+      "@type": "xsd:string"
+    },
+    "env_key_name": {
+      "@id": "h2o:env_key_name",
+      "@type": "xsd:string"
+    },
+    "key_id": {
+      "@id": "h2o:key_id",
+      "@type": "xsd:string"
+    },
+    "CustomAgentDetail": "h2o:CustomAgentDetail",
+    "agent_name": {
+      "@id": "h2o:agent_name",
+      "@type": "xsd:string"
+    },
+    "agent_type": {
+      "@id": "h2o:agent_type",
+      "@type": "xsd:string"
+    },
+    "agent_args": {
+      "@id": "h2o:agent_args"
+    },
+    "Count": "h2o:Count",
+    "count": {
+      "@id": "h2o:count",
+      "@type": "xsd:integer"
+    },
+    "EndpointError": "h2o:EndpointError",
+    "code": {
+      "@id": "h2o:code",
+      "@type": "xsd:integer"
+    },
+    "message": {
+      "@id": "h2o:message",
+      "@type": "xsd:string"
+    },
+    "AgentToolKeyAssociations": "h2o:AgentToolKeyAssociations",
+    "tool": {
+      "@id": "h2o:tool",
+      "@type": "xsd:string"
+    },
+    "keys": {
+      "@id": "h2o:keys",
+      "@container": "@list"
+    },
+    "CreateAgentToolKeyAssociationsRequest": "h2o:CreateAgentToolKeyAssociationsRequest",
+    "CustomAgentToolAssociation": "h2o:CustomAgentToolAssociation",
+    "tool_id": {
+      "@id": "h2o:tool_id",
+      "@type": "xsd:string"
+    },
+    "mcp_server_name": {
+      "@id": "h2o:mcp_server_name",
+      "@type": "xsd:string"
+    },
+    "user_id": {
+      "@id": "h2o:user_id",
+      "@type": "xsd:string"
+    },
+    "KeyAssociation": "h2o:KeyAssociation",
+    "associate_id": {
+      "@id": "h2o:associate_id",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "h2o:email",
+      "@type": "xsd:string"
+    },
+    "UpdateCustomAgentRequest": "h2o:UpdateCustomAgentRequest",
+    "mcp_servers_mapping": {
+      "@id": "h2o:mcp_servers_mapping"
+    },
+    "AgentServerDirectoryFileStats": "h2o:AgentServerDirectoryFileStats",
+    "path": {
+      "@id": "h2o:path",
+      "@type": "xsd:string"
+    },
+    "is_directory": {
+      "@id": "h2o:is_directory",
+      "@type": "xsd:boolean"
+    },
+    "sha256": {
+      "@id": "h2o:sha256",
+      "@type": "xsd:string"
+    },
+    "CustomAgentSuggestion": "h2o:CustomAgentSuggestion",
+    "CreateAgentKeyRequest": "h2o:CreateAgentKeyRequest",
+    "UpdateCustomAgentToolRequest": "h2o:UpdateCustomAgentToolRequest",
+    "CreateCustomAgentToolAssociationRequest": "h2o:CreateCustomAgentToolAssociationRequest",
+    "AgentServerDirectoryStatsPerAgentChatSession": "h2o:AgentServerDirectoryStatsPerAgentChatSession",
+    "agent_chat_session_id": {
+      "@id": "h2o:agent_chat_session_id",
+      "@type": "xsd:string"
+    },
+    "chat_preview": {
+      "@id": "h2o:chat_preview",
+      "@type": "xsd:string"
+    },
+    "stats": {
+      "@id": "h2o:stats",
+      "@container": "@list"
+    },
+    "NewKeyAssociation": "h2o:NewKeyAssociation",
+    "CustomAgentKeyAssociation": "h2o:CustomAgentKeyAssociation",
+    "requirement_type": {
+      "@id": "h2o:requirement_type",
+      "@type": "xsd:string"
+    },
+    "key_name": {
+      "@id": "h2o:key_name",
+      "@type": "xsd:string"
+    },
+    "AgentToolSpecApiKeys": "h2o:AgentToolSpecApiKeys",
+    "required": {
+      "@id": "h2o:required",
+      "@container": "@list"
+    },
+    "optional": {
+      "@id": "h2o:optional",
+      "@container": "@list"
+    },
+    "internal": {
+      "@id": "h2o:internal",
+      "@container": "@list"
+    },
+    "AiAssistantCollectionConnectRequest": "h2o:AiAssistantCollectionConnectRequest",
+    "collection_id": {
+      "@id": "h2o:collection_id",
+      "@type": "xsd:string"
+    },
+    "access_mode": {
+      "@id": "h2o:access_mode",
+      "@type": "xsd:string"
+    },
+    "AiAssistantForumLink": "h2o:AiAssistantForumLink",
+    "junction_id": {
+      "@id": "h2o:junction_id",
+      "@type": "xsd:string"
+    },
+    "forum_id": {
+      "@id": "h2o:forum_id",
+      "@type": "xsd:string"
+    },
+    "connected_at": {
+      "@id": "h2o:connected_at",
+      "@type": "xsd:dateTime"
+    },
+    "forum_name": {
+      "@id": "h2o:forum_name",
+      "@type": "xsd:string"
+    },
+    "username": {
+      "@id": "h2o:username",
+      "@type": "xsd:string"
+    },
+    "forum_created_at": {
+      "@id": "h2o:forum_created_at",
+      "@type": "xsd:dateTime"
+    },
+    "forum_updated_at": {
+      "@id": "h2o:forum_updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "post_count": {
+      "@id": "h2o:post_count",
+      "@type": "xsd:integer"
+    },
+    "AiAssistantMessage": "h2o:AiAssistantMessage",
+    "assistant_id": {
+      "@id": "h2o:assistant_id",
+      "@type": "xsd:string"
+    },
+    "sender_type": {
+      "@id": "h2o:sender_type",
+      "@type": "xsd:string"
+    },
+    "sender_user_id": {
+      "@id": "h2o:sender_user_id",
+      "@type": "xsd:string"
+    },
+    "sender_username": {
+      "@id": "h2o:sender_username",
+      "@type": "xsd:string"
+    },
+    "assistant_name": {
+      "@id": "h2o:assistant_name",
+      "@type": "xsd:string"
+    },
+    "content": {
+      "@id": "h2o:content",
+      "@type": "xsd:string"
+    },
+    "file_ids": {
+      "@id": "h2o:file_ids",
+      "@container": "@list"
+    },
+    "metadata": {
+      "@id": "h2o:metadata"
+    },
+    "wake_cycle": {
+      "@id": "h2o:wake_cycle",
+      "@type": "xsd:integer"
+    },
+    "InterAssistantMessageRequest": "h2o:InterAssistantMessageRequest",
+    "recipient_assistant_id": {
+      "@id": "h2o:recipient_assistant_id",
+      "@type": "xsd:string"
+    },
+    "AiAssistantToolRequest": "h2o:AiAssistantToolRequest",
+    "custom_tool_definition": {
+      "@id": "h2o:custom_tool_definition",
+      "@type": "xsd:string"
+    },
+    "ShareAiAssistantRequest": "h2o:ShareAiAssistantRequest",
+    "AiAssistantMessageRequest": "h2o:AiAssistantMessageRequest",
+    "EventSubscription": "h2o:EventSubscription",
+    "event_type_id": {
+      "@id": "h2o:event_type_id",
+      "@type": "xsd:string"
+    },
+    "event_type_name": {
+      "@id": "h2o:event_type_name",
+      "@type": "xsd:string"
+    },
+    "AiAssistantSpec": "h2o:AiAssistantSpec",
+    "system_prompt": {
+      "@id": "h2o:system_prompt",
+      "@type": "xsd:string"
+    },
+    "llm": {
+      "@id": "h2o:llm",
+      "@type": "xsd:string"
+    },
+    "history_management": {
+      "@id": "h2o:history_management",
+      "@type": "xsd:string"
+    },
+    "history_max_chars": {
+      "@id": "h2o:history_max_chars",
+      "@type": "xsd:integer"
+    },
+    "history_recent_chars": {
+      "@id": "h2o:history_recent_chars",
+      "@type": "xsd:integer"
+    },
+    "history_retrieval_chars": {
+      "@id": "h2o:history_retrieval_chars",
+      "@type": "xsd:integer"
+    },
+    "notification_email": {
+      "@id": "h2o:notification_email",
+      "@type": "xsd:string"
+    },
+    "allowed_tool_actions": {
+      "@id": "h2o:allowed_tool_actions",
+      "@container": "@list"
+    },
+    "allowed_trigger_types": {
+      "@id": "h2o:allowed_trigger_types",
+      "@container": "@list"
+    },
+    "default_wake_period": {
+      "@id": "h2o:default_wake_period",
+      "@type": "xsd:integer"
+    },
+    "auto_memory_block": {
+      "@id": "h2o:auto_memory_block",
+      "@type": "xsd:boolean"
+    },
+    "auto_start": {
+      "@id": "h2o:auto_start",
+      "@type": "xsd:boolean"
+    },
+    "EventSubscriptionRequest": "h2o:EventSubscriptionRequest",
+    "AiAssistantForumConnectRequest": "h2o:AiAssistantForumConnectRequest",
+    "EmitEventResponse": "h2o:EmitEventResponse",
+    "status": {
+      "@id": "h2o:status",
+      "@type": "xsd:string"
+    },
+    "woken_count": {
+      "@id": "h2o:woken_count",
+      "@type": "xsd:integer"
+    },
+    "AiAssistantFile": "h2o:AiAssistantFile",
+    "file_id": {
+      "@id": "h2o:file_id",
+      "@type": "xsd:string"
+    },
+    "source": {
+      "@id": "h2o:source",
+      "@type": "xsd:string"
+    },
+    "AiAssistantCollectionLink": "h2o:AiAssistantCollectionLink",
+    "collection_name": {
+      "@id": "h2o:collection_name",
+      "@type": "xsd:string"
+    },
+    "collection_description": {
+      "@id": "h2o:collection_description",
+      "@type": "xsd:string"
+    },
+    "document_count": {
+      "@id": "h2o:document_count",
+      "@type": "xsd:integer"
+    },
+    "AiAssistantPermission": "h2o:AiAssistantPermission",
+    "can_read": {
+      "@id": "h2o:can_read",
+      "@type": "xsd:boolean"
+    },
+    "can_edit": {
+      "@id": "h2o:can_edit",
+      "@type": "xsd:boolean"
+    },
+    "AiAssistantUpdateRequest": "h2o:AiAssistantUpdateRequest",
+    "llm_args": {
+      "@id": "h2o:llm_args"
+    },
+    "credential_ids": {
+      "@id": "h2o:credential_ids",
+      "@container": "@list"
+    },
+    "memory_block_id": {
+      "@id": "h2o:memory_block_id",
+      "@type": "xsd:string"
+    },
+    "AiAssistantCreateRequest": "h2o:AiAssistantCreateRequest",
+    "AiAssistantEvent": "h2o:AiAssistantEvent",
+    "event_type": {
+      "@id": "h2o:event_type",
+      "@type": "xsd:string"
+    },
+    "trigger_type": {
+      "@id": "h2o:trigger_type",
+      "@type": "xsd:string"
+    },
+    "trigger_detail": {
+      "@id": "h2o:trigger_detail"
+    },
+    "chat_session_id": {
+      "@id": "h2o:chat_session_id",
+      "@type": "xsd:string"
+    },
+    "AiAssistantScheduleLink": "h2o:AiAssistantScheduleLink",
+    "scheduled_task_id": {
+      "@id": "h2o:scheduled_task_id",
+      "@type": "xsd:string"
+    },
+    "schedule_type": {
+      "@id": "h2o:schedule_type",
+      "@type": "xsd:string"
+    },
+    "schedule_expression": {
+      "@id": "h2o:schedule_expression",
+      "@type": "xsd:string"
+    },
+    "task_type": {
+      "@id": "h2o:task_type",
+      "@type": "xsd:string"
+    },
+    "last_execution_at": {
+      "@id": "h2o:last_execution_at",
+      "@type": "xsd:dateTime"
+    },
+    "next_execution_at": {
+      "@id": "h2o:next_execution_at",
+      "@type": "xsd:dateTime"
+    },
+    "execution_count": {
+      "@id": "h2o:execution_count",
+      "@type": "xsd:integer"
+    },
+    "AiAssistant": "h2o:AiAssistant",
+    "current_chat_session_id": {
+      "@id": "h2o:current_chat_session_id",
+      "@type": "xsd:string"
+    },
+    "wake_count": {
+      "@id": "h2o:wake_count",
+      "@type": "xsd:integer"
+    },
+    "last_wake_at": {
+      "@id": "h2o:last_wake_at",
+      "@type": "xsd:dateTime"
+    },
+    "last_sleep_at": {
+      "@id": "h2o:last_sleep_at",
+      "@type": "xsd:dateTime"
+    },
+    "error_message": {
+      "@id": "h2o:error_message",
+      "@type": "xsd:string"
+    },
+    "is_owner": {
+      "@id": "h2o:is_owner",
+      "@type": "xsd:boolean"
+    },
+    "user_access_mode": {
+      "@id": "h2o:user_access_mode",
+      "@type": "xsd:string"
+    },
+    "forum_count": {
+      "@id": "h2o:forum_count",
+      "@type": "xsd:integer"
+    },
+    "EventType": "h2o:EventType",
+    "payload_schema": {
+      "@id": "h2o:payload_schema"
+    },
+    "subscriber_count": {
+      "@id": "h2o:subscriber_count",
+      "@type": "xsd:integer"
+    },
+    "InterAssistantMessage": "h2o:InterAssistantMessage",
+    "sender_assistant_id": {
+      "@id": "h2o:sender_assistant_id",
+      "@type": "xsd:string"
+    },
+    "EventTypeCreateRequest": "h2o:EventTypeCreateRequest",
+    "AiAssistantScheduleConnectRequest": "h2o:AiAssistantScheduleConnectRequest",
+    "EmitEventRequest": "h2o:EmitEventRequest",
+    "payload": {
+      "@id": "h2o:payload"
+    },
+    "target_assistant_ids": {
+      "@id": "h2o:target_assistant_ids",
+      "@container": "@list"
+    },
+    "APIKeyUpdateExpiryRequest": "h2o:APIKeyUpdateExpiryRequest",
+    "expires_in": {
+      "@id": "h2o:expires_in",
+      "@type": "xsd:string"
+    },
+    "APIKeyResult": "h2o:APIKeyResult",
+    "secret_key": {
+      "@id": "h2o:secret_key",
+      "@type": "xsd:string"
+    },
+    "api_key": {
+      "@id": "h2o:api_key",
+      "@type": "@id"
+    },
+    "APIKeyCreateRequest": "h2o:APIKeyCreateRequest",
+    "inactivity_interval": {
+      "@id": "h2o:inactivity_interval",
+      "@type": "xsd:integer"
+    },
+    "APIKeyUpdateInactivityIntervalRequest": "h2o:APIKeyUpdateInactivityIntervalRequest",
+    "APIKeyInfo": "h2o:APIKeyInfo",
+    "hint": {
+      "@id": "h2o:hint",
+      "@type": "xsd:string"
+    },
+    "expires_at": {
+      "@id": "h2o:expires_at",
+      "@type": "xsd:dateTime"
+    },
+    "last_used_at": {
+      "@id": "h2o:last_used_at",
+      "@type": "xsd:dateTime"
+    },
+    "total_calls": {
+      "@id": "h2o:total_calls",
+      "@type": "xsd:integer"
+    },
+    "is_active": {
+      "@id": "h2o:is_active",
+      "@type": "xsd:boolean"
+    },
+    "is_global_key": {
+      "@id": "h2o:is_global_key",
+      "@type": "xsd:boolean"
+    },
+    "ChatCompletionRequest": "h2o:ChatCompletionRequest",
+    "pre_prompt_query": {
+      "@id": "h2o:pre_prompt_query",
+      "@type": "xsd:string"
+    },
+    "prompt_query": {
+      "@id": "h2o:prompt_query",
+      "@type": "xsd:string"
+    },
+    "image_batch_final_prompt": {
+      "@id": "h2o:image_batch_final_prompt",
+      "@type": "xsd:string"
+    },
+    "image_batch_image_prompt": {
+      "@id": "h2o:image_batch_image_prompt",
+      "@type": "xsd:string"
+    },
+    "self_reflection_config": {
+      "@id": "h2o:self_reflection_config",
+      "@type": "@id"
+    },
+    "rag_config": {
+      "@id": "h2o:rag_config",
+      "@type": "@id"
+    },
+    "include_chat_history": {
+      "@id": "h2o:include_chat_history",
+      "@type": "xsd:string"
+    },
+    "tags": {
+      "@id": "h2o:tags"
+    },
+    "stream": {
+      "@id": "h2o:stream",
+      "@type": "xsd:boolean"
+    },
+    "MessageVoteUpdateRequest": "h2o:MessageVoteUpdateRequest",
+    "votes": {
+      "@id": "h2o:votes",
+      "@type": "xsd:integer"
+    },
+    "UpdateQAFeedbackRequest": "h2o:UpdateQAFeedbackRequest",
+    "expected_answer": {
+      "@id": "h2o:expected_answer",
+      "@type": "xsd:string"
+    },
+    "user_comment": {
+      "@id": "h2o:user_comment",
+      "@type": "xsd:string"
+    },
+    "ChatError": "h2o:ChatError",
+    "error": {
+      "@id": "h2o:error",
+      "@type": "xsd:string"
+    },
+    "SuggestedQuestion": "h2o:SuggestedQuestion",
+    "question": {
+      "@id": "h2o:question",
+      "@type": "xsd:string"
+    },
+    "TagFilter": "h2o:TagFilter",
+    "include": {
+      "@id": "h2o:include",
+      "@container": "@list"
+    },
+    "exclude": {
+      "@id": "h2o:exclude",
+      "@container": "@list"
+    },
+    "ChatSessionUpdateRequest": "h2o:ChatSessionUpdateRequest",
+    "ChatCompletionDelta": "h2o:ChatCompletionDelta",
+    "message_id": {
+      "@id": "h2o:message_id",
+      "@type": "xsd:string"
+    },
+    "body": {
+      "@id": "h2o:body",
+      "@type": "xsd:string"
+    },
+    "finished": {
+      "@id": "h2o:finished",
+      "@type": "xsd:boolean"
+    },
+    "ChatSession": "h2o:ChatSession",
+    "prompt_template_id": {
+      "@id": "h2o:prompt_template_id",
+      "@type": "xsd:string"
+    },
+    "latest_message_content": {
+      "@id": "h2o:latest_message_content",
+      "@type": "xsd:string"
+    },
+    "workspace": {
+      "@id": "h2o:workspace",
+      "@type": "xsd:string"
+    },
+    "AgentServerFile": "h2o:AgentServerFile",
+    "bytes": {
+      "@id": "h2o:bytes",
+      "@type": "xsd:integer"
+    },
+    "filename": {
+      "@id": "h2o:filename",
+      "@type": "xsd:string"
+    },
+    "purpose": {
+      "@id": "h2o:purpose",
+      "@type": "xsd:string"
+    },
+    "CollectionChangeRequest": "h2o:CollectionChangeRequest",
+    "ChatCompletion": "h2o:ChatCompletion",
+    "ChatMessage": "h2o:ChatMessage",
+    "has_references": {
+      "@id": "h2o:has_references",
+      "@type": "xsd:boolean"
+    },
+    "total_references": {
+      "@id": "h2o:total_references",
+      "@type": "xsd:integer"
+    },
+    "reply_to": {
+      "@id": "h2o:reply_to",
+      "@type": "xsd:string"
+    },
+    "type_list": {
+      "@id": "h2o:type_list",
+      "@container": "@list"
+    },
+    "JobDetails": "h2o:JobDetails",
+    "overall_status": {
+      "@id": "h2o:overall_status",
+      "@type": "xsd:string"
+    },
+    "passed_percentage": {
+      "@id": "h2o:passed_percentage",
+      "@type": "xsd:decimal"
+    },
+    "failed_percentage": {
+      "@id": "h2o:failed_percentage",
+      "@type": "xsd:decimal"
+    },
+    "progress": {
+      "@id": "h2o:progress",
+      "@type": "xsd:decimal"
+    },
+    "kind": {
+      "@id": "h2o:kind",
+      "@type": "xsd:string"
+    },
+    "statuses": {
+      "@id": "h2o:statuses",
+      "@container": "@list"
+    },
+    "errors": {
+      "@id": "h2o:errors",
+      "@container": "@list"
+    },
+    "duration": {
+      "@id": "h2o:duration",
+      "@type": "xsd:string"
+    },
+    "duration_seconds": {
+      "@id": "h2o:duration_seconds",
+      "@type": "xsd:decimal"
+    },
+    "canceled_by": {
+      "@id": "h2o:canceled_by",
+      "@type": "xsd:string"
+    },
+    "cancel_reason": {
+      "@id": "h2o:cancel_reason",
+      "@type": "xsd:string"
+    },
+    "timeout": {
+      "@id": "h2o:timeout",
+      "@type": "xsd:decimal"
+    },
+    "start_time": {
+      "@id": "h2o:start_time",
+      "@type": "xsd:decimal"
+    },
+    "ChatMessageReference": "h2o:ChatMessageReference",
+    "document_id": {
+      "@id": "h2o:document_id",
+      "@type": "xsd:string"
+    },
+    "document_name": {
+      "@id": "h2o:document_name",
+      "@type": "xsd:string"
+    },
+    "chunk_id": {
+      "@id": "h2o:chunk_id",
+      "@type": "xsd:integer"
+    },
+    "score": {
+      "@id": "h2o:score",
+      "@type": "xsd:decimal"
+    },
+    "pages": {
+      "@id": "h2o:pages",
+      "@type": "xsd:string"
+    },
+    "were_references_deleted": {
+      "@id": "h2o:were_references_deleted",
+      "@type": "xsd:boolean"
+    },
+    "uri": {
+      "@id": "h2o:uri",
+      "@type": "xsd:string"
+    },
+    "JobDetailsStatus": "h2o:JobDetailsStatus",
+    "GuardrailsSettings": "h2o:GuardrailsSettings",
+    "exception_message": {
+      "@id": "h2o:exception_message",
+      "@type": "xsd:string"
+    },
+    "show_violated_responses": {
+      "@id": "h2o:show_violated_responses",
+      "@type": "xsd:boolean"
+    },
+    "guardrails_on_transcriptions": {
+      "@id": "h2o:guardrails_on_transcriptions",
+      "@type": "xsd:boolean"
+    },
+    "vision_guardrails_enabled": {
+      "@id": "h2o:vision_guardrails_enabled",
+      "@type": "xsd:boolean"
+    },
+    "guardrails_vision_llm": {
+      "@id": "h2o:guardrails_vision_llm",
+      "@type": "xsd:string"
+    },
+    "column_redaction_config": {
+      "@id": "h2o:column_redaction_config",
+      "@container": "@list"
+    },
+    "disallowed_regex_patterns": {
+      "@id": "h2o:disallowed_regex_patterns",
+      "@container": "@list"
+    },
+    "presidio_labels_to_flag": {
+      "@id": "h2o:presidio_labels_to_flag",
+      "@container": "@list"
+    },
+    "pii_labels_to_flag": {
+      "@id": "h2o:pii_labels_to_flag",
+      "@container": "@list"
+    },
+    "pii_detection_parse_action": {
+      "@id": "h2o:pii_detection_parse_action",
+      "@type": "xsd:string"
+    },
+    "pii_detection_llm_input_action": {
+      "@id": "h2o:pii_detection_llm_input_action",
+      "@type": "xsd:string"
+    },
+    "pii_detection_llm_output_action": {
+      "@id": "h2o:pii_detection_llm_output_action",
+      "@type": "xsd:string"
+    },
+    "prompt_guard_labels_to_flag": {
+      "@id": "h2o:prompt_guard_labels_to_flag",
+      "@container": "@list"
+    },
+    "guardrails_labels_to_flag": {
+      "@id": "h2o:guardrails_labels_to_flag",
+      "@container": "@list"
+    },
+    "guardrails_llm": {
+      "@id": "h2o:guardrails_llm",
+      "@type": "xsd:string"
+    },
+    "guardrails_safe_category": {
+      "@id": "h2o:guardrails_safe_category",
+      "@type": "xsd:string"
+    },
+    "guardrails_entities": {
+      "@id": "h2o:guardrails_entities"
+    },
+    "column_redaction_custom_entities_to_flag": {
+      "@id": "h2o:column_redaction_custom_entities_to_flag",
+      "@container": "@list"
+    },
+    "column_redaction_custom_entities": {
+      "@id": "h2o:column_redaction_custom_entities"
+    },
+    "custom_pii_entities_to_flag": {
+      "@id": "h2o:custom_pii_entities_to_flag",
+      "@container": "@list"
+    },
+    "custom_pii_entities": {
+      "@id": "h2o:custom_pii_entities"
+    },
+    "PromptTemplateChangeRequest": "h2o:PromptTemplateChangeRequest",
+    "DeleteChatSessionsJobRequest": "h2o:DeleteChatSessionsJobRequest",
+    "session_ids": {
+      "@id": "h2o:session_ids",
+      "@container": "@list"
+    },
+    "ChatMessageMeta": "h2o:ChatMessageMeta",
+    "message_type": {
+      "@id": "h2o:message_type",
+      "@type": "xsd:string"
+    },
+    "QAFeedback": "h2o:QAFeedback",
+    "question_content": {
+      "@id": "h2o:question_content",
+      "@type": "xsd:string"
+    },
+    "reply_content": {
+      "@id": "h2o:reply_content",
+      "@type": "xsd:string"
+    },
+    "question_id": {
+      "@id": "h2o:question_id",
+      "@type": "xsd:string"
+    },
+    "reply_id": {
+      "@id": "h2o:reply_id",
+      "@type": "xsd:string"
+    },
+    "pre_prompt_summary": {
+      "@id": "h2o:pre_prompt_summary",
+      "@type": "xsd:string"
+    },
+    "prompt_summary": {
+      "@id": "h2o:prompt_summary",
+      "@type": "xsd:string"
+    },
+    "collection_documents": {
+      "@id": "h2o:collection_documents",
+      "@container": "@list"
+    },
+    "response_created_at_time": {
+      "@id": "h2o:response_created_at_time",
+      "@type": "xsd:string"
+    },
+    "voted_user_id": {
+      "@id": "h2o:voted_user_id",
+      "@type": "xsd:string"
+    },
+    "voted_username": {
+      "@id": "h2o:voted_username",
+      "@type": "xsd:string"
+    },
+    "Collection": "h2o:Collection",
+    "embedding_model": {
+      "@id": "h2o:embedding_model",
+      "@type": "xsd:string"
+    },
+    "document_size": {
+      "@id": "h2o:document_size",
+      "@type": "xsd:integer"
+    },
+    "user_count": {
+      "@id": "h2o:user_count",
+      "@type": "xsd:integer"
+    },
+    "is_public": {
+      "@id": "h2o:is_public",
+      "@type": "xsd:boolean"
+    },
+    "sessions_count": {
+      "@id": "h2o:sessions_count",
+      "@type": "xsd:integer"
+    },
+    "thumbnail": {
+      "@id": "h2o:thumbnail",
+      "@type": "xsd:string"
+    },
+    "size_limit": {
+      "@id": "h2o:size_limit",
+      "@type": "xsd:integer"
+    },
+    "expiry_date": {
+      "@id": "h2o:expiry_date",
+      "@type": "xsd:dateTime"
+    },
+    "rag_type": {
+      "@id": "h2o:rag_type",
+      "@type": "xsd:string"
+    },
+    "metadata_dict": {
+      "@id": "h2o:metadata_dict",
+      "@type": "@id"
+    },
+    "has_default_guardrails": {
+      "@id": "h2o:has_default_guardrails",
+      "@type": "xsd:boolean"
+    },
+    "vex_encryption": {
+      "@id": "h2o:vex_encryption",
+      "@type": "xsd:string"
+    },
+    "Chunk": "h2o:Chunk",
+    "text": {
+      "@id": "h2o:text",
+      "@type": "xsd:string"
+    },
+    "size": {
+      "@id": "h2o:size",
+      "@type": "xsd:integer"
+    },
+    "ShareCollectionRequest": "h2o:ShareCollectionRequest",
+    "DeleteCollectionsJobRequest": "h2o:DeleteCollectionsJobRequest",
+    "collection_ids": {
+      "@id": "h2o:collection_ids",
+      "@container": "@list"
+    },
+    "DeleteDocumentsJobRequest": "h2o:DeleteDocumentsJobRequest",
+    "document_ids": {
+      "@id": "h2o:document_ids",
+      "@container": "@list"
+    },
+    "ScheduledConnectorDetails": "h2o:ScheduledConnectorDetails",
+    "user_name": {
+      "@id": "h2o:user_name",
+      "@type": "xsd:string"
+    },
+    "user_email": {
+      "@id": "h2o:user_email",
+      "@type": "xsd:string"
+    },
+    "config": {
+      "@id": "h2o:config"
+    },
+    "schedule": {
+      "@id": "h2o:schedule",
+      "@type": "xsd:integer"
+    },
+    "last_sync_status": {
+      "@id": "h2o:last_sync_status",
+      "@type": "xsd:string"
+    },
+    "last_sync_job_id": {
+      "@id": "h2o:last_sync_job_id",
+      "@type": "xsd:string"
+    },
+    "last_sync_at": {
+      "@id": "h2o:last_sync_at",
+      "@type": "xsd:dateTime"
+    },
+    "last_sync_error": {
+      "@id": "h2o:last_sync_error",
+      "@type": "xsd:string"
+    },
+    "Document": "h2o:Document",
+    "page_count": {
+      "@id": "h2o:page_count",
+      "@type": "xsd:integer"
+    },
+    "usage_stats": {
+      "@id": "h2o:usage_stats",
+      "@type": "xsd:string"
+    },
+    "connector": {
+      "@id": "h2o:connector",
+      "@type": "xsd:string"
+    },
+    "original_type": {
+      "@id": "h2o:original_type",
+      "@type": "xsd:string"
+    },
+    "original_mtime": {
+      "@id": "h2o:original_mtime",
+      "@type": "xsd:string"
+    },
+    "summary": {
+      "@id": "h2o:summary",
+      "@type": "xsd:string"
+    },
+    "summary_parameters": {
+      "@id": "h2o:summary_parameters",
+      "@type": "xsd:string"
+    },
+    "is_encrypted": {
+      "@id": "h2o:is_encrypted",
+      "@type": "xsd:boolean"
+    },
+    "CollectionUpdateRequest": "h2o:CollectionUpdateRequest",
+    "GroupSharePermission": "h2o:GroupSharePermission",
+    "group_id": {
+      "@id": "h2o:group_id",
+      "@type": "xsd:string"
+    },
+    "SharePermission": "h2o:SharePermission",
+    "MigrateCollectionChatSessionsJobRequest": "h2o:MigrateCollectionChatSessionsJobRequest",
+    "target_collection_id": {
+      "@id": "h2o:target_collection_id",
+      "@type": "xsd:string"
+    },
+    "ChatSettings": "h2o:ChatSettings",
+    "CollectionSettings": "h2o:CollectionSettings",
+    "max_tokens_per_chunk": {
+      "@id": "h2o:max_tokens_per_chunk",
+      "@type": "xsd:integer"
+    },
+    "chunk_overlap_tokens": {
+      "@id": "h2o:chunk_overlap_tokens",
+      "@type": "xsd:integer"
+    },
+    "gen_doc_summaries": {
+      "@id": "h2o:gen_doc_summaries",
+      "@type": "xsd:boolean"
+    },
+    "gen_doc_questions": {
+      "@id": "h2o:gen_doc_questions",
+      "@type": "xsd:boolean"
+    },
+    "audio_input_language": {
+      "@id": "h2o:audio_input_language",
+      "@type": "xsd:string"
+    },
+    "ocr_model": {
+      "@id": "h2o:ocr_model",
+      "@type": "xsd:string"
+    },
+    "tesseract_lang": {
+      "@id": "h2o:tesseract_lang",
+      "@type": "xsd:string"
+    },
+    "keep_tables_as_one_chunk": {
+      "@id": "h2o:keep_tables_as_one_chunk",
+      "@type": "xsd:boolean"
+    },
+    "chunk_by_page": {
+      "@id": "h2o:chunk_by_page",
+      "@type": "xsd:boolean"
+    },
+    "handwriting_check": {
+      "@id": "h2o:handwriting_check",
+      "@type": "xsd:boolean"
+    },
+    "ingest_mode": {
+      "@id": "h2o:ingest_mode",
+      "@type": "xsd:string"
+    },
+    "follow_links": {
+      "@id": "h2o:follow_links",
+      "@type": "xsd:boolean"
+    },
+    "max_depth": {
+      "@id": "h2o:max_depth",
+      "@type": "xsd:integer"
+    },
+    "max_documents": {
+      "@id": "h2o:max_documents",
+      "@type": "xsd:integer"
+    },
+    "root_dir": {
+      "@id": "h2o:root_dir",
+      "@type": "xsd:string"
+    },
+    "copy_document": {
+      "@id": "h2o:copy_document",
+      "@type": "xsd:boolean"
+    },
+    "guardrails_settings": {
+      "@id": "h2o:guardrails_settings",
+      "@type": "@id"
+    },
+    "CollectionCreateRequest": "h2o:CollectionCreateRequest",
+    "collection_settings": {
+      "@id": "h2o:collection_settings",
+      "@type": "@id"
+    },
+    "chat_settings": {
+      "@id": "h2o:chat_settings",
+      "@type": "@id"
+    },
+    "GlobalConfigurationItem": "h2o:GlobalConfigurationItem",
+    "string_value": {
+      "@id": "h2o:string_value",
+      "@type": "xsd:string"
+    },
+    "value_type": {
+      "@id": "h2o:value_type",
+      "@type": "xsd:string"
+    },
+    "can_overwrite": {
+      "@id": "h2o:can_overwrite",
+      "@type": "xsd:boolean"
+    },
+    "upper_bound": {
+      "@id": "h2o:upper_bound",
+      "@type": "xsd:decimal"
+    },
+    "is_read_only": {
+      "@id": "h2o:is_read_only",
+      "@type": "xsd:boolean"
+    },
+    "category": {
+      "@id": "h2o:category",
+      "@type": "xsd:string"
+    },
+    "needs_propagation": {
+      "@id": "h2o:needs_propagation",
+      "@type": "xsd:boolean"
+    },
+    "UserConfigurationItem": "h2o:UserConfigurationItem",
+    "IngestFromConfluenceBody": "h2o:IngestFromConfluenceBody",
+    "base_url": {
+      "@id": "h2o:base_url",
+      "@type": "xsd:string"
+    },
+    "page_ids": {
+      "@id": "h2o:page_ids",
+      "@container": "@list"
+    },
+    "include_attachments": {
+      "@id": "h2o:include_attachments",
+      "@type": "xsd:boolean"
+    },
+    "credentials": {
+      "@id": "h2o:credentials",
+      "@type": "@id"
+    },
+    "AzureCredentials": "h2o:AzureCredentials",
+    "account_key": {
+      "@id": "h2o:account_key",
+      "@type": "xsd:string"
+    },
+    "sas_token": {
+      "@id": "h2o:sas_token",
+      "@type": "xsd:string"
+    },
+    "IngestFromWebsiteBody": "h2o:IngestFromWebsiteBody",
+    "url": {
+      "@id": "h2o:url",
+      "@type": "xsd:string"
+    },
+    "ConfluenceCredentials": "h2o:ConfluenceCredentials",
+    "password": {
+      "@id": "h2o:password",
+      "@type": "xsd:string"
+    },
+    "IngestFromGcsBody": "h2o:IngestFromGcsBody",
+    "urls": {
+      "@id": "h2o:urls",
+      "@container": "@list"
+    },
+    "GCSCredentials": "h2o:GCSCredentials",
+    "service_account_json_key": {
+      "@id": "h2o:service_account_json_key",
+      "@type": "xsd:string"
+    },
+    "SharepointIngestionEntry": "h2o:SharepointIngestionEntry",
+    "entry_type": {
+      "@id": "h2o:entry_type",
+      "@type": "xsd:string"
+    },
+    "web_url": {
+      "@id": "h2o:web_url",
+      "@type": "xsd:string"
+    },
+    "drive_id": {
+      "@id": "h2o:drive_id",
+      "@type": "xsd:string"
+    },
+    "object_id": {
+      "@id": "h2o:object_id",
+      "@type": "xsd:string"
+    },
+    "IngestFromSharepointOnlineBody": "h2o:IngestFromSharepointOnlineBody",
+    "entries": {
+      "@id": "h2o:entries",
+      "@container": "@list"
+    },
+    "S3Credentials": "h2o:S3Credentials",
+    "use_irsa": {
+      "@id": "h2o:use_irsa",
+      "@type": "xsd:boolean"
+    },
+    "access_key_id": {
+      "@id": "h2o:access_key_id",
+      "@type": "xsd:string"
+    },
+    "secret_access_key": {
+      "@id": "h2o:secret_access_key",
+      "@type": "xsd:string"
+    },
+    "session_token": {
+      "@id": "h2o:session_token",
+      "@type": "xsd:string"
+    },
+    "role_arn": {
+      "@id": "h2o:role_arn",
+      "@type": "xsd:string"
+    },
+    "external_id": {
+      "@id": "h2o:external_id",
+      "@type": "xsd:string"
+    },
+    "endpoint_url": {
+      "@id": "h2o:endpoint_url",
+      "@type": "xsd:string"
+    },
+    "IngestFromFileSystemBody": "h2o:IngestFromFileSystemBody",
+    "glob": {
+      "@id": "h2o:glob",
+      "@type": "xsd:string"
+    },
+    "SharepointOnlineCredentials": "h2o:SharepointOnlineCredentials",
+    "auth_type": {
+      "@id": "h2o:auth_type",
+      "@type": "xsd:string"
+    },
+    "tenant_name": {
+      "@id": "h2o:tenant_name",
+      "@type": "xsd:string"
+    },
+    "client_id": {
+      "@id": "h2o:client_id",
+      "@type": "xsd:string"
+    },
+    "client_secret": {
+      "@id": "h2o:client_secret",
+      "@type": "xsd:string"
+    },
+    "connector_id": {
+      "@id": "h2o:connector_id",
+      "@type": "xsd:string"
+    },
+    "admin_enumerate_drives": {
+      "@id": "h2o:admin_enumerate_drives",
+      "@type": "xsd:boolean"
+    },
+    "IngestFromAzureBlobStorageBody": "h2o:IngestFromAzureBlobStorageBody",
+    "container": {
+      "@id": "h2o:container",
+      "@type": "xsd:string"
+    },
+    "paths": {
+      "@id": "h2o:paths",
+      "@container": "@list"
+    },
+    "account_name": {
+      "@id": "h2o:account_name",
+      "@type": "xsd:string"
+    },
+    "IngestUploadBody": "h2o:IngestUploadBody",
+    "IngestFromS3Body": "h2o:IngestFromS3Body",
+    "region": {
+      "@id": "h2o:region",
+      "@type": "xsd:string"
+    },
+    "UploadedFile": "h2o:UploadedFile",
+    "TagCreateRequest": "h2o:TagCreateRequest",
+    "Tag": "h2o:Tag",
+    "format": {
+      "@id": "h2o:format",
+      "@type": "xsd:string"
+    },
+    "DocumentSummary": "h2o:DocumentSummary",
+    "kwargs": {
+      "@id": "h2o:kwargs",
+      "@type": "xsd:string"
+    },
+    "ProcessDocumentJobRequest": "h2o:ProcessDocumentJobRequest",
+    "summary_id": {
+      "@id": "h2o:summary_id",
+      "@type": "xsd:string"
+    },
+    "max_num_chunks": {
+      "@id": "h2o:max_num_chunks",
+      "@type": "xsd:integer"
+    },
+    "sampling_strategy": {
+      "@id": "h2o:sampling_strategy",
+      "@type": "xsd:string"
+    },
+    "keep_intermediate_results": {
+      "@id": "h2o:keep_intermediate_results",
+      "@type": "xsd:boolean"
+    },
+    "meta_data_to_include": {
+      "@id": "h2o:meta_data_to_include"
+    },
+    "DocumentUpdateRequest": "h2o:DocumentUpdateRequest",
+    "Extractor": "h2o:Extractor",
+    "prompt": {
+      "@id": "h2o:prompt",
+      "@type": "xsd:string"
+    },
+    "vision": {
+      "@id": "h2o:vision",
+      "@type": "xsd:string"
+    },
+    "vision_llm": {
+      "@id": "h2o:vision_llm",
+      "@type": "xsd:string"
+    },
+    "DocumentExtractionResult": "h2o:DocumentExtractionResult",
+    "ExtractorCreateRequest": "h2o:ExtractorCreateRequest",
+    "ResetAndShareRequest": "h2o:ResetAndShareRequest",
+    "usernames": {
+      "@id": "h2o:usernames",
+      "@container": "@list"
+    },
+    "ResetAndShareWithGroupsRequest": "h2o:ResetAndShareWithGroupsRequest",
+    "groups": {
+      "@id": "h2o:groups",
+      "@container": "@list"
+    },
+    "ForumUpdateRequest": "h2o:ForumUpdateRequest"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "H2O.ai API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects H2O.ai's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-03) from openapi/h2o-ai-agents-api-openapi.yml, openapi/h2o-ai-ai-assistants-api-openapi.yml, openapi/h2o-ai-api-keys-api-openapi.yml.",
+  "dcterms:created": "2026-10-03",
+  "dcterms:source": [
+    "openapi/h2o-ai-agents-api-openapi.yml",
+    "openapi/h2o-ai-ai-assistants-api-openapi.yml",
+    "openapi/h2o-ai-api-keys-api-openapi.yml",
+    "openapi/h2o-ai-chat-api-openapi.yml",
+    "openapi/h2o-ai-collections-api-openapi.yml"
+  ]
+}

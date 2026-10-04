@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-job-details-schema.json",
+  "title": "JobDetails",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/JobDetails",
+  "required": [
+    "id",
+    "name",
+    "overall_status",
+    "passed_percentage",
+    "failed_percentage",
+    "progress",
+    "created_at",
+    "updated_at",
+    "kind",
+    "statuses",
+    "errors",
+    "duration",
+    "duration_seconds"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": [
+        "in progress",
+        "completed",
+        "failed",
+        "canceled"
+      ]
+    },
+    "status": {
+      "type": "string"
+    },
+    "passed_percentage": {
+      "type": "number",
+      "format": "double"
+    },
+    "failed_percentage": {
+      "type": "number",
+      "format": "double"
+    },
+    "progress": {
+      "type": "number",
+      "format": "double"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "statuses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/JobDetailsStatus"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "duration": {
+      "type": "string"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "format": "double"
+    },
+    "canceled_by": {
+      "type": "string"
+    },
+    "cancel_reason": {
+      "type": "string"
+    },
+    "timeout": {
+      "type": "number",
+      "format": "double"
+    },
+    "start_time": {
+      "type": "number",
+      "format": "double"
+    }
+  },
+  "$defs": {
+    "JobDetailsStatus": {
+      "required": [
+        "id",
+        "status"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-upload-showcase-thumbnail-response-schema.json",
+  "title": "UploadShowcaseThumbnailResponse",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-showcase-api-openapi.yml#/components/schemas/UploadShowcaseThumbnailResponse",
+  "type": "object",
+  "required": [
+    "thumbnail_path"
+  ],
+  "properties": {
+    "thumbnail_path": {
+      "type": "string"
+    }
+  }
+}

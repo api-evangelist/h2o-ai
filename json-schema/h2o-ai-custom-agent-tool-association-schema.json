@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-custom-agent-tool-association-schema.json",
+  "title": "CustomAgentToolAssociation",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-agents-api-openapi.yml#/components/schemas/CustomAgentToolAssociation",
+  "required": [
+    "id",
+    "agent_id",
+    "agent_name",
+    "mcp_server_name",
+    "user_id"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Association UUID"
+    },
+    "agent_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Custom agent UUID"
+    },
+    "agent_name": {
+      "type": "string",
+      "description": "Custom agent name"
+    },
+    "tool_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Associated tool UUID (null if unresolved)"
+    },
+    "tool_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Associated tool name (null if unresolved)"
+    },
+    "mcp_server_name": {
+      "type": "string",
+      "description": "MCP server name"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "User UUID who owns the association"
+    }
+  }
+}

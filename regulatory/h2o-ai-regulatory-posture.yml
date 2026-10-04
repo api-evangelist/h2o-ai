@@ -1,0 +1,41 @@
+generated: '2026-10-03'
+method: searched
+signals:
+  data_subject_request:
+    evidence:
+      - source: 'https://h2o.ai/legal/privacy/'
+        http_status: 200
+        fetched: '2026-10-03'
+        quote: "You can exercise your privacy rights by submitting a request through privacy@h2o.ai."
+        note: "Provides mechanism for data subject rights requests."
+    details:
+      - quote: "The right to know information about our processing of your Personal Information, including the right to access your Personal Information, often in a portable format;"
+      - quote: "The right to request deletion of your Personal Information;"
+      - quote: "The right to correct your Personal Information;"
+      - quote: "The Right to be free from discrimination relating to the exercise of any of your privacy rights."
+  subprocessors:
+    evidence:
+      - source: 'https://h2o.ai/legal/privacy/'
+        http_status: 200
+        fetched: '2026-10-03'
+        quote: "H2O uses subprocessors to support delivery of Services. A current list is published at https://trust.h2o.ai/ and updated periodically."
+        note: "Disclosure of subprocessors and link to list."
+  ai_transparency:
+    evidence:
+      - source: 'https://h2o.ai/legal/privacy/'
+        http_status: 200
+        fetched: '2026-10-03'
+        quote: "H2O does not use Customer Content to train or improve its AI models, except for the benefit of the applicable customer."
+        note: "Statement about AI model training."
+      - source: 'https://h2o.ai/legal/privacy/'
+        http_status: 200
+        fetched: '2026-10-03'
+        quote: "H2O may use third-party artificial intelligence services (including large language models) to support and operate the Services."
+        note: "Use of third‑party AI services disclosed."
+  data_retention:
+    evidence:
+      - source: 'https://h2o.ai/legal/privacy/'
+        http_status: 200
+        fetched: '2026-10-03'
+        quote: "Customer data is deleted upon termination of the customer environment unless otherwise agreed. Logs are retained for up to three (3) years. Telemetry, metrics, and diagnostic data may be retained for as long as necessary for security, operational, business and reliability purposes, unless deletion is requested and feasible (subject to technical limitations and legal obligations)."
+        note: "Retention periods for various data types."

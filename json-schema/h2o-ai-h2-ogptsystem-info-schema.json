@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-h2-ogptsystem-info-schema.json",
+  "title": "H2OGPTSystemInfo",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-system-api-openapi.yml#/components/schemas/H2OGPTSystemInfo",
+  "required": [
+    "timestamp",
+    "uptime_seconds",
+    "hostname",
+    "os_name",
+    "os_version",
+    "kernel_version",
+    "cpu_count_physical",
+    "cpu_count_logical",
+    "cpu_percent_per_cpu",
+    "cpu_freq_current",
+    "cpu_freq_min",
+    "cpu_freq_max",
+    "load_avg_1min",
+    "load_avg_5min",
+    "load_avg_15min",
+    "memory_total",
+    "memory_available",
+    "memory_used",
+    "memory_percent",
+    "swap_total",
+    "swap_used",
+    "swap_percent",
+    "disk_partitions",
+    "disk_usage",
+    "disk_io_counters",
+    "network_interfaces",
+    "network_io_counters",
+    "network_connections_count",
+    "gpus",
+    "process_count",
+    "top_processes_cpu",
+    "top_processes_memory"
+  ],
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string"
+    },
+    "uptime_seconds": {
+      "type": "number"
+    },
+    "hostname": {
+      "type": "string"
+    },
+    "os_name": {
+      "type": "string"
+    },
+    "os_version": {
+      "type": "string"
+    },
+    "kernel_version": {
+      "type": "string"
+    },
+    "cpu_count_physical": {
+      "type": "integer"
+    },
+    "cpu_count_logical": {
+      "type": "integer"
+    },
+    "cpu_percent_per_cpu": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "cpu_freq_current": {
+      "type": "number"
+    },
+    "cpu_freq_min": {
+      "type": "number"
+    },
+    "cpu_freq_max": {
+      "type": "number"
+    },
+    "cpu_temperature": {
+      "type": "number"
+    },
+    "load_avg_1min": {
+      "type": "number"
+    },
+    "load_avg_5min": {
+      "type": "number"
+    },
+    "load_avg_15min": {
+      "type": "number"
+    },
+    "memory_total": {
+      "type": "integer"
+    },
+    "memory_available": {
+      "type": "integer"
+    },
+    "memory_used": {
+      "type": "integer"
+    },
+    "memory_percent": {
+      "type": "number"
+    },
+    "swap_total": {
+      "type": "integer"
+    },
+    "swap_used": {
+      "type": "integer"
+    },
+    "swap_percent": {
+      "type": "number"
+    },
+    "disk_partitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    },
+    "disk_usage": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      }
+    },
+    "disk_io_counters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "network_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "network_io_counters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      }
+    },
+    "network_connections_count": {
+      "type": "integer"
+    },
+    "gpus": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/H2OGPTGPUInfo"
+      }
+    },
+    "process_count": {
+      "type": "integer"
+    },
+    "top_processes_cpu": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "top_processes_memory": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "$defs": {
+    "H2OGPTGPUInfo": {
+      "required": [
+        "name"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "utilization": {
+          "type": "number"
+        },
+        "memory_total": {
+          "type": "integer"
+        },
+        "memory_used": {
+          "type": "integer"
+        },
+        "power_usage": {
+          "type": "number"
+        },
+        "fan_speed": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

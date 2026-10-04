@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ingest-from-s3-body-schema.json",
+  "title": "IngestFromS3Body",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-document-ingestion-api-openapi.yml#/components/schemas/IngestFromS3Body",
+  "type": "object",
+  "required": [
+    "urls"
+  ],
+  "properties": {
+    "urls": {
+      "description": "The path or list of paths of S3 files or directories.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "region": {
+      "description": "The name of the region used for interaction with AWS services.",
+      "type": "string",
+      "default": "us-east-1"
+    },
+    "credentials": {
+      "$ref": "#/$defs/S3Credentials"
+    },
+    "metadata": {
+      "description": "Metadata for the documents.",
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "S3Credentials": {
+      "description": "The object with S3 credentials. If the object is not provided, only public buckets will be accessible. When use_irsa is true, access_key_id and secret_access_key are optional and the pod's service account will be used for authentication.",
+      "type": "object",
+      "properties": {
+        "use_irsa": {
+          "type": "boolean",
+          "description": "Enable IAM Roles for Service Accounts (IRSA) to authenticate using the pod's service account. When enabled, explicit credentials are not required.",
+          "default": false
+        },
+        "access_key_id": {
+          "type": "string",
+          "description": "AWS access key ID. Not required when using IRSA."
+        },
+        "secret_access_key": {
+          "type": "string",
+          "description": "AWS secret access key. Not required when using IRSA."
+        },
+        "session_token": {
+          "type": "string",
+          "description": "AWS session token for temporary credentials."
+        },
+        "role_arn": {
+          "type": "string",
+          "description": "The Amazon Resource Name (ARN) of IAM Role that will be utilized for accessing the S3 storage. When IRSA is enabled, this role will be assumed from the service account identity (role chaining). When IRSA is disabled, it requires specification of other credentials to identify an identity the role will be associated with."
+        },
+        "external_id": {
+          "type": "string",
+          "description": "Optional security token for assuming cross-account roles. This is used to prevent the 'confused deputy' problem when a third party assumes a role in your account. Only required if the role's trust policy requires an external ID."
+        },
+        "endpoint_url": {
+          "type": "string",
+          "description": "Custom S3-compatible endpoint URL. Leave empty for standard AWS S3. Example: https://qumulo.example.com"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-apikey-create-request-schema.json",
+  "title": "APIKeyCreateRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyCreateRequest",
+  "type": "object",
+  "required": [
+    "user_id"
+  ],
+  "properties": {
+    "user_id": {
+      "description": "Id of the user the key will be created for",
+      "type": "string"
+    },
+    "name": {
+      "description": "The name for the API key",
+      "type": "string"
+    },
+    "collection_id": {
+      "description": "The id of the collection you want the key to be configured to",
+      "type": "string"
+    },
+    "expires_in": {
+      "description": "Interval of when the API key should expire",
+      "type": "string"
+    },
+    "inactivity_interval": {
+      "description": "The number of days a key can be unused for (no activity) before it becomes invalid.",
+      "type": "integer"
+    }
+  }
+}

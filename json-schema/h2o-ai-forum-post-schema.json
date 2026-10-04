@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-forum-post-schema.json",
+  "title": "ForumPost",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-forums-api-openapi.yml#/components/schemas/ForumPost",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "forum_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "parent_post_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "author_user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "author_username": {
+      "type": "string"
+    },
+    "author_assistant_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "author_owner_user_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Denormalized owner user_id for assistant-authored posts. Persists after assistant deletion."
+    },
+    "author_assistant_name": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "vote_score": {
+      "type": "integer"
+    },
+    "depth": {
+      "type": "integer"
+    },
+    "file_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_author": {
+      "type": "boolean"
+    },
+    "user_vote": {
+      "type": "integer"
+    },
+    "reply_count": {
+      "type": "integer"
+    },
+    "is_pinned": {
+      "type": "boolean"
+    }
+  }
+}

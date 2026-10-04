@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-user-deletion-request-schema.json",
+  "title": "UserDeletionRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-permissions-api-openapi.yml#/components/schemas/UserDeletionRequest",
+  "required": [
+    "delete_id"
+  ],
+  "type": "object",
+  "properties": {
+    "delete_id": {
+      "type": "string",
+      "description": "Unique identifier for the deletion request. Must be used within 5 minutes to confirm deletion."
+    }
+  }
+}

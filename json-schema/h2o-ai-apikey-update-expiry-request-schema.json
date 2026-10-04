@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-apikey-update-expiry-request-schema.json",
+  "title": "APIKeyUpdateExpiryRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyUpdateExpiryRequest",
+  "type": "object",
+  "properties": {
+    "expires_in": {
+      "description": "Interval of when the API key should expire. Do not include if you would like to remove the expiry of a key.",
+      "type": "string"
+    }
+  }
+}

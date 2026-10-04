@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for the Enterprise h2oGPTe REST API
   version: 1.0.0
-extends: openapi/h2o-ai-h2ogpte-openapi-original.yml
+extends: ../openapi/_original/h2o-ai-h2ogpte-openapi-original.yml
 x-generated: '2026-08-04'
 x-method: generated
 x-source: >-

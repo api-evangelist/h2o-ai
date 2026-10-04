@@ -506,14 +506,8 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:
@@ -524,121 +518,49 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     NotFound:
       description: Not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
   schemas:
-    MemoryBlockCreateRequest:
+    MemoryBlockPrivacyRequest:
       type: object
       required:
-      - name
+      - is_public
       properties:
-        name:
-          type: string
-          description: Name of the memory block.
-        content:
-          type: string
-          description: Initial content of the memory block.
-        system_prompt_amendment:
-          type: string
-          description: System prompt amendment for agent mode that drives changes to the memory block.
-        injection_mode:
-          type: string
-          description: Where memory content is injected. 'system_prompt' (default) adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
-          enum:
-          - system_prompt
-          - user_instruction
-          - agent_file
-          - agent_tool
-        access_mode:
-          type: string
-          description: Controls whether the LLM/agent can read the memory, write to it, or both.
-          enum:
-          - read
-          - write
-          - read_write
-        max_content_length:
-          type: integer
-          default: 10000
-          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited. In LLM mode, new memories are appended and oldest content is trimmed when this limit is exceeded.
-    DefaultMemoryBlocksByScope:
-      type: object
-      properties:
-        llm:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
-        agent:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
-    ShareMemoryBlockRequest:
-      type: object
-      properties:
+        is_public:
+          type: boolean
+          description: Whether the memory block should be public.
         permissions:
-          description: Individual permission levels for the memory block.
+          description: Public permission levels to grant when is_public is true (e.g. 'h2ogpte/memory_block/edit'). Read access is always granted to a public memory block. Ignored when is_public is false. When omitted, edit access is granted by default; pass an explicit empty array to make the block public read-only.
           type: array
           items:
             type: string
-    SetDefaultMemoryBlockRequest:
-      type: object
-      required:
-      - scope
-      properties:
-        scope:
-          type: string
-          description: Which scope to set.
-          enum:
-          - llm
-          - agent
-        memory_block_id:
-          type:
-          - string
-          - 'null'
-          description: UUID of the memory block to set as default, or null to clear.
-    MemoryBlockUpdateRequest:
+    DefaultMemoryBlocksResponse:
       type: object
       properties:
-        name:
-          type: string
-          description: New name for the memory block.
-        content:
-          type: string
-          description: Updated content of the memory block.
-        system_prompt_amendment:
-          type: string
-          description: Updated system prompt amendment.
-        injection_mode:
-          type: string
-          description: Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
-          enum:
-          - system_prompt
-          - user_instruction
-          - agent_file
-          - agent_tool
-        access_mode:
-          type: string
-          description: Controls whether the LLM/agent can read the memory, write to it, or both.
-          enum:
-          - read
-          - write
-          - read_write
-        max_content_length:
-          type: integer
-          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited.
+        defaults:
+          $ref: '#/components/schemas/DefaultMemoryBlocksByScope'
     MemoryBlock:
       type: object
       required:
@@ -711,52 +633,50 @@ components:
         group_count:
           type: integer
           description: The number of groups the memory block has been shared with.
-    MemoryBlockPrivacyRequest:
+    ShareMemoryBlockRequest:
       type: object
-      required:
-      - is_public
       properties:
-        is_public:
-          type: boolean
-          description: Whether the memory block should be public.
         permissions:
-          description: Public permission levels to grant when is_public is true (e.g. 'h2ogpte/memory_block/edit'). Read access is always granted to a public memory block. Ignored when is_public is false. When omitted, edit access is granted by default; pass an explicit empty array to make the block public read-only.
+          description: Individual permission levels for the memory block.
           type: array
           items:
             type: string
-    DefaultMemoryBlocksResponse:
+    MemoryBlockUpdateRequest:
       type: object
       properties:
-        defaults:
-          $ref: '#/components/schemas/DefaultMemoryBlocksByScope'
-    SetDefaultMemoryBlockResponse:
-      type: object
-      properties:
-        scope:
+        name:
           type: string
+          description: New name for the memory block.
+        content:
+          type: string
+          description: Updated content of the memory block.
+        system_prompt_amendment:
+          type: string
+          description: Updated system prompt amendment.
+        injection_mode:
+          type: string
+          description: Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
           enum:
-          - llm
-          - agent
-        memory_block:
-          allOf:
-          - $ref: '#/components/schemas/MemoryBlock'
+          - system_prompt
+          - user_instruction
+          - agent_file
+          - agent_tool
+        access_mode:
+          type: string
+          description: Controls whether the LLM/agent can read the memory, write to it, or both.
+          enum:
+          - read
+          - write
+          - read_write
+        max_content_length:
+          type: integer
+          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited.
     GroupSharePermission:
       required:
       - group_id
       type: object
       properties:
         group_id:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    SharePermission:
-      required:
-      - username
-      type: object
-      properties:
-        username:
           type: string
         permissions:
           type: array
@@ -774,6 +694,86 @@ components:
         message:
           type: string
           description: Error message
+    SetDefaultMemoryBlockResponse:
+      type: object
+      properties:
+        scope:
+          type: string
+          enum:
+          - llm
+          - agent
+        memory_block:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
+    DefaultMemoryBlocksByScope:
+      type: object
+      properties:
+        llm:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
+        agent:
+          allOf:
+          - $ref: '#/components/schemas/MemoryBlock'
+    MemoryBlockCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the memory block.
+        content:
+          type: string
+          description: Initial content of the memory block.
+        system_prompt_amendment:
+          type: string
+          description: System prompt amendment for agent mode that drives changes to the memory block.
+        injection_mode:
+          type: string
+          description: Where memory content is injected. 'system_prompt' (default) adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).
+          enum:
+          - system_prompt
+          - user_instruction
+          - agent_file
+          - agent_tool
+        access_mode:
+          type: string
+          description: Controls whether the LLM/agent can read the memory, write to it, or both.
+          enum:
+          - read
+          - write
+          - read_write
+        max_content_length:
+          type: integer
+          default: 10000
+          description: Maximum number of characters allowed in memory content. Set to 0 for unlimited. In LLM mode, new memories are appended and oldest content is trimmed when this limit is exceeded.
+    SharePermission:
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    SetDefaultMemoryBlockRequest:
+      type: object
+      required:
+      - scope
+      properties:
+        scope:
+          type: string
+          description: Which scope to set.
+          enum:
+          - llm
+          - agent
+        memory_block_id:
+          type:
+          - string
+          - 'null'
+          description: UUID of the memory block to set as default, or null to clear.
   securitySchemes:
     bearerAuth:
       type: http

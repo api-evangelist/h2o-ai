@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-showcase-chat-schema.json",
+  "title": "ShowcaseChat",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-showcase-api-openapi.yml#/components/schemas/ShowcaseChat",
+  "type": "object",
+  "required": [
+    "id",
+    "shared_chat_id",
+    "chat_name",
+    "sort_order",
+    "featured_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Showcase entry ID."
+    },
+    "shared_chat_id": {
+      "type": "string",
+      "description": "Underlying shared chat ID."
+    },
+    "title": {
+      "type": "string",
+      "description": "Admin-supplied tile title; falls back to chat_name when empty."
+    },
+    "description": {
+      "type": "string",
+      "description": "Admin-supplied tile description."
+    },
+    "category": {
+      "type": "string",
+      "description": "Free-text label used to group tiles. Null/missing means uncategorized."
+    },
+    "thumbnail_path": {
+      "type": "string",
+      "description": "Object storage key for the tile thumbnail."
+    },
+    "sort_order": {
+      "type": "integer",
+      "description": "Display order, ascending."
+    },
+    "featured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last mutation on the showcase row; used as a cache-buster for the thumbnail URL."
+    },
+    "chat_name": {
+      "type": "string"
+    },
+    "is_private": {
+      "type": "boolean",
+      "description": "Current privacy of the linked shared chat. Private tiles are only listed to authenticated users."
+    },
+    "is_frozen": {
+      "type": "boolean",
+      "description": "Whether the linked shared chat is a frozen snapshot."
+    },
+    "includes_artifacts": {
+      "type": "boolean"
+    },
+    "chat_created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "shared_by_username": {
+      "type": "string"
+    },
+    "featured_by_username": {
+      "type": "string"
+    }
+  }
+}

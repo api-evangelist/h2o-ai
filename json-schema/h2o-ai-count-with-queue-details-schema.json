@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-count-with-queue-details-schema.json",
+  "title": "CountWithQueueDetails",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-jobs-api-openapi.yml#/components/schemas/CountWithQueueDetails",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Count"
+    },
+    {
+      "type": "object",
+      "required": [
+        "queue_infos"
+      ],
+      "properties": {
+        "queue_infos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/QueueDetails"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Count": {
+      "required": [
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        }
+      }
+    },
+    "QueueDetails": {
+      "required": [
+        "name",
+        "length"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "length": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

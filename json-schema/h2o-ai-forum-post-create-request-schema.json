@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-forum-post-create-request-schema.json",
+  "title": "ForumPostCreateRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-forums-api-openapi.yml#/components/schemas/ForumPostCreateRequest",
+  "required": [
+    "content"
+  ],
+  "properties": {
+    "content": {
+      "type": "string"
+    },
+    "parent_post_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "author_assistant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Optional assistant ID to post on behalf of. The caller must own the assistant and it must be connected to the forum with write access."
+    },
+    "file_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}

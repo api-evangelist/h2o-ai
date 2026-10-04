@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-extractor-create-request-schema.json",
+  "title": "ExtractorCreateRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-extractors-api-openapi.yml#/components/schemas/ExtractorCreateRequest",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "llm",
+    "schema"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable name"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this extractor does"
+    },
+    "llm": {
+      "type": "string",
+      "description": "Identifier or version of the language model the extractor uses"
+    },
+    "schema": {
+      "type": "string",
+      "description": "JSONSchema (or other spec) that the extractor outputs. When schema is valid and not empty, the output will be always returned as JSON object."
+    },
+    "prompt": {
+      "type": "string",
+      "description": "Custom prompt text for the extractor. If empty, default prompt will be used. If combined with schema, prompt can customize the output, but cannot change its format as it will always be JSON object."
+    },
+    "pre_prompt_summary": {
+      "type": "string",
+      "description": "(Optional) Pre-prompt summary text for the extractor"
+    },
+    "keep_intermediate_results": {
+      "type": "boolean",
+      "description": "(Optional) Flag indicating whether to keep intermediate results during extraction"
+    },
+    "system_prompt": {
+      "type": "string",
+      "description": "(Optional) System prompt text for the extractor"
+    },
+    "max_num_chunks": {
+      "type": "integer",
+      "description": "(Optional) Maximum number of chunks to process"
+    },
+    "vision": {
+      "type": "string",
+      "description": "(Optional) Vision mode setting"
+    },
+    "vision_llm": {
+      "type": "string",
+      "description": "(Optional) Vision LLM model identifier"
+    },
+    "image_batch_image_prompt": {
+      "type": "string",
+      "description": "(Optional) Image batch processing prompt"
+    },
+    "image_batch_final_prompt": {
+      "type": "string",
+      "description": "(Optional) Final prompt for image batch processing"
+    },
+    "guardrails_settings": {
+      "$ref": "#/$defs/GuardrailsSettings"
+    }
+  },
+  "$defs": {
+    "GuardrailsSettings": {
+      "type": "object",
+      "properties": {
+        "exception_message": {
+          "description": "A message that will be returned in case some guardrails settings are violated.",
+          "type": "string"
+        },
+        "show_violated_responses": {
+          "description": "Admin-only toggle to view the exact content of violated responses. When enabled, admins can see what triggered a guardrail violation. This is disabled by default for privacy and security. Only administrators can enable this setting and view violated content.",
+          "type": "boolean",
+          "default": false
+        },
+        "guardrails_on_transcriptions": {
+          "description": "When enabled, audio and video transcriptions are checked for content safety violations using the guardrails LLM, in addition to the existing PII detection.",
+          "type": "boolean",
+          "default": false
+        },
+        "vision_guardrails_enabled": {
+          "description": "When enabled, images and video frames are checked for content safety violations using a vision-capable guardrails LLM during document ingestion.",
+          "type": "boolean",
+          "default": false
+        },
+        "guardrails_vision_llm": {
+          "description": "Vision-capable LLM for image and video content safety checks. Defaults to auto which selects the best available vision model.",
+          "type": "string",
+          "default": "auto"
+        },
+        "column_redaction_config": {
+          "type": "array",
+          "description": "List of [column_pattern, redaction_label], both strings.",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "disallowed_regex_patterns": {
+          "description": "A list of regular expressions that match custom PII.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "presidio_labels_to_flag": {
+          "description": "A list of entities to be flagged as PII by the built-in Presidio model.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pii_labels_to_flag": {
+          "description": "A list of entities to be flagged as PII by the built-in PII model.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pii_detection_parse_action": {
+          "description": "What to do when PII is detected during parsing of documents. The 'redact' option will replace disallowed content in the ingested documents with redaction bars.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "redact",
+            "fail"
+          ]
+        },
+        "pii_detection_llm_input_action": {
+          "description": "What to do when PII is detected in the input to the LLM (document content and user prompts). The 'redact' option will replace disallowed content with placeholders.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "redact",
+            "fail"
+          ]
+        },
+        "pii_detection_llm_output_action": {
+          "description": "What to do when PII is detected in the output of the LLM. The 'redact' option will replace disallowed content with placeholders.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "redact",
+            "fail"
+          ]
+        },
+        "prompt_guard_labels_to_flag": {
+          "description": "A list of entities to be flagged as safety violations in user prompts by the built-in prompt guard model.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "guardrails_labels_to_flag": {
+          "description": "A list of entities to be flagged as safety violations in user prompts. Must be a subset of guardrails_entities, if provided.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "guardrails_llm": {
+          "description": "LLM to use for Guardrails and PII detection",
+          "type": "string"
+        },
+        "guardrails_safe_category": {
+          "description": "Name of the safe category for guardrails. Must be a key in guardrails_entities, if provided. Otherwise uses system defaults.",
+          "type": "string"
+        },
+        "guardrails_entities": {
+          "description": "Dictionary of entities and their descriptions for the guardrails model to classify. The first entry is the \"safe\" class, the rest are \"unsafe\" classes.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "column_redaction_custom_entities_to_flag": {
+          "description": "Deprecated - Use custom_pii_entities_to_flag. A list of entities to redact in tabular data files. Must be a subset of column_redaction_custom_entities, if provided.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "column_redaction_custom_entities": {
+          "description": "(Optional) Deprecated - Use custom_pii_entities. A dictionary of entities and a short description for the LLM to check for and redact columns containing PII in tabular data files.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "custom_pii_entities_to_flag": {
+          "description": "A list of entities to redact in tabular data files. Must be a subset of custom_pii_entities, if provided.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "custom_pii_entities": {
+          "description": "(Optional) A dictionary of entities and a short description for the LLM to check for and redact columns containing PII in tabular data files.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-qafeedback-schema.json",
+  "title": "QAFeedback",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/QAFeedback",
+  "required": [
+    "question_content",
+    "reply_content",
+    "question_id",
+    "reply_id",
+    "votes",
+    "response_created_at_time"
+  ],
+  "type": "object",
+  "properties": {
+    "question_content": {
+      "type": "string"
+    },
+    "reply_content": {
+      "type": "string"
+    },
+    "question_id": {
+      "type": "string"
+    },
+    "reply_id": {
+      "type": "string"
+    },
+    "llm": {
+      "type": "string"
+    },
+    "system_prompt": {
+      "type": "string"
+    },
+    "pre_prompt_query": {
+      "type": "string"
+    },
+    "prompt_query": {
+      "type": "string"
+    },
+    "pre_prompt_summary": {
+      "type": "string"
+    },
+    "prompt_summary": {
+      "type": "string"
+    },
+    "rag_config": {
+      "type": "string"
+    },
+    "collection_documents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "votes": {
+      "type": "integer"
+    },
+    "expected_answer": {
+      "type": "string"
+    },
+    "user_comment": {
+      "type": "string"
+    },
+    "collection_id": {
+      "type": "string"
+    },
+    "collection_name": {
+      "type": "string"
+    },
+    "response_created_at_time": {
+      "type": "string"
+    },
+    "prompt_template_id": {
+      "type": "string"
+    },
+    "include_chat_history": {
+      "type": "string"
+    },
+    "chat_session_id": {
+      "type": "string"
+    },
+    "voted_user_id": {
+      "type": "string"
+    },
+    "voted_username": {
+      "type": "string"
+    }
+  }
+}

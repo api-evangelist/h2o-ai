@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ingest-from-azure-blob-storage-body-schema.json",
+  "title": "IngestFromAzureBlobStorageBody",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-document-ingestion-api-openapi.yml#/components/schemas/IngestFromAzureBlobStorageBody",
+  "type": "object",
+  "required": [
+    "container",
+    "paths",
+    "account_name"
+  ],
+  "properties": {
+    "container": {
+      "description": "Name of the Azure Blob Storage container.",
+      "type": "string"
+    },
+    "paths": {
+      "description": "Path or list of paths to files or directories within an Azure Blob Storage container.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "account_name": {
+      "description": "Name of a storage account",
+      "type": "string"
+    },
+    "credentials": {
+      "$ref": "#/$defs/AzureCredentials"
+    },
+    "metadata": {
+      "description": "Metadata for the document.",
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "AzureCredentials": {
+      "description": "The object with Azure credentials. If container is private, set either `account_key` or `sas_token`.",
+      "type": "object",
+      "properties": {
+        "account_key": {
+          "type": "string"
+        },
+        "sas_token": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

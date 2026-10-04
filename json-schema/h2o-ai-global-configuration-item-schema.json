@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-global-configuration-item-schema.json",
+  "title": "GlobalConfigurationItem",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-configurations-api-openapi.yml#/components/schemas/GlobalConfigurationItem",
+  "required": [
+    "key_name",
+    "string_value",
+    "value_type",
+    "can_overwrite",
+    "is_public"
+  ],
+  "type": "object",
+  "properties": {
+    "key_name": {
+      "type": "string"
+    },
+    "string_value": {
+      "type": "string"
+    },
+    "value_type": {
+      "type": "string"
+    },
+    "can_overwrite": {
+      "type": "boolean"
+    },
+    "upper_bound": {
+      "type": "number"
+    },
+    "is_public": {
+      "type": "boolean"
+    },
+    "is_read_only": {
+      "type": "boolean"
+    },
+    "is_encrypted": {
+      "type": "boolean"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "needs_propagation": {
+      "type": "boolean",
+      "description": "When true, mux resolves this key per-user (with role-priority\noverrides) and caches the resolved value for the duration of\nthe global `config_cache_ttl_seconds` setting. The UI uses this\nflag to render an info icon explaining that changes take up to\nthe cache-TTL seconds to propagate across all mux replicas.\n"
+    }
+  }
+}

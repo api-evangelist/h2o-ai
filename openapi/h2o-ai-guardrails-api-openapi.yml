@@ -184,41 +184,41 @@ paths:
         default:
           $ref: '#/components/responses/Unexpected'
 components:
+  responses:
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
   schemas:
-    GuardrailViolationsDailyTrend:
+    GuardrailViolationsList:
       type: object
       properties:
-        day:
-          type: string
         total:
           type: integer
-    GuardrailViolationsByUser:
-      type: object
-      properties:
-        username:
-          type: string
-        email:
-          type: string
-        total:
-          type: integer
-    GuardrailViolationsByType:
-      type: object
-      properties:
-        violation_type:
-          type: string
-        total:
-          type: integer
-    GuardrailViolationsByCollection:
-      type: object
-      properties:
-        collection_name:
-          type: string
-        collection_id:
-          type:
-          - string
-          - 'null'
-        total:
-          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolation'
     GuardrailViolationsSummary:
       type: object
       properties:
@@ -238,61 +238,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GuardrailViolationsByType'
-    GuardrailViolation:
+    GuardrailViolationsByCollection:
       type: object
       properties:
-        id:
-          type: string
-        created_at:
-          type: string
-        user_id:
-          type: string
-        username:
-          type: string
-        email:
+        collection_name:
           type: string
         collection_id:
           type:
           - string
           - 'null'
-        collection_name:
-          type: string
-        violation_type:
-          type: string
-        violation_message:
-          type: string
-    GuardrailViolationsList:
-      type: object
-      properties:
         total:
           type: integer
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolation'
-    GuardrailViolationsDashboard:
-      type: object
-      properties:
-        daily_trend:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsDailyTrend'
-        by_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByType'
-        by_collection:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByCollection'
-        by_user:
-          type: array
-          items:
-            $ref: '#/components/schemas/GuardrailViolationsByUser'
-        available_types:
-          type: array
-          items:
-            type: string
     GuardrailsSettings:
       type: object
       properties:
@@ -447,31 +403,75 @@ components:
         message:
           type: string
           description: Error message
-  responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unauthorized:
-      description: Unauthorized - Invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
+    GuardrailViolationsDashboard:
+      type: object
+      properties:
+        daily_trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsDailyTrend'
+        by_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByType'
+        by_collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByCollection'
+        by_user:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuardrailViolationsByUser'
+        available_types:
+          type: array
+          items:
+            type: string
+    GuardrailViolationsDailyTrend:
+      type: object
+      properties:
+        day:
+          type: string
+        total:
+          type: integer
+    GuardrailViolation:
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+        user_id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        collection_id:
+          type:
+          - string
+          - 'null'
+        collection_name:
+          type: string
+        violation_type:
+          type: string
+        violation_message:
+          type: string
+    GuardrailViolationsByUser:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        total:
+          type: integer
+    GuardrailViolationsByType:
+      type: object
+      properties:
+        violation_type:
+          type: string
+        total:
+          type: integer
   securitySchemes:
     bearerAuth:
       type: http

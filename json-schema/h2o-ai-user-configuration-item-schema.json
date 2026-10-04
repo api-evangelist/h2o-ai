@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-user-configuration-item-schema.json",
+  "title": "UserConfigurationItem",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-configurations-api-openapi.yml#/components/schemas/UserConfigurationItem",
+  "required": [
+    "key_name",
+    "string_value",
+    "value_type"
+  ],
+  "type": "object",
+  "properties": {
+    "key_name": {
+      "type": "string"
+    },
+    "string_value": {
+      "type": "string"
+    },
+    "value_type": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this override was last saved."
+    }
+  }
+}

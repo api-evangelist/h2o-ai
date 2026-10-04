@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-chat-message-schema.json",
+  "title": "ChatMessage",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-chat-api-openapi.yml#/components/schemas/ChatMessage",
+  "required": [
+    "id",
+    "content",
+    "votes",
+    "created_at",
+    "has_references",
+    "total_references"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "votes": {
+      "type": "integer"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "has_references": {
+      "type": "boolean"
+    },
+    "total_references": {
+      "type": "integer"
+    },
+    "username": {
+      "type": "string"
+    },
+    "reply_to": {
+      "type": "string"
+    },
+    "error": {
+      "type": "string"
+    },
+    "llm_args": {
+      "type": "string",
+      "description": "JSON-encoded LLM arguments (e.g. `{\"use_agent\": true}`) that were\napplied when the question was dispatched. Only populated on\nquestion messages (`reply_to` is null); reply messages have\n`llm_args = \"null\"` (literal string).\n"
+    },
+    "type_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ChatMessageMeta"
+      }
+    }
+  },
+  "$defs": {
+    "ChatMessageMeta": {
+      "required": [
+        "message_type",
+        "content"
+      ],
+      "type": "object",
+      "properties": {
+        "message_type": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

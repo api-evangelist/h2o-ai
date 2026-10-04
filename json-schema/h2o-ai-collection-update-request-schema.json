@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-collection-update-request-schema.json",
+  "title": "CollectionUpdateRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-collections-api-openapi.yml#/components/schemas/CollectionUpdateRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Name of the collection",
+      "type": "string"
+    },
+    "description": {
+      "description": "Description of the collection",
+      "type": "string"
+    },
+    "rag_type": {
+      "description": "RAG type options:\n  * `auto` - Automatically select the best rag_type.\n  * `llm_only` LLM Only - Answer the query without any supporting document contexts.\n  Requires 1 LLM call.\n  * `rag` RAG (Retrieval Augmented Generation) - Use supporting document contexts\n  to answer the query. Requires 1 LLM call.\n  * `hyde1` LLM Only + RAG composite - HyDE RAG (Hypothetical Document Embedding).\n  Use 'LLM Only' response to find relevant contexts from a collection for generating\n  a response. Requires 2 LLM calls.\n  * `hyde2` HyDE + RAG composite - Use the 'HyDE RAG' response to find relevant\n  contexts from a collection for generating a response. Requires 3 LLM calls.\n  * `rag+` Summary RAG - Like RAG, but uses more context and recursive\n  summarization to overcome LLM context limits. Keeps all retrieved chunks, puts\n  them in order, adds neighboring chunks, then uses the summary API to get the\n  answer. Can require several LLM calls.\n  * `all_data` All Data RAG - Like Summary RAG, but includes all document\n  chunks. Uses recursive summarization to overcome LLM context limits.\n  Can require several LLM calls.\n",
+      "type": "string",
+      "enum": [
+        "auto",
+        "llm_only",
+        "rag",
+        "hyde1",
+        "hyde2",
+        "rag+",
+        "all_data"
+      ]
+    }
+  }
+}

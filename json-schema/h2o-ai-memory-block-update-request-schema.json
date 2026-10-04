@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-memory-block-update-request-schema.json",
+  "title": "MemoryBlockUpdateRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-memory-blocks-api-openapi.yml#/components/schemas/MemoryBlockUpdateRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "New name for the memory block."
+    },
+    "content": {
+      "type": "string",
+      "description": "Updated content of the memory block."
+    },
+    "system_prompt_amendment": {
+      "type": "string",
+      "description": "Updated system prompt amendment."
+    },
+    "injection_mode": {
+      "type": "string",
+      "description": "Where memory content is injected. 'system_prompt' adds it to the LLM system prompt; 'user_instruction' prepends it to the user message; 'agent_file' makes it only available as AGENTS.md in agent mode; 'agent_tool' exposes content lazily via the read_memory_block / update_memory_block tools (no pre-injection).",
+      "enum": [
+        "system_prompt",
+        "user_instruction",
+        "agent_file",
+        "agent_tool"
+      ]
+    },
+    "access_mode": {
+      "type": "string",
+      "description": "Controls whether the LLM/agent can read the memory, write to it, or both.",
+      "enum": [
+        "read",
+        "write",
+        "read_write"
+      ]
+    },
+    "max_content_length": {
+      "type": "integer",
+      "description": "Maximum number of characters allowed in memory content. Set to 0 for unlimited."
+    }
+  }
+}

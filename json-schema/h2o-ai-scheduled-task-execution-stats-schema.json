@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-scheduled-task-execution-stats-schema.json",
+  "title": "ScheduledTaskExecutionStats",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-scheduled-tasks-api-openapi.yml#/components/schemas/ScheduledTaskExecutionStats",
+  "type": "object",
+  "properties": {
+    "daily_executions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "completed": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "totals": {
+      "type": "object",
+      "properties": {
+        "total_executions": {
+          "type": "integer"
+        },
+        "completed_executions": {
+          "type": "integer"
+        },
+        "failed_executions": {
+          "type": "integer"
+        },
+        "running_executions": {
+          "type": "integer"
+        },
+        "total_tasks": {
+          "type": "integer"
+        },
+        "active_tasks": {
+          "type": "integer"
+        }
+      }
+    },
+    "top_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "task_name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "task_type": {
+            "type": "string"
+          },
+          "execution_count": {
+            "type": "integer"
+          },
+          "completed_count": {
+            "type": "integer"
+          },
+          "failed_count": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

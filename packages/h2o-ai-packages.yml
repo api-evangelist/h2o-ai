@@ -1,11 +1,8 @@
 generated: '2026-08-04'
 method: searched
 source: https://pypi.org/, https://registry.npmjs.org/, https://search.maven.org/, https://cran.r-project.org/
-notes: >-
-  First-party H2O.ai client libraries verified against the public registries on 2026-08-04.
-  Versions are the latest published at probe time. Java artifacts are published under the
-  ai.h2o Maven Central group (97 artifacts at probe time); only the marquee entries are
-  listed here.
+notes: First-party H2O.ai client libraries verified against the public registries on 2026-08-04. Versions are the latest published at probe time.
+  Java artifacts are published under the ai.h2o Maven Central group (97 artifacts at probe time); only the marquee entries are listed here.
 packages:
 - language: python
   registry: pypi
@@ -16,6 +13,7 @@ packages:
   repository: https://github.com/h2oai/h2o-3
   description: H2O, Fast Scalable Machine Learning, for python (the H2O-3 Python client)
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2ogpte
@@ -26,6 +24,7 @@ packages:
   repository: https://github.com/h2oai/h2ogpte
   description: Client library for Enterprise h2oGPTe
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2ogpte-mcp-server
@@ -35,6 +34,7 @@ packages:
   repository: https://github.com/h2oai/h2ogpte-mcp-server
   description: MCP API server for h2oGPTe — a local stdio MCP proxy over the h2oGPTe REST API
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-mlops
@@ -45,6 +45,7 @@ packages:
   license: Apache-2.0
   description: Python client for H2O MLOps
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: driverlessai
@@ -54,6 +55,7 @@ packages:
   docs: https://docs.h2o.ai/driverless-ai/pyclient/docs/html/index.html
   description: Python client for H2O Driverless AI
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-wave
@@ -64,6 +66,7 @@ packages:
   repository: https://github.com/h2oai/wave
   description: Python driver for H2O Wave Realtime Apps (also ships the `wave` CLI)
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-lightwave
@@ -72,6 +75,7 @@ packages:
   install: pip install h2o-lightwave
   description: H2O Wave Python driver for integration with arbitrary Python web frameworks
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-authn
@@ -81,6 +85,7 @@ packages:
   repository: https://github.com/h2oai/authn-py
   description: H2O Python Clients Authentication Helpers (universal token provider)
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-cloud-discovery
@@ -90,6 +95,7 @@ packages:
   repository: https://github.com/h2oai/cloud-discovery-py
   description: H2O Cloud Discovery Python client
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-drive
@@ -98,6 +104,7 @@ packages:
   install: pip install h2o-drive
   description: H2O Drive Python client
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-engine-manager
@@ -107,6 +114,7 @@ packages:
   docs: https://docs.h2o.ai/ai-engine-manager/py/initialization
   description: Python client for H2O AI Engine Manager
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-notebook
@@ -116,6 +124,7 @@ packages:
   docs: https://docs.h2o.ai/notebook/py/initialization
   description: Python client for H2O Notebook Labs
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-secure-store
@@ -125,6 +134,7 @@ packages:
   docs: https://docs.h2o.ai/secure-store/py/initialization
   description: Python client for H2O Secure Store
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2o-featurestore
@@ -134,6 +144,7 @@ packages:
   docs: https://docs.h2o.ai/featurestore/api/permissions
   description: Python client for H2O Feature Store
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: python
   registry: pypi
   name: h2osteam
@@ -142,6 +153,7 @@ packages:
   install: pip install h2osteam
   description: Python client for H2O Enterprise Steam
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: javascript
   registry: npm
   name: h2ogpte
@@ -150,6 +162,7 @@ packages:
   install: npm install h2ogpte
   description: JavaScript client for h2oGPTe
   official: true
+  ownership_audit: metadata names h2o.ai
 - language: javascript
   registry: npm
   name: h2o-wave
@@ -157,7 +170,8 @@ packages:
   url: https://www.npmjs.com/package/h2o-wave
   install: npm install h2o-wave
   description: H2O Wave browser module
-  official: true
+  official: false
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
 - language: r
   registry: cran
   name: h2o
@@ -169,13 +183,13 @@ packages:
   registry: maven
   name: ai.h2o:h2o-core
   url: https://central.sonatype.com/artifact/ai.h2o/h2o-core
-  install: 'implementation "ai.h2o:h2o-core:3.46.0.7"'
+  install: implementation "ai.h2o:h2o-core:3.46.0.7"
   description: H2O-3 core engine (one of 97 ai.h2o artifacts on Maven Central)
   official: true
 - language: java
   registry: maven
   name: ai.h2o:mojo2-runtime-api
   url: https://central.sonatype.com/artifact/ai.h2o/mojo2-runtime-api
-  install: 'implementation "ai.h2o:mojo2-runtime-api:2.8.9"'
+  install: implementation "ai.h2o:mojo2-runtime-api:2.8.9"
   description: MOJO2 scoring runtime API used to embed Driverless AI / MLOps models
   official: true

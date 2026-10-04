@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-memory-block-privacy-request-schema.json",
+  "title": "MemoryBlockPrivacyRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-memory-blocks-api-openapi.yml#/components/schemas/MemoryBlockPrivacyRequest",
+  "type": "object",
+  "required": [
+    "is_public"
+  ],
+  "properties": {
+    "is_public": {
+      "type": "boolean",
+      "description": "Whether the memory block should be public."
+    },
+    "permissions": {
+      "description": "Public permission levels to grant when is_public is true (e.g. 'h2ogpte/memory_block/edit'). Read access is always granted to a public memory block. Ignored when is_public is false. When omitted, edit access is granted by default; pass an explicit empty array to make the block public read-only.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

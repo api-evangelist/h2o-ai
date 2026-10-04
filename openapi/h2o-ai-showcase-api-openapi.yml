@@ -324,14 +324,8 @@ paths:
           $ref: '#/components/responses/Unexpected'
 components:
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
-    Conflict:
-      description: Conflict
+    Unexpected:
+      description: Unexpected error
       content:
         application/json:
           schema:
@@ -342,32 +336,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EndpointError'
     NotFound:
       description: Not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
-    Unexpected:
-      description: Unexpected error
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EndpointError'
+    Forbidden:
+      description: Forbidden
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EndpointError'
   schemas:
-    AddShowcaseChatResponse:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
     UploadShowcaseThumbnailResponse:
       type: object
       required:
@@ -405,6 +398,16 @@ components:
         category:
           type: string
           description: Omit to keep the existing value; pass an empty (or whitespace-only) string to clear the category (tile moves to Uncategorized).
+    ReorderShowcaseChatEntry:
+      type: object
+      required:
+      - id
+      - sort_order
+      properties:
+        id:
+          type: string
+        sort_order:
+          type: integer
     ReorderShowcaseChatsRequest:
       type: object
       required:
@@ -414,6 +417,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReorderShowcaseChatEntry'
+    AddShowcaseChatResponse:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    EndpointError:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    ListShowcaseCategoriesResponse:
+      type: object
+      required:
+      - categories
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
     ShowcaseChat:
       type: object
       required:
@@ -468,38 +500,6 @@ components:
           type: string
         featured_by_username:
           type: string
-    ListShowcaseCategoriesResponse:
-      type: object
-      required:
-      - categories
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-          description: Distinct, alphabetically-sorted category labels currently in use across showcase tiles.
-    ReorderShowcaseChatEntry:
-      type: object
-      required:
-      - id
-      - sort_order
-      properties:
-        id:
-          type: string
-        sort_order:
-          type: integer
-    EndpointError:
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: Error code
-        message:
-          type: string
-          description: Error message
   securitySchemes:
     bearerAuth:
       type: http

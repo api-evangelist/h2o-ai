@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-apikey-info-schema.json",
+  "title": "APIKeyInfo",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-api-keys-api-openapi.yml#/components/schemas/APIKeyInfo",
+  "required": [
+    "id",
+    "username",
+    "name",
+    "hint",
+    "created_at",
+    "is_global_key",
+    "is_active",
+    "total_calls"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier of the API key",
+      "type": "string"
+    },
+    "username": {
+      "description": "The username of the user this key belongs to",
+      "type": "string"
+    },
+    "name": {
+      "description": "The name of the API key",
+      "type": "string"
+    },
+    "hint": {
+      "description": "Hint for the secret key of the API key",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "The date and time of when the API key was created",
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "description": "The date and time of the API key expiration",
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_used_at": {
+      "description": "The date and time of the most recent API call using this key",
+      "type": "string",
+      "format": "date-time"
+    },
+    "inactivity_interval": {
+      "description": "The number of days this API key can be inactive for before becoming invalid",
+      "type": "integer"
+    },
+    "total_calls": {
+      "description": "Number of times this API key has been used",
+      "type": "integer"
+    },
+    "is_active": {
+      "description": "Status denoting if the API key is active or not",
+      "type": "boolean"
+    },
+    "collection_name": {
+      "description": "The name of the collection associated with the API key (if it has been configured to a collection)",
+      "type": "string"
+    },
+    "collection_id": {
+      "description": "The id of the collection associated with the API key (if it has been configured to a collection)",
+      "type": "string"
+    },
+    "is_global_key": {
+      "description": "Status denoting if the API key is global or collection specific",
+      "type": "boolean"
+    }
+  }
+}

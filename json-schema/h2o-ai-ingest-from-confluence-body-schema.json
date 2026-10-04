@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ingest-from-confluence-body-schema.json",
+  "title": "IngestFromConfluenceBody",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-document-ingestion-api-openapi.yml#/components/schemas/IngestFromConfluenceBody",
+  "type": "object",
+  "required": [
+    "base_url",
+    "page_ids",
+    "credentials"
+  ],
+  "properties": {
+    "base_url": {
+      "description": "Base url of the confluence instance.",
+      "type": "string"
+    },
+    "page_ids": {
+      "description": "Ids of pages to be ingested.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "include_attachments": {
+      "description": "A flag indicating whether to also ingest attachments with the page.",
+      "type": "boolean",
+      "default": false
+    },
+    "credentials": {
+      "$ref": "#/$defs/ConfluenceCredentials"
+    },
+    "metadata": {
+      "description": "Metadata for the documents.",
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "ConfluenceCredentials": {
+      "description": "The object with Confluence credentials.",
+      "required": [
+        "username",
+        "password"
+      ],
+      "type": "object",
+      "properties": {
+        "username": {
+          "description": "Name or email of the user.",
+          "type": "string"
+        },
+        "password": {
+          "description": "Password or API token.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

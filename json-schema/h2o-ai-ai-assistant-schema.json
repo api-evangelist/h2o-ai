@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/h2o-ai/main/json-schema/h2o-ai-ai-assistant-schema.json",
+  "title": "AiAssistant",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/h2o-ai-ai-assistants-api-openapi.yml#/components/schemas/AiAssistant",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "system_prompt": {
+      "type": "string"
+    },
+    "llm": {
+      "type": "string"
+    },
+    "llm_args": {
+      "type": "object"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "stopped",
+        "running",
+        "sleeping",
+        "error"
+      ]
+    },
+    "custom_tool_definition": {
+      "type": "string"
+    },
+    "mcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "credential_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "memory_block_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "notification_email": {
+      "type": "string"
+    },
+    "history_management": {
+      "type": "string",
+      "enum": [
+        "compactification",
+        "truncation",
+        "semantic_retrieval"
+      ]
+    },
+    "history_max_chars": {
+      "type": "integer"
+    },
+    "history_recent_chars": {
+      "type": "integer"
+    },
+    "history_retrieval_chars": {
+      "type": "integer"
+    },
+    "allowed_tool_actions": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "List of allowed tool action names. NULL means all actions allowed."
+    },
+    "allowed_trigger_types": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "List of allowed trigger types. NULL means all triggers allowed."
+    },
+    "current_chat_session_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "wake_count": {
+      "type": "integer"
+    },
+    "last_wake_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_sleep_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "error_message": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "username": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_owner": {
+      "type": "boolean"
+    },
+    "user_access_mode": {
+      "type": "string"
+    },
+    "forum_count": {
+      "type": "integer"
+    }
+  }
+}

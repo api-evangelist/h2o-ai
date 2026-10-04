@@ -54,7 +54,6 @@
     "apis.yml register: already-registered"
   ],
   "skipped": [
-    "h2o-ai-admin-sessions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "h2o-ai-agents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "h2o-ai-ai-assistants-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "h2o-ai-api-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
