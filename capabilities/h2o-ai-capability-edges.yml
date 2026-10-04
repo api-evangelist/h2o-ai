@@ -1,0 +1,70 @@
+slug: h2o-ai
+provider: H2O.ai
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Permissions
+  spec_file: h2o-ai-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: GET /users/{user_id}/permissions 'Lists permissions of a given user'; PUT /users/{user_id}/roles/{role_names}
+    'Assigns roles to a given user'; schemas RoleInfo, UserPermission, GroupInfo
+  reason: The surface is user, role, group and permission administration plus permission checks — identity
+    and access management for the platform (BC-620.20).
+- tag: Model
+  spec_file: h2o-ai-model-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.85
+  evidence: POST /model/score score_rows_model_score_post; GET /model/schema; POST /model/contribution
+    score_contributions; schemas ModelSchema, PredictionInterval, ShapleyType
+  reason: MLOps scoring endpoints expose a deployed ML model for inference, schema introspection and Shapley
+    contributions — this is model deployment/serving within AI/ML lifecycle management (MLOps), matching
+    BC-610.60.
+- tag: Models
+  spec_file: h2o-ai-models-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.8
+  evidence: GET /models 'Lists all available large language models'; POST /models/{model_name}/self_test
+    'Runs a self-test for a given model'; schemas GuardrailsSettings, UsageStatsPerModel
+  reason: Operations enumerate and operate LLM and embedding models, run self-tests, apply guardrails
+    and track per-model usage — AI/ML model lifecycle and responsible-AI management (BC-610.60). Some
+    ambiguity since it also exposes inference endpoints, but the capability is the same.
+- tag: AI Assistants
+  spec_file: h2o-ai-ai-assistants-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.75
+  evidence: POST /ai_assistants  create_ai_assistant  Create an AI assistant; POST /ai_assistants/generate_spec  Generate
+    AI assistant spec from a prompt; POST /ai_assistants/{assistant_id}/stop  Stop an AI assistant and
+    cancel any running agent
+  reason: Lifecycle management of generative-AI assistants/agents on a private GenAI and RAG platform
+    — create, spec-generate, start/stop, wake cycles, collection links. This realises AI/ML model and
+    agent lifecycle management (BC-610.60); no other candidate fits an AI platform surface.
+- tag: Guardrails
+  spec_file: h2o-ai-guardrails-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: GET /guardrails/violations/summary get_guardrail_violations_summary Get guardrail violation
+    summary KPIs; schemas GuardrailViolationsByType, GuardrailsSettings
+  reason: Guardrail settings and violation reporting over LLM usage is responsible-AI control and monitoring,
+    explicitly within Artificial Intelligence Management (responsible AI). Not security threat detection
+    — the violations are AI policy breaches by users of the model.

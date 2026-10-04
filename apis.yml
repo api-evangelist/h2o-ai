@@ -941,6 +941,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/h2o-ai-capability-edges.yml
+  name: H2O.ai Business Capability Map
 - type: Overlay
   url: overlays/h2o-ai-h2ogpte-overlay.yaml
 - type: IssueTracker
