@@ -1,10 +1,17 @@
 generated: '2026-10-13'
 method: searched
 checked:
+- https://api.nuget.org/v3
 - https://azuremarketplace.microsoft.com/
+- https://crates.io/api/v1
 - https://github.com/kubeflow/website
 - https://github.com/lfai/landscape
 - https://github.com/mlcommons
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 marketplace_apps: []
 edges:
 - partner_name: Microsoft Azure Marketplace
@@ -55,6 +62,45 @@ edges:
     detected: '2026-10-15'
   detected_by: sweep-mlops.py
   first_seen: '2026-10-15'
+- partner_name: PyPI
+  partner: pypi
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Python)
+  evidence: https://pypi.org/project/h2o/
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: PyPI (public registry JSON)
+    spec_file: null
+    language: Python
+    packages:
+    - name: h2o
+      version: 3.46.0.12
+      released: '2026-08-12'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/h2o/
+      repo_leg: github-org:h2oai
+      publisher_leg: email:h2o.ai
+      matched_by: domain
+    - name: h2osteam
+      version: 1.9.18
+      released: '2026-04-16'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/h2osteam/
+      repo_leg: github-org:h2oai
+      publisher_leg: email:h2o.ai
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
 source:
 - https://github.com/lfai/landscape
 - https://github.com/mlcommons
