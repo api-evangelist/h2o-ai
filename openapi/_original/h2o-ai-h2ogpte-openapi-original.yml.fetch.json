@@ -1,0 +1,12 @@
+{
+ "url": "https://h2ogpte.genai.h2o.ai/api-spec.yaml",
+ "requested_url": "https://h2ogpte.genai.h2o.ai/api-spec.yaml",
+ "status": 200,
+ "content_type": "application/x-yaml",
+ "bytes": 712171,
+ "sha256": "a82a117320f46263a166787329f4dc87bf810a54931b16734c49e5123fd2df5c",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.917), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
