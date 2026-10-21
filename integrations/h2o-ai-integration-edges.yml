@@ -12,6 +12,7 @@ checked:
 - https://registry.npmjs.org
 - https://repo1.maven.org/maven2
 - https://rubygems.org/api/v1
+- jetbrains/integrations/jetbrains-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: PyPI
@@ -101,6 +102,25 @@ edges:
   seller_name: H2O.ai
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: JetBrains (jetbrains-marketplace)
+  partner: jetbrains
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: jetbrains-marketplace
+  evidence: https://plugins.jetbrains.com/vendor/e093f663-1bdf-4802-b1c6-9bd22fa7a34b
+  mirror_of: jetbrains/integrations/jetbrains-integration-edges.yml
+  apps:
+  - H2O Wave
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: IDE / developer extension marketplace listing
+  badges:
+  - Verified vendor
 source:
 - https://github.com/lfai/landscape
 - https://github.com/mlcommons
