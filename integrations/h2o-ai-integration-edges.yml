@@ -14,6 +14,10 @@ checked:
 - https://rubygems.org/api/v1
 - jetbrains/integrations/jetbrains-integration-edges.yml
 - https://cran.r-project.org/web/packages/packages.rds
+- https://catalog.redhat.com/api/containers/v1/operators/bundles?filter=organization==certified-operators
+- https://catalog.redhat.com/api/containers/v1/repositories?page_size=100
+- https://catalog.redhat.com/api/containers/v1/vendors/label/
+- https://catalog.redhat.com/software/partners
 marketplace_apps: []
 edges:
 - partner_name: PyPI
@@ -151,6 +155,56 @@ edges:
     detected_by: sweep-cran-r-packages.py
     detected: '2026-10-22'
   detected_by: sweep-cran-r-packages.py
+  first_seen: '2026-10-22'
+- partner_name: Red Hat Ecosystem Catalog (certified partners)
+  partner: red-hat
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://catalog.redhat.com/software/containers/search?p=1&vendor_name=H2O.ai%20Inc
+  category: Red Hat OpenShift / RHEL software certification
+  contract_reference:
+    register: 'Red Hat Ecosystem Catalog (catalog.redhat.com/api/containers/v1: repositories, vendors, certified
+      operator bundles)'
+    standard: Red Hat Container Certification (Red Hat Ecosystem Catalog, registry.connect.redhat.com)
+    spec_file: null
+    role: red-hat-certified-partner
+    registered_name: H2O.ai Inc
+    register_id: h2oai
+    matched_domain: h2o.ai
+    matched_by: domain
+    identity_source: the register's own company_url for the vendor (no lookup)
+    certified_products:
+    - product: Red Hat certified container image
+      product_type: container-image
+      standard: Red Hat Container Certification (Red Hat Ecosystem Catalog, registry.connect.redhat.com)
+      lapsed: false
+      repositories_listed: 4
+      products_sample:
+      - h2oai/driverlessai-rhelubi7
+      - h2oai/h2o
+      - h2oai/h2o-operator
+      - h2oai/h2o-operator-bundle
+    - product: Red Hat certified OpenShift operator
+      product_type: openshift-operator
+      standard: Red Hat OpenShift Operator Certification (certified-operator-index)
+      lapsed: true
+      operator_packages: 1
+      products_sample:
+      - h2o-operator
+      ocp_versions:
+      - '4.6'
+      - '4.7'
+      - '4.8'
+    signal_note: 'certified_products = one entry per certified product TYPE (container image, OpenShift operator),
+      standard named on each; lapsed: true when no certified item of that type is current (containers: all Deprecated
+      / past EOL / unpublished; operators: absent from the three newest certified-operator indexes); repository
+      and package counts are context, never counted'
+    detected_by: sweep-red-hat-certified-ecosystem.py
+    detected: '2026-10-22'
+  detected_by: sweep-red-hat-certified-ecosystem.py
   first_seen: '2026-10-22'
 source:
 - https://github.com/lfai/landscape
