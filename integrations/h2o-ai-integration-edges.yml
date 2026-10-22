@@ -13,6 +13,7 @@ checked:
 - https://repo1.maven.org/maven2
 - https://rubygems.org/api/v1
 - jetbrains/integrations/jetbrains-integration-edges.yml
+- https://cran.r-project.org/web/packages/packages.rds
 marketplace_apps: []
 edges:
 - partner_name: PyPI
@@ -121,6 +122,36 @@ edges:
   category: IDE / developer extension marketplace listing
   badges:
   - Verified vendor
+- partner_name: CRAN
+  partner: null
+  partner_match: null
+  type: register
+  direction: provider-built
+  category: official SDK (R)
+  evidence: https://cran.r-project.org/package=h2o
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: CRAN (packages.rds, the public package metadata table)
+    spec_file: null
+    language: R
+    packages:
+    - name: h2o
+      version: 3.44.0.3
+      title: R Interface for the 'H2O' Scalable Machine Learning Platform
+      released: '2024-01-11'
+      released_field: Published
+      lapsed: true
+      page: https://cran.r-project.org/package=h2o
+      repo_leg: github-org:h2oai
+      publisher_leg: email:h2o.ai
+      matched_by: domain
+    current: false
+    signal_note: 'an official R package on CRAN: distribution, not an integration; lapsed = no release in 24 months'
+    detected_by: sweep-cran-r-packages.py
+    detected: '2026-10-22'
+  detected_by: sweep-cran-r-packages.py
+  first_seen: '2026-10-22'
 source:
 - https://github.com/lfai/landscape
 - https://github.com/mlcommons
