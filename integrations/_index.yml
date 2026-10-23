@@ -88,19 +88,6 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
-- slug: h2o-ai-jetbrains-jetbrains-marketplace
-  label: JetBrains (jetbrains-marketplace)
-  partner: jetbrains
-  partner_name: JetBrains (jetbrains-marketplace)
-  category: IDE / developer extension marketplace listing
-  type: marketplace
-  marketplace: jetbrains-marketplace
-  channel: partner-built
-  evidence: https://plugins.jetbrains.com/vendor/e093f663-1bdf-4802-b1c6-9bd22fa7a34b
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: h2o-ai-cran
   label: CRAN
   partner_name: CRAN
@@ -180,5 +167,31 @@
       and package counts are context, never counted'
     detected_by: sweep-red-hat-certified-ecosystem.py
     detected: '2026-10-22'
+  status: not-a-workflow
+  arazzo: null
+- slug: h2o-ai-jetbrains-jetbrains-marketplace
+  label: JetBrains (jetbrains-marketplace)
+  partner: jetbrains
+  partner_name: JetBrains (jetbrains-marketplace)
+  category: IDE / developer extension marketplace listing
+  type: marketplace
+  marketplace: jetbrains-marketplace
+  channel: partner-built
+  evidence: https://plugins.jetbrains.com/vendor/e093f663-1bdf-4802-b1c6-9bd22fa7a34b
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: h2o-ai-hugging-face-hugging-face-hub
+  label: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_name: Hugging Face (hugging-face-hub)
+  category: Hugging Face Hub datasets
+  type: marketplace
+  marketplace: hugging-face-hub
+  channel: partner-built
+  evidence: https://huggingface.co/h2oai
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null

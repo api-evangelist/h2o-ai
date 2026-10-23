@@ -18,6 +18,7 @@ checked:
 - https://catalog.redhat.com/api/containers/v1/repositories?page_size=100
 - https://catalog.redhat.com/api/containers/v1/vendors/label/
 - https://catalog.redhat.com/software/partners
+- hugging-face/integrations/hugging-face-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: PyPI
@@ -107,25 +108,6 @@ edges:
   seller_name: H2O.ai
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
-- partner_name: JetBrains (jetbrains-marketplace)
-  partner: jetbrains
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: jetbrains-marketplace
-  evidence: https://plugins.jetbrains.com/vendor/e093f663-1bdf-4802-b1c6-9bd22fa7a34b
-  mirror_of: jetbrains/integrations/jetbrains-integration-edges.yml
-  apps:
-  - H2O Wave
-  listing_count: 1
-  detected: '2026-10-20'
-  detected_by: mirror-platform-listings.py
-  category: IDE / developer extension marketplace listing
-  badges:
-  - Verified vendor
 - partner_name: CRAN
   partner: null
   partner_match: null
@@ -206,6 +188,67 @@ edges:
     detected: '2026-10-22'
   detected_by: sweep-red-hat-certified-ecosystem.py
   first_seen: '2026-10-22'
+- partner_name: JetBrains (jetbrains-marketplace)
+  partner: jetbrains
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: jetbrains-marketplace
+  evidence: https://plugins.jetbrains.com/vendor/e093f663-1bdf-4802-b1c6-9bd22fa7a34b
+  mirror_of: jetbrains/integrations/jetbrains-integration-edges.yml
+  apps:
+  - H2O Wave
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: IDE / developer extension marketplace listing
+  badges:
+  - Verified vendor
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/h2oai
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - h2oai/h2o-lightning-card-assets
+  - h2oai/dai_docs
+  - h2oai/h2o-lightning-31b-decision-index
+  - h2oai/h2ogpt-oig-instruct-cleaned
+  - h2oai/openassistant_oasst1_h2ogpt_llama2_chat
+  - h2oai/scillm
+  - h2oai/h2o-translated-chinese-med-prompts
+  - h2oai/h2ogpt-oig-instruct-cleaned-v3
+  - h2oai/h2o-danube3-500m-chat
+  - h2oai/h2ovl-mississippi-800m
+  - h2oai/h2ovl-mississippi-2b
+  - h2oai/h2o-lightning-4b-gguf
+  - h2oai/deberta_finetuned_pii
+  - h2oai/llama2-0b-unit-test
+  - h2oai/h2o-lightning-4b
+  - h2oai/h2ogpt-oig-oasst1-512-6_9b
+  - h2oai/h2ogpt-chatbot
+  - h2oai/h2ogpt-chatbot2
+  - h2oai/wave-chatbot-ui
+  - h2oai/theme-generator
+  - h2oai/h2ovl-mississippi
+  - h2oai/h2o_wave_whisper
+  - h2oai/ner_annotation
+  - h2oai/wave-tour
+  listing_count: 3
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub datasets
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
 source:
 - https://github.com/lfai/landscape
 - https://github.com/mlcommons
