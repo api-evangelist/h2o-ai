@@ -9,6 +9,9 @@ artifacts:
   authentication/h2o-ai-authentication.yml:
     method: searched
     evidence: declared in the artifact
+  capabilities/h2o-ai-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/h2o-ai-changelog.yml:
     method: searched
     evidence: declared in the artifact
@@ -180,127 +183,325 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  hosts/h2o-ai-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
     method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+    evidence: carries an API Evangelist house phrase
+  integrations/h2o-ai-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
+  json-ld/h2o-ai-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-add-showcase-chat-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-agent-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-agent-server-directory-stats-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-agent-tool-spec-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ai-assistant-collection-link-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ai-assistant-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ai-assistant-schedule-link-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ai-assistant-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ai-assistant-spec-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ai-assistant-update-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-apikey-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-apikey-info-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-apikey-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-apikey-update-expiry-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-apikey-update-inactivity-interval-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-chat-completion-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-chat-message-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-chat-session-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-collection-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-collection-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-collection-settings-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-collection-update-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-confirm-user-deletion-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-contributions-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-contributions-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-count-with-queue-details-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-create-custom-agent-key-association-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-custom-agent-detail-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-custom-agent-key-association-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-custom-agent-tool-association-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-delete-shared-chats-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-document-extraction-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-document-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-extraction-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-extractor-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-extractor-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-forum-permission-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-forum-post-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-forum-post-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-forum-reply-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-forum-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-forum-vote-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-global-configuration-item-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-group-info-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-group-share-permission-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-guardrail-violations-dashboard-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-guardrail-violations-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-guardrail-violations-summary-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-guardrails-settings-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-guardrails-settings-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-h2-ogptsystem-info-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ingest-from-azure-blob-storage-body-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ingest-from-confluence-body-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ingest-from-gcs-body-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ingest-from-s3-body-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-ingest-from-sharepoint-online-body-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-job-details-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-list-showcase-categories-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-memory-block-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-memory-block-privacy-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-memory-block-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-memory-block-update-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-model-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-process-document-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-prompt-template-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-prompt-template-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-qafeedback-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-question-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-reorder-showcase-chats-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-reset-and-share-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-reset-and-share-with-groups-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-role-info-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-connector-details-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-task-admin-summary-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-task-admin-update-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-task-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-task-execution-stats-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-task-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-scheduled-task-update-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-score-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-score-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-self-test-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-set-default-memory-block-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-share-chat-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-share-chat-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-share-memory-block-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-share-permission-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-shared-chat-detail-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-shared-chat-info-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-showcase-chat-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-summarize-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-tag-create-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-tag-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-tag-update-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-update-shared-chat-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-update-showcase-chat-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-upload-showcase-thumbnail-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-user-configuration-item-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-user-deletion-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-user-info-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-user-job-details-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/h2o-ai-user-permission-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -384,6 +585,21 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/h2o-ai-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -398,8 +614,8 @@ artifacts:
     evidence: declared in the artifact
   openapi/_original/h2o-ai-h2ogpte-openapi-original.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: the same operations as https://h2ogpte.genai.h2o.ai/api-spec.yaml (sha256 a82a117320f4,
+      fetched 2026-10-19)
   openapi/_original/h2o-ai-mlops-scoring-openapi-original.yml:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
@@ -480,13 +696,19 @@ artifacts:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   overlays/h2o-ai-h2ogpte-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/h2o-ai-mlops-scoring-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   packages/h2o-ai-packages.yml:
     method: searched
+    evidence: declared in the artifact
+  regulatory/h2o-ai-regulatory-posture.yml:
+    method: searched
+    evidence: declared in the artifact
+  rules/h2o-ai-rules.yml:
+    method: generated
     evidence: declared in the artifact
   sandbox/h2o-ai-sandbox.yml:
     method: searched
@@ -514,6 +736,12 @@ artifacts:
     evidence: declared in the artifact
   skills/h2o-ai-score-a-deployed-mlops-model.md:
     method: generated
+    evidence: declared in the artifact
+  vendors/h2o-ai-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/h2o-ai-vocabulary.yml:
+    method: derived
     evidence: declared in the artifact
   well-known/h2o-ai-trust-oauth-authorization-server.json:
     method: unknown
